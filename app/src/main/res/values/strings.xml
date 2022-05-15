@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WALK HOLIC</string>
+    <string name="walk_holic">Walk\nHolic</string>
+    <string name="logout">로그아웃</string>
+    <string name="withdrawal">회원탈퇴</string>
+</resources>

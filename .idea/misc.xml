@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable/logout_btn.xml" value="0.223" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable/register_btn.xml" value="0.223" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/font/fontstyle.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_item_clicked.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_list_item.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_logo.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_main.xml" value="0.3651041666666667" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_recomm_item.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/activity_signup.xml" value="0.1" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/dialog.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/frag_home.xml" value="0.33" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/frag_homeback.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/frag_list.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/frag_play.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/layout/frag_search.xml" value="0.21614583333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
