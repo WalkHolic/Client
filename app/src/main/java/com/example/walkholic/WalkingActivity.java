@@ -2,43 +2,33 @@ package com.example.walkholic;
 
 import static java.lang.Thread.sleep;
 
-import android.app.ListActivity;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import android.Manifest;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
@@ -58,19 +48,17 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-//implements TMapGpsManager.onLocationChangedCallback, TMapView.OnClickListenerCallback, TMapView.OnLongClickListenerCallback
-public class FragPlay extends Fragment implements TMapGpsManager.onLocationChangedCallback, TMapView.OnClickListenerCallback, TMapView.OnLongClickListenerCallback, View.OnClickListener {
-    private MainActivity activity;
-    //UID 예시
+public class WalkingActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback, TMapView.OnClickListenerCallback, TMapView.OnLongClickListenerCallback, View.OnClickListener {
+    //UID 예시 아마 안쓸거임
     private long uid = 1;
-    //산책로이름, 산책로 설명
-    private String road_name = "a";
-    private String road_desc = "b";
+
+    ImageButton btn_home;
+    ImageButton btn_park;
+    ImageButton btn_walk;
+    ImageButton btn_walking;
+    ImageButton btn_walk_list;
 
     ListViewAdapter adapter;
 
@@ -85,6 +73,8 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
 
     // T Map GPS
     TMapGpsManager tMapGPS = null;
+    //T Map Data
+    TMapData tmapdata;
 
     // 신규 경로
     Trail newTrail = null;
@@ -98,7 +88,6 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
     private String address2 = "bb";
 
     boolean drawSwitch = false;
-
     int counter = 0;
 
     private Animation fab_open, fab_close;
@@ -106,34 +95,27 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
 
     FloatingActionButton fab, fab1, fab2, fab3;
     TextView fab1_text, fab2_text, fab3_text;
-    Button recordButton, drawBackButton;
-    TMapData tmapdata;
+    Button recordButton, drawBackButton, clearButton;
+
+    //산책로이름, 산책로 설명
+    private String road_name = "a";
+    private String road_desc = "b";
+
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
-        activity = (MainActivity) getActivity();
-    }
+    protected void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //이제 더이상 엑티비티 참조가안됨
-        activity = null;
-    }
+        adapter = new ListViewAdapter();
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_walking);
 
-        //프래그먼트 메인을 인플레이트해주고 컨테이너에 붙여달라는 뜻임
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.frag_play, container, false);
 
+        //T Map Data
         tmapdata = new TMapData();
 
         // T Map View
-        tMapView = new TMapView(getActivity());
+        tMapView = new TMapView(this);
 
         // API Key
         tMapView.setSKTMapApiKey(API_Key);
@@ -145,7 +127,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
         // T Map View Using Linear Layout
-        LinearLayout linearLayoutTmap = rootView.findViewById(R.id.linearLayoutTmap);
+        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_walking);
         linearLayoutTmap.addView(tMapView);
 
         // Request For GPS permission
@@ -153,8 +135,9 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
+
         // GPS using T Map
-        tMapGPS = new TMapGpsManager(rootView.getContext());
+        tMapGPS = new TMapGpsManager(this);
 
         // Initial Setting
         tMapGPS.setMinTime(1000);
@@ -163,54 +146,105 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
+        tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
+        tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
 
-        Button clearButton = rootView.findViewById(R.id.clearButton);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        btn_home =  findViewById(R.id.btn_home);
+        btn_park =  findViewById(R.id.btn_park);
+        btn_walk = findViewById(R.id.btn_walk);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_walk_list = findViewById(R.id.btn_walk_list);
+
+        clearButton = findViewById(R.id.clearButton);
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+
+
+        fab1_text = findViewById(R.id.fab1_text);
+        fab2_text = findViewById(R.id.fab2_text);
+        fab3_text = findViewById(R.id.fab3_text);
+
+        recordButton = findViewById(R.id.recordButton);
+        drawBackButton = findViewById(R.id.drawBackButton);
+
+
+
+
+
+
+        btn_home.setOnClickListener(this);
+        btn_park.setOnClickListener(this);
+        btn_walk.setOnClickListener(this);
+        btn_walking.setOnClickListener(this);
+        btn_walk_list.setOnClickListener(this);
+
         clearButton.setOnClickListener(this);
 
-
-        fab_open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.fab_close);
-
-        fab = rootView.findViewById(R.id.fab);
-        fab1 = rootView.findViewById(R.id.fab1);
-        fab2 = rootView.findViewById(R.id.fab2);
-        fab3 = rootView.findViewById(R.id.fab3);
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
 
-        fab1_text = rootView.findViewById(R.id.fab1_text);
-        fab2_text = rootView.findViewById(R.id.fab2_text);
-        fab3_text = rootView.findViewById(R.id.fab3_text);
-
-        recordButton = rootView.findViewById(R.id.recordButton);
-        drawBackButton = rootView.findViewById(R.id.drawBackButton);
         recordButton.setOnClickListener(this);
         drawBackButton.setOnClickListener(this);
 
-
-        return rootView;
-
-    }//oncreateview end
-
-    //click handlers
+    }
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(getContext(), "출근 완료", Toast.LENGTH_SHORT).show();
         switch (view.getId()) {
+            case R.id.btn_home:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.btn_park:
+                Intent intent2 = new Intent(getApplicationContext(), ParkActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
+            case R.id.btn_walk:
+                Intent intent3 = new Intent(getApplicationContext(), WalkActivity.class);
+                startActivity(intent3);
+                finish();
+                break;
+            case R.id.btn_walking:
+                Intent intent4 = new Intent(getApplicationContext(), WalkingActivity.class);
+                startActivity(intent4);
+                finish();
+                break;
+            case R.id.btn_walk_list:
+                Intent intent5 = new Intent(getApplicationContext(), WalkListActivity.class);
+                startActivity(intent5);
+                finish();
+                break;
             case R.id.fab:
                 anim();
                 break;
             case R.id.fab1: // 그려진 경로 지우기
                 anim();
-
                 break;
             case R.id.fab2: // 터치로 그리기
                 anim();
-
-
                 break;
             case R.id.fab3: // 기록하기
                 anim();
@@ -219,7 +253,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
                 //기록 새로 시작하기
                 clearTrail();
                 showDialog();
-                Toast.makeText(getActivity().getApplicationContext(), "기록 시작", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "기록 시작", Toast.LENGTH_SHORT).show();
                 isRecording = true;
                 newTrail = new Trail();
                 newTrail.coorList.add(tMapGPS.getLocation());
@@ -241,7 +275,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
                 recordButton.setVisibility(View.GONE);
                 //기록 중에 기록을 종료하기
 
-                Toast.makeText(getActivity().getApplicationContext(), "기록 종료", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "기록 종료", Toast.LENGTH_SHORT).show();
                 isRecording = false;
                 newTrail.coorList.add(tMapGPS.getLocation());
                 drawTrail(newTrail);
@@ -276,21 +310,40 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
 
                 newTrail = null;
 
-        break;
+                break;
 
-        case R.id.drawBackButton: // 되돌리기
+            case R.id.drawBackButton: // 되돌리기
 
 
-        break;
+                break;
 
+        }
     }
 
-}
+    @Override
+    public void onLocationChange(Location location) {
 
-    //click handlers end
+        Log.e("asdasd", "위치변경");
+        //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
+        tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
+        tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
+        //만약 좌표를 기록 중이라면,
 
-    //functions
+        if (isRecording) {
+            //Toast.makeText(getApplicationContext(), "좌표 기록 중", Toast.LENGTH_SHORT).show();
+            newTrail.coorList.add(tMapGPS.getLocation());
 
+        }
+        /*TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+
+        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
+        tMapMarkerItem.setIcon(markerIcon); // 마커 아이콘 지정
+
+        tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
+        tMapMarkerItem.setName("marker");
+        tMapView.addMarkerItem("marker", tMapMarkerItem);*/
+
+    }
     public void anim() {
 
         if (isFabOpen) {
@@ -321,30 +374,6 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
         }
     }
 
-    @Override
-    public void onLocationChange(Location location) {
-        //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
-        tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
-        tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
-        //만약 좌표를 기록 중이라면,
-
-        if (isRecording) {
-            //Toast.makeText(getApplicationContext(), "좌표 기록 중", Toast.LENGTH_SHORT).show();
-            newTrail.coorList.add(tMapGPS.getLocation());
-
-            drawTrail(newTrail);
-
-        }
-        /*TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
-
-        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
-        tMapMarkerItem.setIcon(markerIcon); // 마커 아이콘 지정
-
-        tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
-        tMapMarkerItem.setName("marker");
-        tMapView.addMarkerItem("marker", tMapMarkerItem);*/
-
-    }
 
     // 기록 종료된 산책로 그리기
     public void drawTrail(Trail inTrail) {
@@ -358,6 +387,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
         }
         tMapView.addTMapPolyLine("Line1", tMapPolyLine);
     }
+
 
     public void drawTrail2(Trail inTrail) throws IOException, ParserConfigurationException, SAXException {
 
@@ -393,6 +423,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
         }).start();
         Log.d("TmapTest", "drawTrail2 end");
     }
+
 
     public void drawTrail3(Trail inTrail) throws IOException, ParserConfigurationException, SAXException {
         Thread th = new Thread(new Runnable() {
@@ -434,19 +465,19 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
     }
 
     public void clearTrail() {
-        Toast.makeText(activity.getApplicationContext(), "지우기 성공", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "지우기 성공", Toast.LENGTH_SHORT).show();
         tMapView.removeAllTMapPolyLine();
         tMapView.removeAllTMapCircle();
     }
 
     private void showDialog() {
-        LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout loginLayout = (LinearLayout) vi.inflate(R.layout.dialog, null);
 
-        final EditText name = (EditText) loginLayout.findViewById(R.id.road_name);
-        final EditText desc = (EditText) loginLayout.findViewById(R.id.road_desc);
+        final EditText name = loginLayout.findViewById(R.id.road_name);
+        final EditText desc = loginLayout.findViewById(R.id.road_desc);
 
-        new AlertDialog.Builder(getContext()).setTitle("산책로 정보입력").setView(loginLayout).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle("산책로 정보입력").setView(loginLayout).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 road_name = name.getText().toString();
@@ -454,6 +485,7 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
             }
         }).show();
     }
+
 
     //터치로 경로 그리기
     @Override
@@ -557,6 +589,5 @@ public class FragPlay extends Fragment implements TMapGpsManager.onLocationChang
             //Toast.makeText(getApplicationContext(), "기록안하는중", Toast.LENGTH_SHORT).show();
         }
     }//functions end
-
 
 }

@@ -3,9 +3,9 @@
     package="com.example.walkholic">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,15 +15,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WALKHOLIC">
         <activity
-            android:name=".LogoActivity" android:theme="@style/Theme.WALKHOLIC"
-            android:exported="true">
+            android:name=".WalkListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WalkingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WalkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogoActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WALKHOLIC">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

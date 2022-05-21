@@ -3,4 +3,11 @@
     <string name="walk_holic">Walk\nHolic</string>
     <string name="logout">로그아웃</string>
     <string name="withdrawal">회원탈퇴</string>
+    <string name="act_home">홈</string>
+    <string name="act_park">공원</string>
+    <string name="act_walk">산책로</string>
+    <string name="act_walking">산책로생성</string>
+    <string name="act_walk_list">산책로리스트</string>
+    <string name="act_park_search">공원 검색하기</string>
+
 </resources>
