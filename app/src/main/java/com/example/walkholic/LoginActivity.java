@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.walkholic.Service.MyAPI;
+import com.example.walkholic.Service.SeverRequestApi;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     TextView textView;
     Retrofit retrofit;
     SeverRequestApi severRequestApi;
-    MyAPI MyAPI;
+    com.example.walkholic.Service.MyAPI MyAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

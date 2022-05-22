@@ -1,4 +1,4 @@
-package com.example.walkholic;
+package com.example.walkholic.Service;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
