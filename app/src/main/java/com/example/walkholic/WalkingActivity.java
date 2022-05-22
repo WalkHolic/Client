@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.walkholic.DTO.Road;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.Manifest;
@@ -63,7 +64,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     ListViewAdapter adapter;
 
     Retrofit retrofit;
-    JsonApi jsonApi;
+    SeverRequestApi severRequestApi;
     Call<List<Road>> call;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
