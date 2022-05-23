@@ -42,6 +42,7 @@ import retrofit2.Callback;
 
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth auth;  // Firebase 인증 객체
     private GoogleApiClient googleApiClient; // 구글 api 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
-    private Context context;
+    private Context context; // 이해찬 추가
     TextView textView;
     Retrofit retrofit;
     ServerRequestApi severRequestApi;
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        context = this;
+        context = this; // 이해찬 추가
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -136,11 +137,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         final String TAG = "dlgochan";
         String idtoken = account.getIdToken();
+        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
+        //이해찬 추가
         /////////////////////////////////////////////////////////////////////////
         //서비스 생성
-        ServerRequestApi loginService = ServiceGenerator.createService(ServerRequestApi.class);
-        // 토큰을 바디에 담아서 리퀘스트
-        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://walkhoic.shop")
+                .client(ServiceGenerator.getUnsafeOkHttpClient().build()) // https 처리
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ServerRequestApi loginService = retrofit.create(ServerRequestApi.class);
+        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
         loginService.login(token).enqueue(new Callback<UserList>() {
             @Override
             public void onResponse(Call<UserList> call, Response<UserList> response) {

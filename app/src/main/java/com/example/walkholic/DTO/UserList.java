@@ -8,16 +8,16 @@ import java.util.List;
 public class UserList {
     @SerializedName("error")
     @Expose
-    private Object error;
+    private String error;
     @SerializedName("data")
     @Expose
     private List<User> data = null;
 
-    public Object getError() {
+    public String getError() {
         return error;
     }
 
-    public void setError(Object error) {
+    public void setError(String error) {
         this.error = error;
     }
 

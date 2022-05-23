@@ -76,13 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton btn_walk;
     ImageButton btn_walking;
     ImageButton btn_walk_list;
-
     private FirebaseAuth auth;
     private String name;
     private Uri photoUrl;
     private TextView tv_nickname;
     private ImageView iv_profile;
     private TextView dayinfo;
+    private Context context; // 이해찬 추가
     Button btn_logout;
     Button btn_revoke;
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this; // 이해찬 추가
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
