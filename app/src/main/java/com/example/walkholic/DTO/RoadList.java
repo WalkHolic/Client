@@ -28,4 +28,12 @@ public class RoadList {
     public void setData(List<Road> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "RoadList{" +
+                "error='" + error + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

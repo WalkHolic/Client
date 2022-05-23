@@ -82,4 +82,17 @@ public class RoadSpot {
     public void setLng(Double lng) {
         this.lng = lng;
     }
+
+    @Override
+    public String toString() {
+        return "RoadSpot{" +
+                "id=" + id +
+                ", roadId=" + roadId +
+                ", spotName='" + spotName + '\'' +
+                ", roadAddr='" + roadAddr + '\'' +
+                ", lotAddr='" + lotAddr + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
+    }
 }

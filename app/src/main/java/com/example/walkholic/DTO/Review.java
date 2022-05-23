@@ -81,4 +81,17 @@ public class Review {
     public void setPngPath(String pngPath) {
         this.pngPath = pngPath;
     }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", fk=" + fk +
+                ", score=" + score +
+                ", content='" + content + '\'' +
+                ", pngPath='" + pngPath + '\'' +
+                '}';
+    }
 }

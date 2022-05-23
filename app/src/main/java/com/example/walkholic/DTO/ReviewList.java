@@ -28,4 +28,12 @@ public class ReviewList {
     public void setData(List<Review> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "ReviewList{" +
+                "error='" + error + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

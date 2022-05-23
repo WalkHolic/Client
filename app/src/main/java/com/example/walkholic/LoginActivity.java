@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkholic.Service.MyAPI;
-import com.example.walkholic.Service.SeverRequestApi;
+import com.example.walkholic.DTO.UserList;
+import com.example.walkholic.Service.PreferenceManager;
+import com.example.walkholic.Service.ServerRequestApi;
+import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,10 +37,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,16 +51,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth auth;  // Firebase 인증 객체
     private GoogleApiClient googleApiClient; // 구글 api 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
+    private Context context; // 이해찬 추가
     TextView textView;
     Retrofit retrofit;
-    SeverRequestApi severRequestApi;
-    com.example.walkholic.Service.MyAPI MyAPI;
+    ServerRequestApi severRequestApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        context = this; // 이해찬 추가
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -132,47 +135,43 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void send(@Nullable GoogleSignInAccount account) {
 
-        final String TAG = "olaaai";
+        final String TAG = "dlgochan";
         String idtoken = account.getIdToken();
-        System.out.println(idtoken);
-
         RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
-        // Retrofit 객체를 생성하고 이 객체를 이용해서, API service 를 create 해준다.
-        System.out.println(token);
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://3.34.238.143:8080")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-
-
-        MyAPI myAPI = retrofit.create(MyAPI.class);
-        System.out.println("my api create");
-        // post 한다는 request를 보내는 부분.
-        Call<ResponseBody> call = myAPI.post_posts(token);
-
-        System.out.println("response OK");
-        // 만약 서버로 부터 response를 받는다면.
-        call.enqueue(new Callback<ResponseBody>() {
+        //이해찬 추가
+        /////////////////////////////////////////////////////////////////////////
+        //서비스 생성
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://walkhoic.shop")
+                .client(ServiceGenerator.getUnsafeOkHttpClient().build()) // https 처리
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ServerRequestApi loginService = retrofit.create(ServerRequestApi.class);
+        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
+        loginService.login(token).enqueue(new Callback<UserList>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(Call<UserList> call, Response<UserList> response) {
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "완료! " + response.code());
+                    // 리스폰스 성공 시 200 OK
+                    UserList user = response.body();
+                    Log.d(TAG, "onResponse Success : " + user.toString());
+                    String jwt = user.getData().get(0).getToken();
+                    PreferenceManager.setString(context, "token", jwt);
+                    Log.d(TAG, "onResponse: " + PreferenceManager.getString(context, "token"));
                 } else {
-                    Log.d(TAG, "Post Status Code : " + response.code());
-                    Log.d(TAG, response.errorBody().toString());
-                    Log.d(TAG, call.request().body().toString());
-                    Log.d(TAG, idtoken);
-
+                    // 리스폰스 실패  400, 500 등
+                    Log.d("onResponse Fail : ", response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d(TAG, "Fail msg : " + t.getMessage());
+            public void onFailure(Call<UserList> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
 
             }
         });
-
+        /////////////////////////////////////////////////////////////////////////
     }
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {

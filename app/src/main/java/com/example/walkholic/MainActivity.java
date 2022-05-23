@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.walkholic.Service.ServerRequestApi;
+import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -74,23 +76,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton btn_walk;
     ImageButton btn_walking;
     ImageButton btn_walk_list;
-
     private FirebaseAuth auth;
     private String name;
     private Uri photoUrl;
     private TextView tv_nickname;
     private ImageView iv_profile;
     private TextView dayinfo;
+    private Context context; // 이해찬 추가
     Button btn_logout;
     Button btn_revoke;
 
+    private ServerRequestApi testService; // Service 요청 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this; // 이해찬 추가
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

@@ -29,4 +29,11 @@ public class UserRoadPath {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "UserRoadPath{" +
+                "error='" + error + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

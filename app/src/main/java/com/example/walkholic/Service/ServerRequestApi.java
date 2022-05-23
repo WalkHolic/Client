@@ -5,6 +5,8 @@ import com.example.walkholic.DTO.Review;
 import com.example.walkholic.DTO.ReviewList;
 import com.example.walkholic.DTO.RoadList;
 import com.example.walkholic.DTO.RoadPath;
+import com.example.walkholic.DTO.User;
+import com.example.walkholic.DTO.UserList;
 import com.example.walkholic.DTO.UserRoadPath;
 
 import okhttp3.RequestBody;
@@ -13,12 +15,13 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
-public interface SeverRequestApi {
+public interface ServerRequestApi {
 
     // Park
     @GET("/park/{id}") // park id 로 공원 조회
@@ -94,7 +97,7 @@ public interface SeverRequestApi {
 
     // Login
     @POST("/auth/google") // 로그인
-    Call<ResponseBody> login(@Body RequestBody token);
+    Call<UserList> login(@Body RequestBody token);
 
 
 }

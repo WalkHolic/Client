@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.walkholic.DTO.Road;
-import com.example.walkholic.Service.SeverRequestApi;
+import com.example.walkholic.Service.ServerRequestApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.Manifest;
@@ -65,7 +65,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     ListViewAdapter adapter;
 
     Retrofit retrofit;
-    SeverRequestApi severRequestApi;
+    ServerRequestApi severRequestApi;
     Call<List<Road>> call;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
