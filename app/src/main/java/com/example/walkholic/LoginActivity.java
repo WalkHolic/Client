@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkholic.Service.MyAPI;
+import com.example.walkholic.DTO.UserList;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.gms.auth.api.Auth;
@@ -35,13 +35,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -53,7 +51,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     TextView textView;
     Retrofit retrofit;
     ServerRequestApi severRequestApi;
-    com.example.walkholic.Service.MyAPI MyAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,44 +133,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         final String TAG = "dlgochan";
         String idtoken = account.getIdToken();
-        System.out.println("id token : " + idtoken);
-        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
-        ServerRequestApi loginService = ServiceGenerator.createService(ServerRequestApi.class, idtoken);
-
-        // Retrofit 객체를 생성하고 이 객체를 이용해서, API service 를 create 해준다.
-//        System.out.println(token);
-//        Retrofit.Builder builder = new Retrofit.Builder()
-//                .baseUrl("https://www.walkhoic.shop/")
-//                .addConverterFactory(GsonConverterFactory.create());
-//        Retrofit retrofit = builder.build();
-//
-//
-//        MyAPI myAPI = retrofit.create(MyAPI.class);
-        // post 한다는 request를 보내는 부분.
-//        Call<ResponseBody> call = loginService.login(token);
-
-        // 만약 서버로 부터 response를 받는다면.
         /////////////////////////////////////////////////////////////////////////
-        loginService.login(token).enqueue(new Callback<ResponseBody>() {
+        //서비스 생성
+        ServerRequestApi loginService = ServiceGenerator.createService(ServerRequestApi.class);
+        // 토큰을 바디에 담아서 리퀘스트
+        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
+        loginService.login(token).enqueue(new Callback<UserList>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<UserList> call, Response<UserList> response) {
                 if (response.isSuccessful()) {
-                    System.out.println("response : "+response.body());
-
-                    Log.d(TAG, "완료! " + response.code());
+                    // 리스폰스 성공 시 200 OK
+                    UserList user = response.body();
+                    Log.d(TAG, "onResponse Success : " + user.toString());
                 } else {
-                    Log.d("REST FAILED MESSAGE", response.message());
-//                    Log.d(TAG, "Post Status Code : " + response.code());
-//                    Log.d(TAG, response.errorBody().toString());
-//                    Log.d(TAG, call.request().body().toString());
-//                    Log.d(TAG, idtoken);
-
+                    // 리스폰스 실패  400, 500 등
+                    Log.d("onResponse Fail : ", response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d(TAG, "Fail msg : " + t.getMessage());
+            public void onFailure(Call<UserList> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
 
             }
         });

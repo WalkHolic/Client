@@ -5,6 +5,8 @@ import com.example.walkholic.DTO.Review;
 import com.example.walkholic.DTO.ReviewList;
 import com.example.walkholic.DTO.RoadList;
 import com.example.walkholic.DTO.RoadPath;
+import com.example.walkholic.DTO.User;
+import com.example.walkholic.DTO.UserList;
 import com.example.walkholic.DTO.UserRoadPath;
 
 import okhttp3.RequestBody;
@@ -94,7 +96,7 @@ public interface ServerRequestApi {
 
     // Login
     @POST("/auth/google") // 로그인
-    Call<ResponseBody> login(@Body RequestBody token);
+    Call<UserList> login(@Body RequestBody token);
 
 
 }

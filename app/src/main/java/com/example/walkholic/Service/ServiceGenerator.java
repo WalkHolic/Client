@@ -25,6 +25,7 @@ public class ServiceGenerator {
     private static final Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create());
     private static final String TAG = "Generator";
 
@@ -43,7 +44,6 @@ public class ServiceGenerator {
                 httpClient.addInterceptor(interceptor);
 
 //                builder.client(httpClient.build());
-                builder.client(getUnsafeOkHttpClient().build()); // SSl 우회
                 retrofit = builder.build();
             }
         }
