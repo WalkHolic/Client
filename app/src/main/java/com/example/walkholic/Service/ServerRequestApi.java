@@ -18,7 +18,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
-public interface SeverRequestApi {
+public interface ServerRequestApi {
 
     // Park
     @GET("/park/{id}") // park id 로 공원 조회

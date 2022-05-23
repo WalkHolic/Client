@@ -37,4 +37,13 @@ public class UserRoadSpot {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "UserRoadSpot{" +
+                "lat=" + lat +
+                ", lng=" + lng +
+                ", id=" + id +
+                '}';
+    }
 }

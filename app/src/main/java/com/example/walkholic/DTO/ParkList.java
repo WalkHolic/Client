@@ -28,4 +28,12 @@ public class ParkList {
     public void setData(List<ParkInfo> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "ParkList{" +
+                "error='" + error + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

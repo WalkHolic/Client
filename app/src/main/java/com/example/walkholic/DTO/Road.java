@@ -182,5 +182,27 @@ public class Road {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
+
+    @Override
+    public String toString() {
+        return "Road{" +
+                "id=" + id +
+                ", roadName='" + roadName + '\'' +
+                ", roadDesc='" + roadDesc + '\'' +
+                ", picturePath=" + picturePath +
+                ", distance=" + distance +
+                ", time='" + time + '\'' +
+                ", startName='" + startName + '\'' +
+                ", startRoadAddr='" + startRoadAddr + '\'' +
+                ", startLotAddr='" + startLotAddr + '\'' +
+                ", startLat=" + startLat +
+                ", startLng=" + startLng +
+                ", agencyTel='" + agencyTel + '\'' +
+                ", agencyName='" + agencyName + '\'' +
+                ", baseDate='" + baseDate + '\'' +
+                ", providerCode='" + providerCode + '\'' +
+                ", providerName='" + providerName + '\'' +
+                '}';
+    }
 }
 

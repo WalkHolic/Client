@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.walkholic.Service.ServerRequestApi;
+import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_logout;
     Button btn_revoke;
 
+    private ServerRequestApi testService; // Service 요청 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

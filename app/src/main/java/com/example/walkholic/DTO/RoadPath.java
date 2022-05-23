@@ -28,4 +28,12 @@ public class RoadPath {
     public void setData(List<RoadSpot> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "RoadPath{" +
+                "error='" + error + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

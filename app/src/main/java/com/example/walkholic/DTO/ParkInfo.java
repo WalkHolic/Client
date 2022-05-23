@@ -226,4 +226,29 @@ public class ParkInfo {
             this.providerName = providerName;
         }
 
+    @Override
+    public String toString() {
+        return "ParkInfo{" +
+                "id=" + id +
+                ", parkId='" + parkId + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", addrNew='" + addrNew + '\'' +
+                ", addr='" + addr + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", area=" + area +
+                ", facilitySport='" + facilitySport + '\'' +
+                ", facilityAmuse=" + facilityAmuse +
+                ", facilityConv=" + facilityConv +
+                ", facilityCul=" + facilityCul +
+                ", facilityEtc=" + facilityEtc +
+                ", updated='" + updated + '\'' +
+                ", manageAgency='" + manageAgency + '\'' +
+                ", contact='" + contact + '\'' +
+                ", dataBaseDate='" + dataBaseDate + '\'' +
+                ", providerCode='" + providerCode + '\'' +
+                ", providerName='" + providerName + '\'' +
+                '}';
+    }
 }

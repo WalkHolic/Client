@@ -15,7 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walkholic.Service.MyAPI;
-import com.example.walkholic.Service.SeverRequestApi;
+import com.example.walkholic.Service.ServerRequestApi;
+import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -38,6 +39,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
     TextView textView;
     Retrofit retrofit;
-    SeverRequestApi severRequestApi;
+    ServerRequestApi severRequestApi;
     com.example.walkholic.Service.MyAPI MyAPI;
 
     @Override
@@ -132,36 +134,39 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void send(@Nullable GoogleSignInAccount account) {
 
-        final String TAG = "olaaai";
+        final String TAG = "dlgochan";
         String idtoken = account.getIdToken();
-        System.out.println(idtoken);
-
+        System.out.println("id token : " + idtoken);
         RequestBody token = RequestBody.create(MediaType.parse("text/plain"), idtoken);
+        ServerRequestApi loginService = ServiceGenerator.createService(ServerRequestApi.class, idtoken);
+
         // Retrofit 객체를 생성하고 이 객체를 이용해서, API service 를 create 해준다.
-        System.out.println(token);
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://3.34.238.143:8080")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-
-
-        MyAPI myAPI = retrofit.create(MyAPI.class);
-        System.out.println("my api create");
+//        System.out.println(token);
+//        Retrofit.Builder builder = new Retrofit.Builder()
+//                .baseUrl("https://www.walkhoic.shop/")
+//                .addConverterFactory(GsonConverterFactory.create());
+//        Retrofit retrofit = builder.build();
+//
+//
+//        MyAPI myAPI = retrofit.create(MyAPI.class);
         // post 한다는 request를 보내는 부분.
-        Call<ResponseBody> call = myAPI.post_posts(token);
+//        Call<ResponseBody> call = loginService.login(token);
 
-        System.out.println("response OK");
         // 만약 서버로 부터 response를 받는다면.
-        call.enqueue(new Callback<ResponseBody>() {
+        /////////////////////////////////////////////////////////////////////////
+        loginService.login(token).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
+                    System.out.println("response : "+response.body());
+
                     Log.d(TAG, "완료! " + response.code());
                 } else {
-                    Log.d(TAG, "Post Status Code : " + response.code());
-                    Log.d(TAG, response.errorBody().toString());
-                    Log.d(TAG, call.request().body().toString());
-                    Log.d(TAG, idtoken);
+                    Log.d("REST FAILED MESSAGE", response.message());
+//                    Log.d(TAG, "Post Status Code : " + response.code());
+//                    Log.d(TAG, response.errorBody().toString());
+//                    Log.d(TAG, call.request().body().toString());
+//                    Log.d(TAG, idtoken);
 
                 }
             }
@@ -172,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             }
         });
-
+        /////////////////////////////////////////////////////////////////////////
     }
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> completedTask) {
