@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import org.jetbrains.annotations.NotNull;
 
-public class App extends Application {
-    @NotNull public static TokenSharedPreference token_prefs;
+public class AppD extends Application {
+    @NotNull public static ATokenSharedPreferenceD token_prefs;
 
 //    @NotNull
 //    public final TokenSharedPreference getToken_prefs() {
@@ -20,7 +20,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         Context applicationContext = this.getApplicationContext();
-        token_prefs = new TokenSharedPreference(applicationContext);
+        token_prefs = new ATokenSharedPreferenceD(applicationContext);
         super.onCreate();
     }
 }
