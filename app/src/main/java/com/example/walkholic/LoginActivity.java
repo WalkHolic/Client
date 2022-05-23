@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.walkholic.DTO.UserList;
+import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.gms.auth.api.Auth;
@@ -48,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth auth;  // Firebase 인증 객체
     private GoogleApiClient googleApiClient; // 구글 api 클라이언트 객체
     private static final int REQ_SIGN_GOOGLE = 100; // 구글 로그인 결과 코드
+    private Context context;
     TextView textView;
     Retrofit retrofit;
     ServerRequestApi severRequestApi;
@@ -56,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        context = this;
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -145,6 +148,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     // 리스폰스 성공 시 200 OK
                     UserList user = response.body();
                     Log.d(TAG, "onResponse Success : " + user.toString());
+                    String jwt = user.getData().get(0).getToken();
+                    PreferenceManager.setString(context, "token", jwt);
+                    Log.d(TAG, "onResponse: " + PreferenceManager.getString(context, "token"));
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d("onResponse Fail : ", response.message());
