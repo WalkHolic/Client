@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-public final class TokenSharedPreference {
+public final class ATokenSharedPreferenceD {
     private final String key_accessToken;
     private final String key_accessTokenExpireDate;
     private final String key_grantType;
@@ -49,7 +49,7 @@ public final class TokenSharedPreference {
         this.prefs.edit().putString(this.key_refreshToken, value).apply();
     }
 
-    public TokenSharedPreference(@NotNull Context context) {
+    public ATokenSharedPreferenceD(@NotNull Context context) {
 //        Intrinsics.checkNotNullParameter(context, "context");
         super();
         String prefsFilename = "token_prefs";
