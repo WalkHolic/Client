@@ -18,10 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String BASE_URL = "https://walkhoic.shop";
-//    public static final String BASE_URL = "http://10.0.2.2:8080"; // 로컬에서 테스트 용 안드는 로컬로 이 IP를 쓴다고 하네요 안되면 말씀해주세요
+//    public static final String BASE_URL = "https://walkhoic.shop";
+    public static final String BASE_URL = "http://10.0.2.2:8080"; // 로컬에서 테스트 용 안드는 로컬로 이 IP를 쓴다고 하네요 안되면 말씀해주세요
 
-    private static final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private static final OkHttpClient.Builder httpClient = getUnsafeOkHttpClient();
 
     private static final Retrofit.Builder builder =
             new Retrofit.Builder()
@@ -43,10 +43,12 @@ public class ServiceGenerator {
                     new AuthenticationInterceptor("Bearer " + authToken);
             Log.d(TAG, "createService: Authentication 호출");
 
+
+
             if (!httpClient.interceptors().contains(interceptor)) {
                 httpClient.addInterceptor(interceptor);
 
-                builder.client(httpClient.build()).client(getUnsafeOkHttpClient().build());
+                builder.client(httpClient.build());
                 retrofit = builder.build();
                 Log.d(TAG, "createService: Build");
             }
@@ -87,6 +89,7 @@ public class ServiceGenerator {
                     return true;
                 }
             });
+
             return builder;
         } catch (Exception e) {
             throw new RuntimeException(e);
