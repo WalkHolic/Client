@@ -94,7 +94,14 @@
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btn_set_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+        </LinearLayout>
 
 
     </LinearLayout>
