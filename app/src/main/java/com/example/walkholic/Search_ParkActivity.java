@@ -110,6 +110,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         mlat = tMapGPS.getLocation().getLatitude();
         mlon = tMapGPS.getLocation().getLongitude();
+        Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
 
 
         tMapView.setLocationPoint(mlon, mlat);
