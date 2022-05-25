@@ -11,11 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.walkholic.DTO.ParkList;
-import com.example.walkholic.DTO.UserList;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -26,16 +25,16 @@ import com.skt.Tmap.TMapView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_SharedActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
 
-    ImageButton btn_home;
-    ImageButton btn_park;
-    ImageButton btn_walk;
-    ImageButton btn_walking;
-    ImageButton btn_walk_list;
+    Button btn_home;
+    Button btn_search;
+    Button btn_walking;
+    Button btn_mypage;
+    Button btn_search_park;
+    Button btn_search_walk;
+    Button btn_search_shared;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -55,7 +54,7 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_park);
+        setContentView(R.layout.activity_search_shared);
 
         //이해찬 추가
         /////////////////////////////////////////////////////////////////////////
@@ -146,16 +145,23 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
 
 
         btn_home =  findViewById(R.id.btn_home);
-        btn_park =  findViewById(R.id.btn_park);
-        btn_walk =  findViewById(R.id.btn_walk);
-        btn_walking = findViewById(R.id.btn_walking);
-        btn_walk_list = findViewById(R.id.btn_walk_list);
+        btn_search =  findViewById(R.id.btn_search);
+        btn_walking =  findViewById(R.id.btn_walking);
+        btn_mypage =  findViewById(R.id.btn_mypage);
+
+        btn_search_park = findViewById(R.id.btn_search_park);
+        btn_search_walk = findViewById(R.id.btn_search_walk);
+        btn_search_shared = findViewById(R.id.btn_search_shared);
+
 
         btn_home.setOnClickListener(this);
-        btn_park.setOnClickListener(this);
-        btn_walk.setOnClickListener(this);
+        btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
-        btn_walk_list.setOnClickListener(this);
+        btn_mypage.setOnClickListener(this);
+
+        btn_search_park.setOnClickListener(this);
+        btn_search_walk.setOnClickListener(this);
+        btn_search_shared.setOnClickListener(this);
 
     }
 
@@ -167,24 +173,34 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.btn_park:
-                Intent intent2 = new Intent(getApplicationContext(), ParkActivity.class);
+            case R.id.btn_search:
+                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
                 startActivity(intent2);
                 finish();
                 break;
-            case R.id.btn_walk:
-                Intent intent3 = new Intent(getApplicationContext(), WalkActivity.class);
+            case R.id.btn_walking:
+                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
                 startActivity(intent3);
                 finish();
                 break;
-            case R.id.btn_walking:
-                Intent intent4 = new Intent(getApplicationContext(), WalkingActivity.class);
+            case R.id.btn_mypage:
+                Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
                 startActivity(intent4);
                 finish();
                 break;
-            case R.id.btn_walk_list:
-                Intent intent5 = new Intent(getApplicationContext(), WalkListActivity.class);
+            case R.id.btn_search_park:
+                Intent intent5 = new Intent(getApplicationContext(), Search_ParkActivity.class);
                 startActivity(intent5);
+                finish();
+                break;
+            case R.id.btn_search_walk:
+                Intent intent6 = new Intent(getApplicationContext(), Search_WalkActivity.class);
+                startActivity(intent6);
+                finish();
+                break;
+            case R.id.btn_search_shared:
+                Intent intent7 = new Intent(getApplicationContext(), Search_SharedActivity.class);
+                startActivity(intent7);
                 finish();
                 break;
 

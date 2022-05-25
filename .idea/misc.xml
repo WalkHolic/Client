@@ -3,6 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2145" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/logout_btn.xml" value="0.2145" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/profile_layout.xml" value="0.2145" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/round_layout.xml" value="0.2145" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/withdrawal_btn.xml" value="0.2145" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_login.xml" value="0.1125" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_logo.xml" value="0.1125" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_park.xml" value="0.20774647887323944" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_recomm_item.xml" value="0.1125" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.24320652173913043" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.24320652173913043" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walking.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/frag_homeback.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.143" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable/ic_launcher_background.xml" value="0.143" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable/logout_btn.xml" value="0.223" />

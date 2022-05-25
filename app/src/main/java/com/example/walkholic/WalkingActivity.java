@@ -26,7 +26,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +55,10 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     //UID 예시 아마 안쓸거임
     private long uid = 1;
 
-    ImageButton btn_home;
-    ImageButton btn_park;
-    ImageButton btn_walk;
-    ImageButton btn_walking;
-    ImageButton btn_walk_list;
+    Button btn_home;
+    Button btn_search;
+    Button btn_walking;
+    Button btn_mypage;
 
     ListViewAdapter adapter;
 
@@ -166,10 +164,11 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
 
         btn_home =  findViewById(R.id.btn_home);
-        btn_park =  findViewById(R.id.btn_park);
-        btn_walk = findViewById(R.id.btn_walk);
-        btn_walking = findViewById(R.id.btn_walking);
-        btn_walk_list = findViewById(R.id.btn_walk_list);
+        btn_search =  findViewById(R.id.btn_search);
+        btn_walking =  findViewById(R.id.btn_walking);
+        btn_mypage =  findViewById(R.id.btn_mypage);
+
+
 
         clearButton = findViewById(R.id.clearButton);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
@@ -194,10 +193,9 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
 
         btn_home.setOnClickListener(this);
-        btn_park.setOnClickListener(this);
-        btn_walk.setOnClickListener(this);
+        btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
-        btn_walk_list.setOnClickListener(this);
+        btn_mypage.setOnClickListener(this);
 
         clearButton.setOnClickListener(this);
 
@@ -219,24 +217,19 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.btn_park:
-                Intent intent2 = new Intent(getApplicationContext(), ParkActivity.class);
+            case R.id.btn_search:
+                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
                 startActivity(intent2);
                 finish();
                 break;
-            case R.id.btn_walk:
-                Intent intent3 = new Intent(getApplicationContext(), WalkActivity.class);
+            case R.id.btn_walking:
+                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
                 startActivity(intent3);
                 finish();
                 break;
-            case R.id.btn_walking:
-                Intent intent4 = new Intent(getApplicationContext(), WalkingActivity.class);
+            case R.id.btn_mypage:
+                Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
                 startActivity(intent4);
-                finish();
-                break;
-            case R.id.btn_walk_list:
-                Intent intent5 = new Intent(getApplicationContext(), WalkListActivity.class);
-                startActivity(intent5);
                 finish();
                 break;
             case R.id.fab:

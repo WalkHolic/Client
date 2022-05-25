@@ -26,49 +26,40 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/act_home"
-            android:contentDescription="@string/act_home"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_park"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/act_park"
-            android:contentDescription="@string/act_park"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:background="@drawable/act_search"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_walk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walk"
-            android:contentDescription="@string/act_walk"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageButton
+        <Button
             android:id="@+id/btn_walking"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/act_walking"
-            android:contentDescription="@string/act_walking"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_walk_list"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_mypage"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/act_walk_list"
-            android:contentDescription="@string/act_walk_list"
-            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+            android:background="@drawable/act_mypage_sel"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </LinearLayout>

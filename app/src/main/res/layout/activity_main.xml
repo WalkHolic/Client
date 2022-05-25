@@ -130,7 +130,7 @@
                             android:id="@+id/badge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="     BADGE"
+                            android:text="          BADGE"
                             android:textColor="#FF6B6F91"
                             android:textSize="9pt" />
 
@@ -186,20 +186,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="40dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/btn_logout"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:background="@drawable/act_home_line_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/logout_btn"
+
                         android:fontFamily="@font/fontstyle"
                         android:text="@string/logout"
                         android:textSize="14sp"
@@ -207,17 +208,54 @@
 
                     <Button
                         android:id="@+id/btn_revoke"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:background="@drawable/act_home_line_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/fontstyle"
+                        android:text="@string/withdrawal"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btn_policy"
+                        android:background="@drawable/act_home_line_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/withdrawal_btn"
                         android:fontFamily="@font/fontstyle"
-                        android:text="@string/withdrawal"
+                        android:text="@string/policy"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/btn_email"
+                        android:background="@drawable/act_home_line_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/fontstyle"
+                        android:text="@string/email"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:visibility="visible" />
@@ -235,49 +273,40 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/act_home"
-            android:contentDescription="@string/act_home"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:background="@drawable/act_home_sel"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_park"
+        <Button
+            android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/act_park"
-            android:contentDescription="@string/act_park"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:background="@drawable/act_search"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_walk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walk"
-            android:contentDescription="@string/act_walk"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageButton
+        <Button
             android:id="@+id/btn_walking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/act_walking"
-            android:contentDescription="@string/act_walking"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageButton
-            android:id="@+id/btn_walk_list"
+        <Button
+            android:id="@+id/btn_mypage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/act_walk_list"
-            android:contentDescription="@string/act_walk_list"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:background="@drawable/act_mypage"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </LinearLayout>

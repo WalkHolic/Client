@@ -38,7 +38,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="#FFF1FF"
-                android:hint="산책로 검색하기"
+                android:hint="@string/act_park_search"
                 android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
@@ -64,6 +64,33 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_search_park"
+                android:background="@drawable/act_search_park"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_search_walk"
+                android:background="@drawable/act_search_walk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_search_shared"
+                android:background="@drawable/act_search_shared_sel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,49 +105,35 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/act_home"
-            android:contentDescription="@string/act_home"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-        <ImageButton
-            android:id="@+id/btn_park"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_search"
+            android:background="@drawable/act_search_sel"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/act_park"
-            android:contentDescription="@string/act_park"
-            tools:ignore="TouchTargetSizeCheck" />
+            />
 
-        <ImageButton
-            android:id="@+id/btn_walk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walk"
-            android:contentDescription="@string/act_walk"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageButton
+        <Button
             android:id="@+id/btn_walking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/act_walking"
-            android:contentDescription="@string/act_walking"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <ImageButton
-            android:id="@+id/btn_walk_list"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/act_walk_list"
-            android:contentDescription="@string/act_walk_list"
-            tools:ignore="TouchTargetSizeCheck" />
+            />
+
+        <Button
+            android:id="@+id/btn_mypage"
+            android:background="@drawable/act_mypage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
     </LinearLayout>
 </LinearLayout>
