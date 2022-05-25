@@ -168,6 +168,51 @@
 
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="25sp"
+                            android:layout_marginTop="8sp"
+                            android:layout_weight="1"
+                            android:text="WALK"
+                            android:textColor="#FF6B6F91"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/play" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/stepCountView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="step"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_200" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -180,6 +225,37 @@
                     android:background="@drawable/round_layout"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="25sp"
+                            android:layout_marginTop="8sp"
+                            android:layout_weight="1"
+                            android:text="Calories"
+                            android:textColor="#FF6B6F91"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/play" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/cals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="kcal"
+                        android:textAlignment="center"
+                        android:textColor="@color/purple_200" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,7 +266,6 @@
 
                     <Button
                         android:id="@+id/btn_logout"
-                        android:background="@drawable/act_home_line_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -200,6 +275,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/act_home_line_btn"
 
                         android:fontFamily="@font/fontstyle"
                         android:text="@string/logout"
@@ -208,7 +284,6 @@
 
                     <Button
                         android:id="@+id/btn_revoke"
-                        android:background="@drawable/act_home_line_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -218,6 +293,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/act_home_line_btn"
                         android:fontFamily="@font/fontstyle"
                         android:text="@string/withdrawal"
                         android:textColor="@color/black"
@@ -226,7 +302,6 @@
 
                     <Button
                         android:id="@+id/btn_policy"
-                        android:background="@drawable/act_home_line_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -236,6 +311,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/act_home_line_btn"
                         android:fontFamily="@font/fontstyle"
                         android:text="@string/policy"
                         android:textColor="@color/black"
@@ -244,7 +320,6 @@
 
                     <Button
                         android:id="@+id/btn_email"
-                        android:background="@drawable/act_home_line_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -254,6 +329,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/act_home_line_btn"
                         android:fontFamily="@font/fontstyle"
                         android:text="@string/email"
                         android:textColor="@color/black"

@@ -21,6 +21,14 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="341dp">
 
+            <Button
+                android:id="@+id/shareButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/play"
+                android:layout_marginTop="590dp"
+                android:layout_marginLeft="10dp"
+                android:text="" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutTmap_walking"
@@ -67,6 +75,14 @@
                     android:background="#F5E8FF"
                     android:text="되돌리기"
                     android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/drawButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="터치로 그리기 종료"
+                    android:background="#F5E8FF"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>

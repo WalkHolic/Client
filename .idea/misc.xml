@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_walking.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/dialog.xml" value="0.1875" />
+        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/xml/filepaths.xml" value="0.358695652173913" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2145" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/logout_btn.xml" value="0.2145" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/profile_layout.xml" value="0.2145" />
@@ -51,7 +55,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
