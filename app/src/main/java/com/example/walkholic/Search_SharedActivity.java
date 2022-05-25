@@ -88,7 +88,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
 
             }
         });
-        // parkList 사용법 (DTO의 ParkList 참고)
+        // parkList 사용법 (DTO의 ParkRes 참고)
 //        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
 //        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
         /////////////////////////////////////////////////////////////////////////

@@ -47,21 +47,12 @@ public class ParkInfo {
         @SerializedName("facilityEtc")
         @Expose
         private Object facilityEtc;
-        @SerializedName("updated")
-        @Expose
-        private String updated;
         @SerializedName("manageAgency")
         @Expose
         private String manageAgency;
         @SerializedName("contact")
         @Expose
         private String contact;
-        @SerializedName("dataBaseDate")
-        @Expose
-        private String dataBaseDate;
-        @SerializedName("providerCode")
-        @Expose
-        private String providerCode;
         @SerializedName("providerName")
         @Expose
         private String providerName;
@@ -178,13 +169,6 @@ public class ParkInfo {
             this.facilityEtc = facilityEtc;
         }
 
-        public String getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(String updated) {
-            this.updated = updated;
-        }
 
         public String getManageAgency() {
             return manageAgency;
@@ -200,22 +184,6 @@ public class ParkInfo {
 
         public void setContact(String contact) {
             this.contact = contact;
-        }
-
-        public String getDataBaseDate() {
-            return dataBaseDate;
-        }
-
-        public void setDataBaseDate(String dataBaseDate) {
-            this.dataBaseDate = dataBaseDate;
-        }
-
-        public String getProviderCode() {
-            return providerCode;
-        }
-
-        public void setProviderCode(String providerCode) {
-            this.providerCode = providerCode;
         }
 
         public String getProviderName() {
@@ -243,11 +211,8 @@ public class ParkInfo {
                 ", facilityConv=" + facilityConv +
                 ", facilityCul=" + facilityCul +
                 ", facilityEtc=" + facilityEtc +
-                ", updated='" + updated + '\'' +
                 ", manageAgency='" + manageAgency + '\'' +
                 ", contact='" + contact + '\'' +
-                ", dataBaseDate='" + dataBaseDate + '\'' +
-                ", providerCode='" + providerCode + '\'' +
                 ", providerName='" + providerName + '\'' +
                 '}';
     }
