@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.example.walkholic.DTO.ParkRes;
 import com.example.walkholic.DTO.RoadRes;
+import com.example.walkholic.DTO.UserRoadRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -49,60 +50,13 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     //T Map Data
     TMapData tmapdata;
 
-    private Context context; // 이해찬 추가
-    private ServerRequestApi service; // 이해찬 추가
-    private RoadRes roadList; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    private RoadRes roadRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_walk);
-
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
-        final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-        context = this;
-        String token = PreferenceManager.getString(context, "token");
-        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.createService(ServerRequestApi.class, token);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkRes>() {
-        service.getRoadByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<RoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-            @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    roadList = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadList.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "onResponse Fail : " + response.message());
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RoadRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-        // parkList 사용법 (DTO의 ParkList 참고)
-//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
-//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
-        /////////////////////////////////////////////////////////////////////////
-
-
 
         //T Map Data
         tmapdata = new TMapData();
@@ -141,18 +95,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
         tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
 
-
-
-
-
-
-
-
-
-
-
-
-
         btn_home =  findViewById(R.id.btn_home);
         btn_search =  findViewById(R.id.btn_search);
         btn_walking =  findViewById(R.id.btn_walking);
@@ -172,6 +114,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_walk.setOnClickListener(this);
         btn_search_shared.setOnClickListener(this);
 
+        getRoadByCurrentLocation(37.3015045429, 127.0312636113);
     }
 
     @Override
@@ -231,6 +174,39 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
         tMapMarkerItem.setName("marker");
         tMapView.addMarkerItem("marker", tMapMarkerItem);*/
+
+    }
+
+    public void getRoadByCurrentLocation(double lat, double lng){
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
 
     }
 }

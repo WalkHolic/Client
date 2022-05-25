@@ -182,15 +182,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_revoke.setOnClickListener(this);
 
 
-
-
-
-
-
-
-
-
-
     }
 
 
