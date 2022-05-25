@@ -1,65 +1,59 @@
 package com.example.walkholic.DTO;
 
-
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class Road {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("road_name")
+    @SerializedName("roadName")
     @Expose
     private String roadName;
-    @SerializedName("road_desc")
+    @SerializedName("roadDesc")
     @Expose
     private String roadDesc;
-    @SerializedName("picture_path")
+    @SerializedName("picturePath")
     @Expose
-    private String picturePath;
+    private Object picturePath;
     @SerializedName("distance")
     @Expose
     private Double distance;
     @SerializedName("time")
     @Expose
     private String time;
-    @SerializedName("start_name")
+    @SerializedName("startName")
     @Expose
     private String startName;
-    @SerializedName("start_road_addr")
+    @SerializedName("startRoadAddr")
     @Expose
     private String startRoadAddr;
-    @SerializedName("start_lot_addr")
+    @SerializedName("startLotAddr")
     @Expose
     private String startLotAddr;
-    @SerializedName("start_lat")
+    @SerializedName("startLat")
     @Expose
     private Double startLat;
-    @SerializedName("start_lng")
+    @SerializedName("startLng")
     @Expose
     private Double startLng;
-    @SerializedName("agency_tel")
+    @SerializedName("roadPathStr")
+    @Expose
+    private String roadPathStr;
+    @SerializedName("agencyTel")
     @Expose
     private String agencyTel;
-    @SerializedName("agency_name")
+    @SerializedName("agencyName")
     @Expose
     private String agencyName;
-    @SerializedName("base_date")
-    @Expose
-    private String baseDate;
-    @SerializedName("provider_code")
-    @Expose
-    private String providerCode;
-    @SerializedName("provider_name")
+    @SerializedName("providerName")
     @Expose
     private String providerName;
-
     @SerializedName("hashtag")
     @Expose
-    private List<String> hashtag;
+    private List<Object> hashtag = null;
 
     public Integer getId() {
         return id;
@@ -85,11 +79,11 @@ public class Road {
         this.roadDesc = roadDesc;
     }
 
-    public String getPicturePath() {
+    public Object getPicturePath() {
         return picturePath;
     }
 
-    public void setPicturePath(String picturePath) {
+    public void setPicturePath(Object picturePath) {
         this.picturePath = picturePath;
     }
 
@@ -149,6 +143,14 @@ public class Road {
         this.startLng = startLng;
     }
 
+    public String getRoadPathStr() {
+        return roadPathStr;
+    }
+
+    public void setRoadPathStr(String roadPathStr) {
+        this.roadPathStr = roadPathStr;
+    }
+
     public String getAgencyTel() {
         return agencyTel;
     }
@@ -165,28 +167,20 @@ public class Road {
         this.agencyName = agencyName;
     }
 
-    public String getBaseDate() {
-        return baseDate;
-    }
-
-    public void setBaseDate(String baseDate) {
-        this.baseDate = baseDate;
-    }
-
-    public String getProviderCode() {
-        return providerCode;
-    }
-
-    public void setProviderCode(String providerCode) {
-        this.providerCode = providerCode;
-    }
-
     public String getProviderName() {
         return providerName;
     }
 
     public void setProviderName(String providerName) {
         this.providerName = providerName;
+    }
+
+    public List<Object> getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(List<Object> hashtag) {
+        this.hashtag = hashtag;
     }
 
     @Override
@@ -203,12 +197,11 @@ public class Road {
                 ", startLotAddr='" + startLotAddr + '\'' +
                 ", startLat=" + startLat +
                 ", startLng=" + startLng +
+                ", roadPathStr='" + roadPathStr + '\'' +
                 ", agencyTel='" + agencyTel + '\'' +
                 ", agencyName='" + agencyName + '\'' +
-                ", baseDate='" + baseDate + '\'' +
-                ", providerCode='" + providerCode + '\'' +
                 ", providerName='" + providerName + '\'' +
-                ", hashtag='" + hashtag + '\'' +
+                ", hashtag=" + hashtag +
                 '}';
     }
 }
