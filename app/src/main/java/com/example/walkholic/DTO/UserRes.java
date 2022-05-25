@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UserList {
+public class UserRes {
     @SerializedName("error")
     @Expose
     private String error;

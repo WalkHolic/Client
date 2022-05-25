@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkholic.DTO.UserList;
+import com.example.walkholic.DTO.UserRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -148,12 +148,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         ServerRequestApi loginService = retrofit.create(ServerRequestApi.class);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-        loginService.login(token).enqueue(new Callback<UserList>() {
+        loginService.login(token).enqueue(new Callback<UserRes>() {
             @Override
-            public void onResponse(Call<UserList> call, Response<UserList> response) {
+            public void onResponse(Call<UserRes> call, Response<UserRes> response) {
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
-                    UserList user = response.body();
+                    UserRes user = response.body();
                     Log.d(TAG, "onResponse Success : " + user.toString());
                     String jwt = user.getData().get(0).getToken();
                     PreferenceManager.setString(context, "token", jwt);
@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
 
             @Override
-            public void onFailure(Call<UserList> call, Throwable t) {
+            public void onFailure(Call<UserRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
 

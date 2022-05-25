@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UserRoadPath {
+public class RoadRes {
     @SerializedName("error")
     @Expose
     private String error;
     @SerializedName("data")
     @Expose
-    private List<UserRoadSpot> data = null;
+    private List<Road> data = null;
 
     public String getError() {
         return error;
@@ -21,17 +21,17 @@ public class UserRoadPath {
         this.error = error;
     }
 
-    public List<UserRoadSpot> getData() {
+    public List<Road> getData() {
         return data;
     }
 
-    public void setData(List<UserRoadSpot> data) {
+    public void setData(List<Road> data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "UserRoadPath{" +
+        return "RoadList{" +
                 "error='" + error + '\'' +
                 ", data=" + data +
                 '}';

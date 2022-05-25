@@ -14,8 +14,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.example.walkholic.DTO.ParkList;
-import com.example.walkholic.DTO.UserList;
+import com.example.walkholic.DTO.ParkRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -26,8 +25,6 @@ import com.skt.Tmap.TMapView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
 
@@ -49,7 +46,7 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context context; // 이해찬 추가
     private ServerRequestApi service; // 이해찬 추가
-    private ParkList parkList; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +65,13 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
         service = ServiceGenerator.createService(ServerRequestApi.class, token);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
 //        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<ParkList>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.getParkByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
             @Override
-            public void onResponse(Call<ParkList> call, Response<ParkList> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
-                    parkList = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkList.toString());
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "onResponse Fail : " + response.message());
@@ -83,7 +80,7 @@ public class ParkActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailure(Call<ParkList> call, Throwable t) {
+            public void onFailure(Call<ParkRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
 
