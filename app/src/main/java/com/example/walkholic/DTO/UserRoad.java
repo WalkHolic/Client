@@ -5,7 +5,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class UserRoad {
-
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("userId")
+    @Expose
+    private Object userId;
     @SerializedName("trailName")
     @Expose
     private String trailName;
@@ -18,12 +23,37 @@ public class UserRoad {
     @SerializedName("startAddr")
     @Expose
     private String startAddr;
-    @SerializedName("trailPoints")
+    @SerializedName("picture")
     @Expose
-    private List<List<Double>> trailPoints = null;
+    private String picture;
     @SerializedName("hashtag")
     @Expose
     private List<String> hashtag = null;
+    @SerializedName("createdDate")
+    @Expose
+    private String createdDate;
+    @SerializedName("modifiedDate")
+    @Expose
+    private String modifiedDate;
+    @SerializedName("shared")
+    @Expose
+    private Boolean shared;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Object getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Object userId) {
+        this.userId = userId;
+    }
 
     public String getTrailName() {
         return trailName;
@@ -57,12 +87,12 @@ public class UserRoad {
         this.startAddr = startAddr;
     }
 
-    public List<List<Double>> getTrailPoints() {
-        return trailPoints;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setTrailPoints(List<List<Double>> trailPoints) {
-        this.trailPoints = trailPoints;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public List<String> getHashtag() {
@@ -72,15 +102,45 @@ public class UserRoad {
     public void setHashtag(List<String> hashtag) {
         this.hashtag = hashtag;
     }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Boolean getShared() {
+        return shared;
+    }
+
+    public void setShared(Boolean shared) {
+        this.shared = shared;
+    }
+
     @Override
     public String toString() {
         return "UserRoad{" +
-                "trailName='" + trailName + '\'' +
+                "id=" + id +
+                ", userId=" + userId +
+                ", trailName='" + trailName + '\'' +
                 ", description='" + description + '\'' +
                 ", distance=" + distance +
                 ", startAddr='" + startAddr + '\'' +
-                ", trailPoints=" + trailPoints +
+                ", picture='" + picture + '\'' +
                 ", hashtag=" + hashtag +
+                ", createdDate='" + createdDate + '\'' +
+                ", modifiedDate='" + modifiedDate + '\'' +
+                ", shared=" + shared +
                 '}';
     }
 }
