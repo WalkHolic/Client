@@ -49,7 +49,7 @@ public interface ServerRequestApi {
     Call<RoadPathRes> getRoadPathByRid(@Path("rid") int rid);
 
     @GET("/road/nearRoads") // 근처 산책로 조희
-    Call<ParkRes> getRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
+    Call<RoadRes> getRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
 
     @POST("/road/{id}/review") // 산책로 리뷰 작성
     Call<ResponseBody> uploadRoadReview(@Path("id") int id, @Body RequestBody reviewJson);
@@ -71,7 +71,7 @@ public interface ServerRequestApi {
     Call<UserRoadRes> getUserRoadById(@Query("uid") int uid);
 
     @GET("/user/road/nearRoads") // 근처 공유 산책로 조희
-    Call<ParkRes> getUserRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
+    Call<UserRoadRes> getUserRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
 
 
     // My Information

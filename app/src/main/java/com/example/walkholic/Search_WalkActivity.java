@@ -15,12 +15,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.walkholic.DTO.ParkRes;
+import com.example.walkholic.DTO.RoadRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapView;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +51,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
 
     private Context context; // 이해찬 추가
     private ServerRequestApi service; // 이해찬 추가
-    private ParkRes parkList; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    private RoadRes roadList; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +70,28 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         service = ServiceGenerator.createService(ServerRequestApi.class, token);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
 //        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkRes>() {
-        service.getParkByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.getRoadByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<RoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
             @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
-                    parkList = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkList.toString());
+                    roadList = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadList.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "onResponse Fail : " + response.message());
-                    Log.d(TAG, String.format("onResponse Fail : %d", response.code()));
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
                 }
             }
 
             @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
+            public void onFailure(Call<RoadRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
 
