@@ -22,6 +22,8 @@ import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapView;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,7 +51,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Double mlat;
     Double mlon;
 
-    private Context context; // 이해찬 추가
+//    private Context context; // 이해찬 추가
     private ServerRequestApi service; // 이해찬 추가
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
@@ -106,14 +108,14 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         /////////////////////////////////////////////////////////////////////////
         final String TAG = "dlgochan";
         // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-        context = this;
-        String token = PreferenceManager.getString(context, "token");
-        Log.d(TAG, "onCreate Token: " + token);
+//        context = this;
+//        String token = PreferenceManager.getString(context, "token");
+//        Log.d(TAG, "onCreate Token: " + token);
         //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.createService(ServerRequestApi.class, token);
+        service = ServiceGenerator.getService(ServerRequestApi.class);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
 //        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(mlat, mlon).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.getParkByCurrentLocation(37.3015045429, 127.0312636113).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
             @Override
             public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
                 if (response.isSuccessful()) {
@@ -122,8 +124,13 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "onResponse Fail : " + response.message());
-                    Log.d(TAG, String.format("onResponse Fail : %d", response.code()));
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
                 }
             }
 

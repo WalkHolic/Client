@@ -158,6 +158,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     String jwt = user.getData().get(0).getToken();
                     PreferenceManager.setString(context, "token", jwt);
                     Log.d(TAG, "onResponse: " + PreferenceManager.getString(context, "token"));
+                    ServiceGenerator.createService(ServerRequestApi.class, jwt);
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d("onResponse Fail : ", response.message());
