@@ -1,9 +1,6 @@
 package com.example.walkholic;
 
-import static android.content.ContentValues.TAG;
-
 import android.Manifest;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.walkholic.DTO.ParkInfo;
 import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
@@ -37,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
     Button btn_home;
     Button btn_search;
@@ -81,6 +77,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         // API Key
         tMapView.setSKTMapApiKey(API_Key);
+
 
         // Initial Setting
         tMapView.setZoomLevel(17);
@@ -229,6 +226,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                         addMarketMarker(parkRes.getData());
                         tMapView.setZoomLevel(13);
 
+
+
+
                     } else {
                         // 리스폰스 실패  400, 500 등
                         Log.d(TAG, "RES msg : " + response.message());
@@ -253,9 +253,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     public void addMarketMarker(List<ParkInfo> marketList) {
         final String TAG = "dlgochan";
-        Log.d(TAG, "마커 실행?");
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
 
         for (int i = 0; i < marketList.size(); i++) {
 
@@ -282,13 +282,24 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
             tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
             tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+            tMapMarkerItem.setCalloutRightButtonImage(bitmap2);
+
 
             // add Marker on T Map View
             // id로 Marker을 식별
             tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
 
+
+
         }
 
     }
 
+
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+        final String TAG = "dlgochan";
+        // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "풍선뷰 클릭?");
+    }
 }
