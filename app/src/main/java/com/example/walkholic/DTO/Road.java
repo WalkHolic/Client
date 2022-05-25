@@ -4,6 +4,8 @@ package com.example.walkholic.DTO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Road {
 
     @SerializedName("id")
@@ -17,7 +19,7 @@ public class Road {
     private String roadDesc;
     @SerializedName("picture_path")
     @Expose
-    private Object picturePath;
+    private String picturePath;
     @SerializedName("distance")
     @Expose
     private Double distance;
@@ -55,6 +57,10 @@ public class Road {
     @Expose
     private String providerName;
 
+    @SerializedName("hashtag")
+    @Expose
+    private List<String> hashtag;
+
     public Integer getId() {
         return id;
     }
@@ -79,11 +85,11 @@ public class Road {
         this.roadDesc = roadDesc;
     }
 
-    public Object getPicturePath() {
+    public String getPicturePath() {
         return picturePath;
     }
 
-    public void setPicturePath(Object picturePath) {
+    public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 
@@ -202,6 +208,7 @@ public class Road {
                 ", baseDate='" + baseDate + '\'' +
                 ", providerCode='" + providerCode + '\'' +
                 ", providerName='" + providerName + '\'' +
+                ", hashtag='" + hashtag + '\'' +
                 '}';
     }
 }
