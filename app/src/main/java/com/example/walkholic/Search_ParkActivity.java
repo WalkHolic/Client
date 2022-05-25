@@ -173,7 +173,10 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.btn_set_location:
-                getParkByCurrentLocation(37.3015045429, 127.0312636113);
+                //getParkByCurrentLocation(37.3015045429, 127.0312636113);
+                Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+                getParkByCurrentLocation(mlat, mlat);
+
                 break;
         }
     }
@@ -218,6 +221,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                     // 리스폰스 성공 시 200 OK
                     parkRes = response.body();
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                    addMarketMarker(parkRes.getData());
+                    tMapView.setZoomLevel(13);
 
                 } else {
                     // 리스폰스 실패  400, 500 등
@@ -246,42 +251,48 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
+        try {
+            for (int i = 0; i < marketList.size(); i++) {
 
-        for (int i = 0; i < marketList.size(); i++) {
-
-            String storeName = marketList.get(i).getName();     // 이름
-            String address = marketList.get(i).getAddr();         // 주소
-            double lat = marketList.get(i).getLat();            // 위도
-            double lon = marketList.get(i).getLng();           // 경도
-
-
-
-            // TMapPoint
-            TMapPoint tMapPoint = new TMapPoint(lat, lon);
-
-            // TMapMarkerItem
-            // Marker Initial Settings
-            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
-            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
-            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
-            tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
-            tMapMarkerItem.setName(storeName);              // Marker의 이름
-
-            // Balloon View Initial Settings
-            tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
-            tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
-            tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
-            tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
-            tMapMarkerItem.setCalloutRightButtonImage(bitmap2);
-
-
-            // add Marker on T Map View
-            // id로 Marker을 식별
-            tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
+                String storeName = marketList.get(i).getName();     // 이름
+                String address = marketList.get(i).getAddr();         // 주소
+                double lat = marketList.get(i).getLat();            // 위도
+                double lon = marketList.get(i).getLng();           // 경도
 
 
 
+                // TMapPoint
+                TMapPoint tMapPoint = new TMapPoint(lat, lon);
+
+                // TMapMarkerItem
+                // Marker Initial Settings
+                TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+                tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+                tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+                tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
+                tMapMarkerItem.setName(storeName);              // Marker의 이름
+
+                // Balloon View Initial Settings
+                tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
+                tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
+                tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
+                tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+                tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
+
+
+                // add Marker on T Map View
+                // id로 Marker을 식별
+                tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
+
+
+
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.d(TAG, "onFailure : 널");
         }
+
+
 
     }
 
