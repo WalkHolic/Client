@@ -38,6 +38,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_walk;
     Button btn_search_shared;
 
+    Button btn_set_location;
+
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
     // T Map View
@@ -97,62 +99,10 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         tMapGPS.OpenGps();
         mlat = tMapGPS.getLocation().getLatitude();
-        mlon = tMapGPS.getLocation().getLatitude();
+        mlon = tMapGPS.getLocation().getLongitude();
 
         tMapView.setLocationPoint(mlon, mlat);
         tMapView.setCenterPoint(mlon, mlat);
-
-
-
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
-        final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-//        context = this;
-//        String token = PreferenceManager.getString(context, "token");
-//        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.getService(ServerRequestApi.class);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(37.3015045429, 127.0312636113).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-            @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-        // parkList 사용법 (DTO의 ParkList 참고)
-//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
-//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
-        /////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
 
         btn_home =  findViewById(R.id.btn_home);
         btn_search =  findViewById(R.id.btn_search);
@@ -163,6 +113,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
 
+        btn_set_location = findViewById(R.id.btn_set_location);
+
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -172,6 +124,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_park.setOnClickListener(this);
         btn_search_walk.setOnClickListener(this);
         btn_search_shared.setOnClickListener(this);
+
+        btn_set_location.setOnClickListener(this);
 
     }
 
@@ -213,6 +167,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent7);
                 finish();
                 break;
+            case R.id.btn_set_location:
+                getlocation();
+                break;
 
         }
     }
@@ -237,4 +194,46 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         tMapView.addMarkerItem("marker", tMapMarkerItem);*/
 
     }
+
+    public void getlocation(){
+            //이해찬 추가
+            /////////////////////////////////////////////////////////////////////////
+            final String TAG = "dlgochan";
+            // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
+//        context = this;
+//        String token = PreferenceManager.getString(context, "token");
+//        Log.d(TAG, "onCreate Token: " + token);
+            //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
+            service = ServiceGenerator.getService(ServerRequestApi.class);
+            // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
+//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
+            service.getParkByCurrentLocation(37.3015045429, 127.0312636113).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+                @Override
+                public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                    if (response.isSuccessful()) {
+                        // 리스폰스 성공 시 200 OK
+                        parkRes = response.body();
+                        Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                    } else {
+                        // 리스폰스 실패  400, 500 등
+                        Log.d(TAG, "RES msg : " + response.message());
+                        try {
+                            Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d(TAG, String.format("RES err code : %d", response.code()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ParkRes> call, Throwable t) {
+                    // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                    Log.d(TAG, "onFailure : " + t.getMessage());
+
+                }
+            });
+
+    }
+
 }
