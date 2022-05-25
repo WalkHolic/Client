@@ -1,7 +1,8 @@
 package com.example.walkholic;
 
 import android.Manifest;
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,22 +14,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.walkholic.DTO.ParkInfo;
 import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
+import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
     Button btn_home;
     Button btn_search;
@@ -96,8 +101,11 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
+
         mlat = tMapGPS.getLocation().getLatitude();
         mlon = tMapGPS.getLocation().getLongitude();
+        Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+
 
         tMapView.setLocationPoint(mlon, mlat);
         tMapView.setCenterPoint(mlon, mlat);
@@ -233,4 +241,55 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    public void addMarketMarker(List<ParkInfo> marketList) {
+        final String TAG = "dlgochan";
+        // Marker img -> bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
+
+        for (int i = 0; i < marketList.size(); i++) {
+
+            String storeName = marketList.get(i).getName();     // 이름
+            String address = marketList.get(i).getAddr();         // 주소
+            double lat = marketList.get(i).getLat();            // 위도
+            double lon = marketList.get(i).getLng();           // 경도
+
+
+
+            // TMapPoint
+            TMapPoint tMapPoint = new TMapPoint(lat, lon);
+
+            // TMapMarkerItem
+            // Marker Initial Settings
+            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+            tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
+            tMapMarkerItem.setName(storeName);              // Marker의 이름
+
+            // Balloon View Initial Settings
+            tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
+            tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
+            tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
+            tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+            tMapMarkerItem.setCalloutRightButtonImage(bitmap2);
+
+
+            // add Marker on T Map View
+            // id로 Marker을 식별
+            tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
+
+
+
+        }
+
+    }
+
+
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+        final String TAG = "dlgochan";
+        // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "풍선뷰 클릭?");
+    }
 }
