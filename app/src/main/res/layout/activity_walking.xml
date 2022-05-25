@@ -25,10 +25,11 @@
                 android:id="@+id/shareButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/play"
-                android:layout_marginTop="590dp"
                 android:layout_marginLeft="10dp"
-                android:text="" />
+                android:layout_marginTop="500dp"
+                android:background="@drawable/play"
+                android:text=""
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutTmap_walking"
@@ -193,33 +194,34 @@
 
         <Button
             android:id="@+id/btn_home"
-            android:background="@drawable/act_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/act_home"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_search"
-            android:background="@drawable/act_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_search"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_walking"
-            android:background="@drawable/act_walking_sel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_walking_sel"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_mypage"
-            android:background="@drawable/act_mypage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_mypage"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </LinearLayout>

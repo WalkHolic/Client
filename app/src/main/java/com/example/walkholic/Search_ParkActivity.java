@@ -46,6 +46,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     //T Map Data
     TMapData tmapdata;
 
+    Double mlat;
+    Double mlon;
+
     private Context context; // 이해찬 추가
     private ServerRequestApi service; // 이해찬 추가
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
@@ -55,44 +58,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_park);
-
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
-        final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-        context = this;
-        String token = PreferenceManager.getString(context, "token");
-        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.createService(ServerRequestApi.class, token);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-            @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "onResponse Fail : " + response.message());
-                    Log.d(TAG, String.format("onResponse Fail : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-        // parkList 사용법 (DTO의 ParkList 참고)
-//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
-//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
-        /////////////////////////////////////////////////////////////////////////
-
 
 
         //T Map Data
@@ -129,12 +94,50 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
-        tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
-        tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
+        mlat = tMapGPS.getLocation().getLatitude();
+        mlon = tMapGPS.getLocation().getLatitude();
+
+        tMapView.setLocationPoint(mlon, mlat);
+        tMapView.setCenterPoint(mlon, mlat);
 
 
 
+        //이해찬 추가
+        /////////////////////////////////////////////////////////////////////////
+        final String TAG = "dlgochan";
+        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
+        context = this;
+        String token = PreferenceManager.getString(context, "token");
+        Log.d(TAG, "onCreate Token: " + token);
+        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
+        service = ServiceGenerator.createService(ServerRequestApi.class, token);
+        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
+//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
+        service.getParkByCurrentLocation(mlat, mlon).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "onResponse Fail : " + response.message());
+                    Log.d(TAG, String.format("onResponse Fail : %d", response.code()));
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
+        // parkList 사용법 (DTO의 ParkList 참고)
+//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
+//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
+        /////////////////////////////////////////////////////////////////////////
 
 
 
@@ -209,6 +212,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onLocationChange(Location location) {
+
+        mlat = location.getLatitude();
+        mlon = location.getLongitude();
 
         Log.e("asdasd", "위치변경");
         //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
