@@ -14,12 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.example.walkholic.DTO.ParkInfo;
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.DTO.UserRoadRequestDto;
-import com.example.walkholic.DTO.UserRoadRes;
+import com.example.walkholic.DataClass.Data.ParkInfo;
+import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
@@ -29,13 +27,11 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Body;
 
 public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 

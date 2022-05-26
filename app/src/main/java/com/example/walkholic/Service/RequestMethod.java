@@ -2,14 +2,12 @@ package com.example.walkholic.Service;
 
 import android.util.Log;
 
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.DTO.ReviewRequestDto;
-import com.example.walkholic.DTO.ReviewRes;
-import com.example.walkholic.DTO.RoadPathRes;
-import com.example.walkholic.DTO.RoadRes;
-import com.example.walkholic.DTO.UserRes;
-import com.example.walkholic.DTO.UserRoadRequestDto;
-import com.example.walkholic.DTO.UserRoadRes;
+import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.RoadRes;
+import com.example.walkholic.DataClass.Response.UserRes;
+import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 
 import java.io.IOException;
 
@@ -20,9 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
 
 public class RequestMethod{
     private ParkRes parkRes;

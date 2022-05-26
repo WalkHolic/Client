@@ -1,13 +1,12 @@
 package com.example.walkholic.Service;
 
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.DTO.ReviewRequestDto;
-import com.example.walkholic.DTO.ReviewRes;
-import com.example.walkholic.DTO.RoadRes;
-import com.example.walkholic.DTO.RoadPathRes;
-import com.example.walkholic.DTO.UserRes;
-import com.example.walkholic.DTO.UserRoadRequestDto;
-import com.example.walkholic.DTO.UserRoadRes;
+import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.RoadRes;
+import com.example.walkholic.DataClass.Response.RoadPathRes;
+import com.example.walkholic.DataClass.Response.UserRes;
+import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

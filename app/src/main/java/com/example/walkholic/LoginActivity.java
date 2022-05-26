@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkholic.DTO.UserRes;
+import com.example.walkholic.DataClass.Response.UserRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
