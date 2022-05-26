@@ -7,6 +7,7 @@ import com.example.walkholic.DTO.ReviewRes;
 import com.example.walkholic.DTO.RoadPathRes;
 import com.example.walkholic.DTO.RoadRes;
 import com.example.walkholic.DTO.UserRes;
+import com.example.walkholic.DTO.UserRoadRequestDto;
 import com.example.walkholic.DTO.UserRoadRes;
 
 import java.io.IOException;
@@ -16,6 +17,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public class RequestMethod{
     private ParkRes parkRes;
@@ -118,8 +121,31 @@ public class RequestMethod{
 
     }
 
-    public Call<ResponseBody> createMyRoad(RequestBody roadJson) {
-        return null;
+    public void createMyRoad(@Body UserRoadRequestDto roadRequestDto) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.createMyRoad(roadRequestDto).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public Call<RoadRes> getMyRoad() {
