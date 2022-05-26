@@ -1,5 +1,6 @@
 package com.example.walkholic.Service;
 
+import com.example.walkholic.DataClass.Data.ParkOption;
 import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.DataClass.Response.RoadRes;
@@ -35,7 +36,7 @@ public interface ServerRequestApi {
     Call<ParkRes> getParkByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
 
     @POST("/park/filter") // 조건에 맞는 공원 검색
-    Call<ParkRes> getParkByFilter(@Query("lat") double lat, @Query("lng") double lng);
+    Call<ParkRes> getParkByFilter(@Query("lat") double lat, @Query("lng") double lng, @Body ParkOption option);
 
     // 리뷰 관련
     @Multipart
