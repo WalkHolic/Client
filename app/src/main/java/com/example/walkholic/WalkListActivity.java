@@ -1,21 +1,15 @@
 package com.example.walkholic;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.provider.DocumentsContract;
@@ -24,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Response.ReviewRes;
@@ -73,35 +66,12 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
 
         imageView = findViewById(R.id.user_image);
 
+        // 임시 리뷰 Dto 생성
         reviewRequestDto = new ReviewRequestDto();
         reviewRequestDto.setContent("좋아요");
         reviewRequestDto.setScore(4.0);
         Log.d("dlgochan", "reviewRequestDto: " + reviewRequestDto.toString());
     }
-
-    // 앨범 선택
-    ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    if (result != null) {
-                        Log.d("dlgochan", "result: " + result);
-                        imageUri = result;
-                        imageView.setImageURI(result);
-                    }
-                }
-            });
-    // 카메라 촬영
-    ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Log.d("dlgochan", "result: " + result);
-                        imageView.setImageURI(camUri);
-                    }
-                }
-            });
 
     @Override
     public void onClick(View view) {
@@ -127,32 +97,23 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btn_PostPicture:
-                try {
-
+                File realFile = null;
+                MultipartBody.Part thumbnail = null;
+                if (imageUri != null) {
                     String realImagePath = getRealPathFromUri(imageUri);
-                    File realFile = new File(realImagePath);
+                    realFile = new File(realImagePath);
                     Log.d("dlgochan", "realImagePath: " + realImagePath);
-                    Log.d("dlgochan", "imagePath: " + realFile.getAbsolutePath());
                     Log.d("dlgochan", "fileName: " + realFile.getName());
                     RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
-                    MultipartBody.Part thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
-                    Gson gson = new Gson();
-                    String stringDto = gson.toJson(reviewRequestDto);
-                    RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
-                    uploadParkReview(3, requestBody1, thumbnail);
-                } catch (Exception e) {
-                    Log.d("dlgochan", e.getMessage());
+                    thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
                 }
-
+                Gson gson = new Gson();
+                String stringDto = gson.toJson(reviewRequestDto);
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
+                uploadParkReview(3, requestBody1, thumbnail);
                 break;
-            // 사진 업로드 예시 코드
             case R.id.btn_UploadPicture:
-                DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        doTakePhotoAction();
-                    }
-                };
+                imageUri = null;
                 DialogInterface.OnClickListener albumListner = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -167,7 +128,6 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 };
                 new AlertDialog.Builder(this)
                         .setTitle("업로드할 이미지 선택")
-                        .setPositiveButton("사진촬영", cameraListener)
                         .setNeutralButton("앨범선택", albumListner)
                         .setNegativeButton("취소", cancelListener)
                         .show();
@@ -180,7 +140,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             return contentUri.getPath();
         }
         String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
-        String[] columns = { MediaStore.Files.FileColumns.DATA };
+        String[] columns = {MediaStore.Files.FileColumns.DATA};
         String selection = MediaStore.Files.FileColumns._ID + "=" + id;
         Cursor cursor = getContentResolver().query(MediaStore.Files.getContentUri("external"), columns, selection, null, null);
         try {
@@ -194,22 +154,18 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         return null;
     }
 
-    Uri camUri;
-    // 카메라 통해서 사진 찍기
-    public void doTakePhotoAction() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED) {
-            Toast.makeText(this, "카메라 권한 설정이 필요합니다.", Toast.LENGTH_LONG).show();
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-        }
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
-        camUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camUri);
-        cameraLauncher.launch(cameraIntent);
-    }
+    // 앨범 선택
+    ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    if (result != null) {
+                        Log.d("dlgochan", "result: " + result);
+                        imageUri = result;
+                        imageView.setImageURI(result);
+                    }
+                }
+            });
 
     public void doTakeAlbumAction() {
         getContent.launch("image/*");
