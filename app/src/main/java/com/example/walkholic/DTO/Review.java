@@ -13,7 +13,7 @@ public class Review {
     @SerializedName("userName")
     @Expose
     private String userName;
-    @SerializedName(value="fk", alternate={"parkID", "roadID"})
+    @SerializedName(value="fk", alternate={"parkId", "roadId"})
     @Expose
     private Integer fk;
     @SerializedName("score")
