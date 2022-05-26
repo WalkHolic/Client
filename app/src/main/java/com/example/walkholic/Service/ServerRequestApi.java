@@ -5,6 +5,7 @@ import com.example.walkholic.DTO.ReviewRes;
 import com.example.walkholic.DTO.RoadRes;
 import com.example.walkholic.DTO.RoadPathRes;
 import com.example.walkholic.DTO.UserRes;
+import com.example.walkholic.DTO.UserRoadRequestDto;
 import com.example.walkholic.DTO.UserRoadRes;
 
 import okhttp3.RequestBody;
@@ -76,7 +77,7 @@ public interface ServerRequestApi {
 
     // My Information
     @POST("/user/road") // 산책로 생성
-    Call<ResponseBody> createMyRoad(@Body RequestBody roadJson);
+    Call<UserRoadRes> createMyRoad(@Body UserRoadRequestDto roadRequestDto);
 
     @GET("/user/road") // 내 산책로 조희
     Call<RoadRes> getMyRoad();
