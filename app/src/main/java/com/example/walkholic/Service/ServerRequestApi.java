@@ -50,6 +50,8 @@ public interface ServerRequestApi {
     @DELETE("/park/review/{id}") // 공원 리뷰 삭제
     Call<ReviewRes> delParkReview(@Path("id") int id);
 
+    @PUT("/park/review/{id}") // 공원 리뷰 수정
+    Call<UserRoadRes> updateParkReview(@Path("id") int id);
 
 
     /* Road (기본 산책로) */
@@ -120,8 +122,6 @@ public interface ServerRequestApi {
     @GET("/user/road/{rid}/share") // 공유 상태 변경
     Call<UserRoadSharedRes> changeShareFlag(@Path("rid") int rid);
 
-    @PUT("/park/review/{id}") // 공원 리뷰 수정
-    Call<UserRoadRes> updateParkReview(@Path("id") int id);
 
     // Login
     @POST("/auth/google") // 로그인
