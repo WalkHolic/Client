@@ -37,7 +37,8 @@ public interface ServerRequestApi {
 
     @Multipart
     @POST("/park/{id}/review") // 공원 리뷰 작성
-    Call<ReviewRes> uploadParkReview(@Path("id") int id, @Part ReviewRequestDto reviewRequestDto,
+    Call<ReviewRes> uploadParkReview(@Path("id") int id,
+                                     @Part("reviewRequestDto") RequestBody reviewRequestDto,
                                      @Part MultipartBody.Part file);
 
     @GET("/park/{id}/review") // 공원 리뷰 보기
