@@ -1,9 +1,6 @@
 package com.example.walkholic;
 
-import static android.content.ContentValues.TAG;
-
 import android.Manifest;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.walkholic.DTO.ParkInfo;
 import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
@@ -37,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
     Button btn_home;
     Button btn_search;
@@ -62,8 +58,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Double mlat;
     Double mlon;
 
-//    private Context context; // 이해찬 추가
-    private ServerRequestApi service; // 이해찬 추가
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
     @Override
@@ -138,7 +132,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
-
     }
 
     @Override
@@ -180,9 +173,11 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.btn_set_location:
-                setlocation();
-                break;
+                //getParkByCurrentLocation(37.3015045429, 127.0312636113);
+                Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+                getParkByCurrentLocation(mlat, mlat);
 
+                break;
         }
     }
 
@@ -207,88 +202,105 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    public void setlocation(){
-            //이해찬 추가
-            /////////////////////////////////////////////////////////////////////////
-            final String TAG = "dlgochan";
-            // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
+    public void getParkByCurrentLocation(double lat, double lng){
+        //이해찬 추가
+        /////////////////////////////////////////////////////////////////////////
+        final String TAG = "dlgochan";
+        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
 //        context = this;
 //        String token = PreferenceManager.getString(context, "token");
 //        Log.d(TAG, "onCreate Token: " + token);
-            //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-            service = ServiceGenerator.getService(ServerRequestApi.class);
-            // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
+        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
 //        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-            service.getParkByCurrentLocation(mlat, mlon).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-                @Override
-                public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                    if (response.isSuccessful()) {
-                        // 리스폰스 성공 시 200 OK
-                        parkRes = response.body();
-                        Log.d(TAG, "onResponse Success : " + parkRes.toString());
-                        addMarketMarker(parkRes.getData());
-                        tMapView.setZoomLevel(13);
+        service.getParkByCurrentLocation(lat, lng).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                    addMarketMarker(parkRes.getData());
+                    tMapView.setZoomLevel(13);
 
-                    } else {
-                        // 리스폰스 실패  400, 500 등
-                        Log.d(TAG, "RES msg : " + response.message());
-                        try {
-                            Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d(TAG, String.format("RES err code : %d", response.code()));
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ParkRes> call, Throwable t) {
-                    // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                    Log.d(TAG, "onFailure : " + t.getMessage());
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
 
-                }
-            });
+            }
+        });
 
     }
 
     public void addMarketMarker(List<ParkInfo> marketList) {
         final String TAG = "dlgochan";
-        Log.d(TAG, "마커 실행?");
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
+        try {
+            for (int i = 0; i < marketList.size(); i++) {
 
-        for (int i = 0; i < marketList.size(); i++) {
-
-            String storeName = marketList.get(i).getName();     // 이름
-            String address = marketList.get(i).getAddr();         // 주소
-            double lat = marketList.get(i).getLat();            // 위도
-            double lon = marketList.get(i).getLng();           // 경도
+                String storeName = marketList.get(i).getName();     // 이름
+                String address = marketList.get(i).getAddr();         // 주소
+                double lat = marketList.get(i).getLat();            // 위도
+                double lon = marketList.get(i).getLng();           // 경도
 
 
 
-            // TMapPoint
-            TMapPoint tMapPoint = new TMapPoint(lat, lon);
+                // TMapPoint
+                TMapPoint tMapPoint = new TMapPoint(lat, lon);
 
-            // TMapMarkerItem
-            // Marker Initial Settings
-            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
-            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
-            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
-            tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
-            tMapMarkerItem.setName(storeName);              // Marker의 이름
+                // TMapMarkerItem
+                // Marker Initial Settings
+                TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+                tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+                tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+                tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
+                tMapMarkerItem.setName(storeName);              // Marker의 이름
 
-            // Balloon View Initial Settings
-            tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
-            tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
-            tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
-            tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+                // Balloon View Initial Settings
+                tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
+                tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
+                tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
+                tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+                tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
 
-            // add Marker on T Map View
-            // id로 Marker을 식별
-            tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
 
+                // add Marker on T Map View
+                // id로 Marker을 식별
+                tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
+
+
+
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.d(TAG, "onFailure : 널");
         }
+
+
 
     }
 
+
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+        final String TAG = "dlgochan";
+        // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "풍선뷰 클릭?");
+    }
 }

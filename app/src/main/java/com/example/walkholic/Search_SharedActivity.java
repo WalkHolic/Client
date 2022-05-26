@@ -50,57 +50,14 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
     TMapData tmapdata;
 
     private Context context; // 이해찬 추가
-    private ServerRequestApi service; // 이해찬 추가
-    private UserRoadRes userRoadList; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+//    private ServerRequestApi service; // 이해찬 추가
+    private UserRoadRes userRoadRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_shared);
-
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
-        final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-        context = this;
-        String token = PreferenceManager.getString(context, "token");
-        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.createService(ServerRequestApi.class, token);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkRes>() {
-        service.getUserRoadByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-            @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    userRoadList = response.body();
-                    Log.d(TAG, "onResponse Success : " + userRoadList.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-        // parkList 사용법 (DTO의 ParkRes 참고)
-//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
-//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
-        /////////////////////////////////////////////////////////////////////////
-
 
 
         //T Map Data
@@ -144,7 +101,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
 
 
 
-
+        getUserRoadByCurrentLocation(37.3015045429, 127.0312636113);
 
 
 
@@ -230,6 +187,39 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
         tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
         tMapMarkerItem.setName("marker");
         tMapView.addMarkerItem("marker", tMapMarkerItem);*/
+
+    }
+
+    public void getUserRoadByCurrentLocation(double lat, double lng){
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadByCurrentLocation(lat, lng).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
 
     }
 }
