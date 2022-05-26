@@ -3,24 +3,32 @@ package com.example.walkholic.Service;
 import android.util.Log;
 
 import com.example.walkholic.DTO.ParkRes;
+import com.example.walkholic.DTO.ReviewRequestDto;
 import com.example.walkholic.DTO.ReviewRes;
 import com.example.walkholic.DTO.RoadPathRes;
 import com.example.walkholic.DTO.RoadRes;
 import com.example.walkholic.DTO.UserRes;
+import com.example.walkholic.DTO.UserRoadRequestDto;
 import com.example.walkholic.DTO.UserRoadRes;
 
 import java.io.IOException;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public class RequestMethod{
     private ParkRes parkRes;
     private UserRoadRes userRoadRes;
     private RoadRes roadRes;
+    private ReviewRes reviewRes;
 
     public void getParkById(int id) {
     }
@@ -70,7 +78,31 @@ public class RequestMethod{
     public void getParkByFilter(double lat, double lng) {
     }
 
-    public void uploadParkReview(int id, RequestBody review) {
+    public void uploadParkReview(int id, ReviewRequestDto reviewRequestDto, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public void getParkReview(int id) {
@@ -118,8 +150,31 @@ public class RequestMethod{
 
     }
 
-    public Call<ResponseBody> createMyRoad(RequestBody roadJson) {
-        return null;
+    public void createMyRoad(@Body UserRoadRequestDto roadRequestDto) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.createMyRoad(roadRequestDto).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public Call<RoadRes> getMyRoad() {

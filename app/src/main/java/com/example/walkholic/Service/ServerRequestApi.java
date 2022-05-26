@@ -1,6 +1,7 @@
 package com.example.walkholic.Service;
 
 import com.example.walkholic.DTO.ParkRes;
+import com.example.walkholic.DTO.ReviewRequestDto;
 import com.example.walkholic.DTO.ReviewRes;
 import com.example.walkholic.DTO.RoadRes;
 import com.example.walkholic.DTO.RoadPathRes;
@@ -8,13 +9,16 @@ import com.example.walkholic.DTO.UserRes;
 import com.example.walkholic.DTO.UserRoadRequestDto;
 import com.example.walkholic.DTO.UserRoadRes;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -31,8 +35,10 @@ public interface ServerRequestApi {
     @POST("/park/filter") // 조건에 맞는 공원 검색
     Call<ParkRes> getParkByFilter(@Query("lat") double lat, @Query("lng") double lng);
 
+    @Multipart
     @POST("/park/{id}/review") // 공원 리뷰 작성
-    Call<ResponseBody> uploadParkReview(@Path("id") int id, @Body RequestBody review);
+    Call<ReviewRes> uploadParkReview(@Path("id") int id, @Part ReviewRequestDto reviewRequestDto,
+                                     @Part MultipartBody.Part file);
 
     @GET("/park/{id}/review") // 공원 리뷰 보기
     Call<ReviewRes> getParkReview(@Path("id") int id);
