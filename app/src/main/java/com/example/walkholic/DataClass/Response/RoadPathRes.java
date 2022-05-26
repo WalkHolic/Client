@@ -1,6 +1,8 @@
-package com.example.walkholic.DTO;
+package com.example.walkholic.DataClass.Response;
 
 import java.util.List;
+
+import com.example.walkholic.DataClass.Data.RoadPath;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

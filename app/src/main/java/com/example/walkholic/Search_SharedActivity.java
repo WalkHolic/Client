@@ -14,9 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.DTO.UserRoadRes;
-import com.example.walkholic.Service.PreferenceManager;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;

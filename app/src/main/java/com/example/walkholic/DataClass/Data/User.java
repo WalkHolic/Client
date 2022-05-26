@@ -1,9 +1,7 @@
-package com.example.walkholic.DTO;
+package com.example.walkholic.DataClass.Data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class User {
     @SerializedName("id")

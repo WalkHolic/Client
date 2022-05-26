@@ -1,7 +1,6 @@
 package com.example.walkholic;
 
 import android.Manifest;
-import android.content.Context;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,10 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.DTO.RoadRes;
-import com.example.walkholic.DTO.UserRoadRes;
-import com.example.walkholic.Service.PreferenceManager;
+import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;

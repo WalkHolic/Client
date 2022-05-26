@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.example.walkholic.DTO.Road;
+import com.example.walkholic.DataClass.Data.Road;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

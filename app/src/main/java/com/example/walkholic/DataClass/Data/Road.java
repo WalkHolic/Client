@@ -1,4 +1,4 @@
-package com.example.walkholic.DTO;
+package com.example.walkholic.DataClass.Data;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

@@ -1,17 +1,18 @@
-package com.example.walkholic.DTO;
+package com.example.walkholic.DataClass.Response;
 
+import com.example.walkholic.DataClass.Data.ParkInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UserRes {
+public class ParkRes {
     @SerializedName("error")
     @Expose
     private String error;
     @SerializedName("data")
     @Expose
-    private List<User> data = null;
+    private List<ParkInfo> data = null;
 
     public String getError() {
         return error;
@@ -21,20 +22,18 @@ public class UserRes {
         this.error = error;
     }
 
-
-    public List<User> getData() {
+    public List<ParkInfo> getData() {
         return data;
     }
 
-    public void setData(List<User> data) {
+    public void setData(List<ParkInfo> data) {
         this.data = data;
     }
 
-
     @Override
     public String toString() {
-        return "UserList{" +
-                "error=" + error +
+        return "ParkList{" +
+                "error='" + error + '\'' +
                 ", data=" + data +
                 '}';
     }
