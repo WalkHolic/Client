@@ -124,6 +124,9 @@ public interface ServerRequestApi {
     @PUT("/park/review/{id}") // 공원 리뷰 수정
     Call<UserRoadRes> updateParkReview(@Path("id") int id);
 
+
+
+
     // Login
     @POST("/auth/google") // 로그인
     Call<UserRes> login(@Body RequestBody token);
