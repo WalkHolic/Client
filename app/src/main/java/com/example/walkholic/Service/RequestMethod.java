@@ -78,7 +78,7 @@ public class RequestMethod{
     public void getParkByFilter(double lat, double lng) {
     }
 
-    public void uploadParkReview(int id, ReviewRequestDto reviewRequestDto, MultipartBody.Part file) {
+    public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {

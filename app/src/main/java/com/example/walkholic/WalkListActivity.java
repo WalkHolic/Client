@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.example.walkholic.DTO.ReviewRequestDto;
 import com.example.walkholic.DTO.ReviewRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,10 +60,10 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
     Button btn_mypage;
 
     ImageView imageView;
-    File tempFile;
-    ReviewRes reviewRes;
-    ReviewRequestDto reviewRequestDto;
-    MultipartBody.Part thumbnail;
+    Uri imageUri;
+
+    private ReviewRes reviewRes;
+    private ReviewRequestDto reviewRequestDto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +71,10 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_list);
 
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -80,8 +83,12 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
 
         imageView = findViewById(R.id.user_image);
 
-
+        reviewRequestDto = new ReviewRequestDto();
+        reviewRequestDto.setContent("좋아요");
+        reviewRequestDto.setScore(4.0);
+        Log.d("dlgochan", "reviewRequestDto: " + reviewRequestDto.toString());
     }
+
     // 앨범 선택
     ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -89,20 +96,8 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 public void onActivityResult(Uri result) {
                     if (result != null) {
                         Log.d("dlgochan", "result: " + result);
+                        imageUri = result;
                         imageView.setImageURI(result);
-
-                        try {
-                            InputStream in = getContentResolver().openInputStream(result);
-                            Bitmap image = BitmapFactory.decodeStream(in);
-                            in.close();
-                            String date = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss").format(new Date());
-                            tempFile = new File(Environment.getExternalStorageDirectory() + "/pictures/test", "temp_" + date + ".jpeg");
-                            OutputStream out = new FileOutputStream(tempFile);
-                            image.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            thumbnail = MultipartBody.Part.createFormData("thumbnail", tempFile.getName(), RequestBody.create(MediaType.parse("image/*"), tempFile));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
             });
@@ -142,10 +137,23 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btn_PostPicture:
-                // 리뷰 DTO 임시 생성
-                reviewRequestDto.setScore(4.0);
-                reviewRequestDto.setContent("꽤 좋습니다 좋아요 최고~");
-                uploadParkReview(3, reviewRequestDto, thumbnail);
+                try {
+
+                    String realImagePath = getRealPathFromUri(imageUri);
+                    File realFile = new File(realImagePath);
+                    Log.d("dlgochan", "realImagePath: " + realImagePath);
+                    Log.d("dlgochan", "imagePath: " + realFile.getAbsolutePath());
+                    Log.d("dlgochan", "fileName: " + realFile.getName());
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
+                    MultipartBody.Part thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
+                    Gson gson = new Gson();
+                    String stringDto = gson.toJson(reviewRequestDto);
+                    RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
+                    uploadParkReview(3, requestBody1, thumbnail);
+                } catch (Exception e) {
+                    Log.d("dlgochan", e.getMessage());
+                }
+
                 break;
             // 사진 업로드 예시 코드
             case R.id.btn_UploadPicture:
@@ -173,8 +181,27 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                         .setNeutralButton("앨범선택", albumListner)
                         .setNegativeButton("취소", cancelListener)
                         .show();
-
+                break;
         }
+    }
+
+    private String getRealPathFromUri(Uri contentUri) {
+        if (contentUri.getPath().startsWith("/storage")) {
+            return contentUri.getPath();
+        }
+        String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
+        String[] columns = { MediaStore.Files.FileColumns.DATA };
+        String selection = MediaStore.Files.FileColumns._ID + "=" + id;
+        Cursor cursor = getContentResolver().query(MediaStore.Files.getContentUri("external"), columns, selection, null, null);
+        try {
+            int columnIndex = cursor.getColumnIndex(columns[0]);
+            if (cursor.moveToFirst()) {
+                return cursor.getString(columnIndex);
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
     }
 
     Uri camUri;
@@ -183,7 +210,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED) {
             Toast.makeText(this, "카메라 권한 설정이 필요합니다.", Toast.LENGTH_LONG).show();
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
         }
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
@@ -198,7 +225,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         getContent.launch("image/*");
     }
 
-    public void uploadParkReview(int id, ReviewRequestDto reviewRequestDto, MultipartBody.Part file) {
+    public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {

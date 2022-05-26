@@ -31,9 +31,9 @@ public class ReviewRequestDto {
 
     @Override
     public String toString() {
-        return "ReviewRequestDto{" +
-                "score=" + score +
-                ", content='" + content + '\'' +
-                '}';
+        return "\"{" +
+                "\"score\": " + score +
+                ", \"content\": \"" + content + '\"' +
+                "}";
     }
 }
