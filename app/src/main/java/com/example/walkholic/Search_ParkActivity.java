@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.walkholic.DTO.ParkInfo;
 import com.example.walkholic.DTO.ParkRes;
+import com.example.walkholic.DTO.UserRoadRequestDto;
+import com.example.walkholic.DTO.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
@@ -27,11 +29,13 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 
 public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
@@ -59,6 +63,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Double mlon;
 
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    private UserRoadRes userRoadRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
+
     }
 
     @Override
@@ -175,7 +181,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_set_location:
                 //getParkByCurrentLocation(37.3015045429, 127.0312636113);
                 Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-                getParkByCurrentLocation(mlat, mlat);
+                getParkByCurrentLocation(mlat, mlon);
 
                 break;
         }
