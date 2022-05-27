@@ -1,7 +1,8 @@
 package com.example.walkholic;
 
 import android.Manifest;
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,19 +15,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.walkholic.DTO.ParkRes;
-import com.example.walkholic.Service.PreferenceManager;
+import com.example.walkholic.DataClass.Data.ParkInfo;
+import com.example.walkholic.DataClass.Data.ParkOption;
+import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
+import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
     Button btn_home;
     Button btn_search;
@@ -35,6 +45,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
+
+    Button btn_set_location;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -46,53 +58,17 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     //T Map Data
     TMapData tmapdata;
 
-    private Context context; // 이해찬 추가
-    private ServerRequestApi service; // 이해찬 추가
+    Double mlat;
+    Double mlon;
+
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    private UserRoadRes userRoadRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_park);
-
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
-        final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-        context = this;
-        String token = PreferenceManager.getString(context, "token");
-        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
-        service = ServiceGenerator.createService(ServerRequestApi.class, token);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(37.24815347, 126.9648203).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
-            @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "onResponse Fail : " + response.message());
-                    Log.d(TAG, String.format("onResponse Fail : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-        // parkList 사용법 (DTO의 ParkList 참고)
-//        parkList.getData().get(i).getLat() // 리스트의 i번째 공권의 위도
-//        parkList.getData().get(i).getLng() // 리스트의 i번째 공원의 경도
-        /////////////////////////////////////////////////////////////////////////
-
 
 
         //T Map Data
@@ -129,20 +105,14 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
-        tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
-        tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
+
+        mlat = tMapGPS.getLocation().getLatitude();
+        mlon = tMapGPS.getLocation().getLongitude();
+        Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
 
 
-
-
-
-
-
-
-
-
-
-
+        tMapView.setLocationPoint(mlon, mlat);
+        tMapView.setCenterPoint(mlon, mlat);
 
         btn_home =  findViewById(R.id.btn_home);
         btn_search =  findViewById(R.id.btn_search);
@@ -153,6 +123,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
 
+        btn_set_location = findViewById(R.id.btn_set_location);
+
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -162,6 +134,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_park.setOnClickListener(this);
         btn_search_walk.setOnClickListener(this);
         btn_search_shared.setOnClickListener(this);
+
+        btn_set_location.setOnClickListener(this);
 
     }
 
@@ -203,12 +177,20 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent7);
                 finish();
                 break;
+            case R.id.btn_set_location:
 
+                //getParkByCurrentLocation(37.3015045429, 127.0312636113);
+                Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+                getParkByCurrentLocation(mlat, mlon);
+                break;
         }
     }
 
     @Override
     public void onLocationChange(Location location) {
+
+        mlat = location.getLatitude();
+        mlon = location.getLongitude();
 
         Log.e("asdasd", "위치변경");
         //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
@@ -223,5 +205,127 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         tMapMarkerItem.setName("marker");
         tMapView.addMarkerItem("marker", tMapMarkerItem);*/
 
+    }
+
+    public void getParkByCurrentLocation(double lat, double lng){
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkByCurrentLocation(lat, lng).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                    addMarketMarker(parkRes.getData());
+                    tMapView.setZoomLevel(13);
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+
+    }
+    public void getParkByFilter(double lat, double lng, ParkOption option){
+        final String TAG = "dlgochan";
+
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
+    }
+
+    public void addMarketMarker(List<ParkInfo> marketList) {
+        final String TAG = "dlgochan";
+        // Marker img -> bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
+        try {
+            for (int i = 0; i < marketList.size(); i++) {
+
+                String storeName = marketList.get(i).getName();     // 이름
+                String address = marketList.get(i).getAddr();         // 주소
+                double lat = marketList.get(i).getLat();            // 위도
+                double lon = marketList.get(i).getLng();           // 경도
+
+
+
+                // TMapPoint
+                TMapPoint tMapPoint = new TMapPoint(lat, lon);
+
+                // TMapMarkerItem
+                // Marker Initial Settings
+                TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+                tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+                tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+                tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
+                tMapMarkerItem.setName(storeName);              // Marker의 이름
+
+                // Balloon View Initial Settings
+                tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
+                tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
+                tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
+                tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+                tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
+
+
+                // add Marker on T Map View
+                // id로 Marker을 식별
+                tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
+
+
+
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.d(TAG, "onFailure : 널");
+        }
+
+
+
+    }
+
+
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+        final String TAG = "dlgochan";
+        // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "풍선뷰 클릭?");
     }
 }

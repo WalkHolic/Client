@@ -11,5 +11,7 @@
     <string name="act_walking">산책로생성</string>
     <string name="act_walk_list">산책로리스트</string>
     <string name="act_park_search">장소를 검색해보세요</string>
+    <string name="login_desc">당신에게 맞는\n산책로와 공원을 찾아보세요</string>
+    <string name="walkHolic_logo">WalkHolic</string>
 
 </resources>

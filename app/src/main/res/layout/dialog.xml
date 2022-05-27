@@ -24,6 +24,13 @@
             android:text="산책로 설명"
             android:textSize="15sp"
             android:gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:text="해시 태그"
+            android:textSize="15sp"
+            android:gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +51,14 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:hint="간단하게 산책로 설명을 적어주세요"
+            android:hint="산책로 설명을 적어주세요"
+            android:textSize="14sp" />
+        <EditText
+            android:id="@+id/road_hash"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:hint="#산책로 #벚꽃 #오솔길"
             android:textSize="14sp" />
 
     </LinearLayout>

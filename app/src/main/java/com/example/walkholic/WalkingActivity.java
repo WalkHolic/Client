@@ -4,14 +4,17 @@ import static java.lang.Thread.sleep;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
-import com.example.walkholic.DTO.Road;
+import com.example.walkholic.DataClass.Data.Road;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,6 +30,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +46,8 @@ import com.skt.Tmap.poi_item.TMapPOIItem;
 import org.json.JSONException;
 import org.xml.sax.SAXException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,10 +90,13 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     boolean isRecording = false;
     boolean isDrawing = false;
 
+    String trailPoints = "";
+
     private String address1 = "aa";
     private String address2 = "bb";
 
-    boolean drawSwitch = false;
+    boolean drawSwitchFlag = false;
+    Switch drawSwitch;
     int counter = 0;
 
     private Animation fab_open, fab_close;
@@ -95,11 +104,12 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
     FloatingActionButton fab, fab1, fab2, fab3;
     TextView fab1_text, fab2_text, fab3_text;
-    Button recordButton, drawBackButton, clearButton;
+    Button recordButton, drawBackButton, clearButton, drawButton;
 
-    //산책로이름, 산책로 설명
-    private String road_name = "a";
-    private String road_desc = "b";
+    //산책로이름, 산책로 설명, 해시태그
+    private String road_name = "새 산책로";
+    private String road_desc = "빈 설명";
+    private String road_hash = "";
 
 
     @Override
@@ -109,6 +119,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
+
+        dbHelper = new DBHelper(this, 1);
 
 
         //T Map Data
@@ -150,24 +162,10 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
-
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
 
 
         clearButton = findViewById(R.id.clearButton);
@@ -186,10 +184,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
         recordButton = findViewById(R.id.recordButton);
         drawBackButton = findViewById(R.id.drawBackButton);
-
-
-
-
+        drawButton = findViewById(R.id.drawButton);
+        drawSwitch = findViewById(R.id.switch1);
 
 
         btn_home.setOnClickListener(this);
@@ -206,6 +202,19 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
         recordButton.setOnClickListener(this);
         drawBackButton.setOnClickListener(this);
+        drawButton.setOnClickListener(this);
+
+        // activity_main의 버튼을 가져오기
+        Button shareButton = findViewById(R.id.shareButton);
+
+        // 클릭 리스너 구현
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScreenShot();
+                Log.d("holla", "마지막");
+            }
+        });
 
     }
 
@@ -237,10 +246,92 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 break;
             case R.id.fab1: // 그려진 경로 지우기
                 anim();
+                clearTrail();
                 break;
             case R.id.fab2: // 터치로 그리기
                 anim();
+                //그리기 시작
+                if (!isDrawing && !isRecording) {
+                    drawButton.setVisibility(View.VISIBLE);
+                    drawBackButton.setVisibility(View.VISIBLE);
+                    //drawSwitch.setVisibility(View.VISIBLE);
+                    clearTrail();
+                    showDialog();
+                    Toast.makeText(getApplicationContext(), "그리기 시작", Toast.LENGTH_SHORT).show();
+                    isDrawing = true;
+                    newTrail = new Trail();
+                    newTrail.coorList.add(tMapGPS.getLocation());
+                    TMapPoint point1 = newTrail.coorList.get(0);
+                    Log.d("TmapTest", "" + point1.getLatitude());
+                    Log.d("TmapTest", "" + point1.getLongitude());
+                    tmapdata.convertGpsToAddress(point1.getLatitude(), point1.getLongitude(), new TMapData.ConvertGPSToAddressListenerCallback() {
+                        @Override
+                        public void onConvertToGPSToAddress(String addr) {
+                            address1 = addr;
+                            Log.d("TmapTest", "*** updatePositionInfo - addr: " + addr);
+                        }
+                    });
+                }
+
+
                 break;
+
+            case R.id.drawButton: // 터치로그리기 종료하기
+                drawButton.setVisibility(View.GONE);
+                drawBackButton.setVisibility(View.GONE);
+                //drawSwitch.setVisibility(View.GONE);
+                //그리기 종료
+                if (isDrawing) {
+
+                    /*AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                    alert.setTitle("산책로의 이름을 지정해주세요");*/
+                    Toast.makeText(getApplicationContext(), "그리기 종료", Toast.LENGTH_SHORT).show();
+                    drawTrail(newTrail);
+                    newTrail.calTotalDistance();
+                    isDrawing = false;
+                    // db초기화
+                    dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 1);
+                    try {
+                        TMapPoint point2 = newTrail.coorList.get(newTrail.coorList.size() - 1);
+                        Log.d("TmapTest", "" + point2.getLatitude());
+                        Log.d("TmapTest", "" + point2.getLongitude());
+
+                        tmapdata.convertGpsToAddress(point2.getLatitude(), point2.getLongitude(), new TMapData.ConvertGPSToAddressListenerCallback() {
+                            @Override
+                            public void onConvertToGPSToAddress(String addr) {
+                                Log.d("TmapTest", "*** updatePositionInfo - addr: " + addr);
+                            }
+                        });
+                        //address = tmapdata.convertGpsToAddress(point.getLatitude(), point.getLongitude());
+
+                    } catch (Exception e) {
+                        Log.d("error", "*** Exception: " + e.getLocalizedMessage());
+                        e.printStackTrace();
+                    }
+
+                    //Toast.makeText(getApplicationContext(), "총 거리 : " + newTrail.totalDistance + "km", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "시작주소 : " + address1 , Toast.LENGTH_SHORT).show();
+
+
+                    try {
+                        if (newTrail.totalDistance != 0)
+                            dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
+                            pointsToString(newTrail);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //Toast.makeText(getApplicationContext(), "디비저장\n" + dbHelper.getResult() , Toast.LENGTH_LONG).show();
+
+
+                    newTrail = null;
+                } else {
+                    Toast.makeText(getApplicationContext(), "문제", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                break;
+
+
             case R.id.fab3: // 기록하기
                 anim();
                 recordButton.setVisibility(View.VISIBLE);
@@ -284,7 +375,6 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                     tmapdata.convertGpsToAddress(point2.getLatitude(), point2.getLongitude(), new TMapData.ConvertGPSToAddressListenerCallback() {
                         @Override
                         public void onConvertToGPSToAddress(String addr) {
-
                             Log.d("TmapTest", "*** updatePositionInfo - addr: " + addr);
                         }
                     });
@@ -299,6 +389,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 try {
                     if (newTrail.totalDistance != 0)
                         dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -308,8 +399,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 break;
 
             case R.id.drawBackButton: // 되돌리기
-
-
+                newTrail.coorList.remove(newTrail.coorList.size() - 1);
+                drawTrail(newTrail);
                 break;
 
         }
@@ -327,7 +418,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         if (isRecording) {
             //Toast.makeText(getApplicationContext(), "좌표 기록 중", Toast.LENGTH_SHORT).show();
             newTrail.coorList.add(tMapGPS.getLocation());
-
+            drawTrail(newTrail);
         }
         /*TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
 
@@ -339,6 +430,18 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         tMapView.addMarkerItem("marker", tMapMarkerItem);*/
 
     }
+
+    public void pointsToString(Trail inTrail) {
+        Trail tempTrail = inTrail;
+        trailPoints = trailPoints + "[";
+        for (int i = 0; i < tempTrail.coorList.size(); i++) {
+            if(i!=0) trailPoints += ",";
+                trailPoints = trailPoints + "[" + tempTrail.coorList.get(i).getLatitude() +","+ tempTrail.coorList.get(i).getLongitude() + "]";
+        }
+        trailPoints = trailPoints + "]";
+        Log.d("json Test", "list : " + trailPoints);
+    }
+
     public void anim() {
 
         if (isFabOpen) {
@@ -471,16 +574,52 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
         final EditText name = loginLayout.findViewById(R.id.road_name);
         final EditText desc = loginLayout.findViewById(R.id.road_desc);
+        final EditText hash = loginLayout.findViewById(R.id.road_hash);
 
         new AlertDialog.Builder(this).setTitle("산책로 정보입력").setView(loginLayout).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 road_name = name.getText().toString();
                 road_desc = desc.getText().toString();
+                road_hash = hash.getText().toString();
             }
         }).show();
     }
 
+    //화면 캡쳐하기
+    public void ScreenShot() {
+
+        View view = getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(true);  //화면에 뿌릴때 캐시를 사용하게 한다
+        Log.d("holla", "1");
+        //캐시를 비트맵으로 변환
+        Bitmap screenBitmap = Bitmap.createBitmap(view.getDrawingCache());
+        Log.d("holla", "2");
+        try {
+
+            File cachePath = new File(getApplicationContext().getCacheDir(), "images");
+            Log.d("holla", "3");
+            cachePath.mkdirs(); // don't forget to make the directory
+            Log.d("holla", "4");
+            FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+            Log.d("holla", "5");
+            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Log.d("holla", "6");
+            stream.close();
+
+            File newFile = new File(cachePath, "image.png");
+            Uri contentUri = FileProvider.getUriForFile(getApplicationContext(),
+                    "com.example.walkholic.fileprovider", newFile);
+
+            Intent Sharing_intent = new Intent(Intent.ACTION_SEND);
+            Sharing_intent.setType("image/png");
+            Sharing_intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+            startActivity(Intent.createChooser(Sharing_intent, "Share image"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     //터치로 경로 그리기
     @Override
@@ -536,7 +675,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     @Override
     public void onLongPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint) {
         if (isDrawing) {
-            if (drawSwitch) { // 길찾기로 그리기
+            if (drawSwitchFlag) { // 길찾기로 그리기
                 try {
                     drawLine1(newTrail.coorList.get(newTrail.coorList.size() - 1), tMapPoint);
                 } catch (IOException e) {
@@ -558,7 +697,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 }
             }
             newTrail.coorList.add(tMapPoint);
-            //Toast.makeText(getApplicationContext(), "터치기록", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "터치기록", Toast.LENGTH_SHORT).show();
 
             TMapCircle tMapCircle = new TMapCircle();
             tMapCircle.setCenterPoint(tMapPoint);
@@ -580,6 +719,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 e.printStackTrace();
             }*/
             tMapView.addTMapCircle("circle1", tMapCircle);
+            drawTrail(newTrail);
         } else {
             //Toast.makeText(getApplicationContext(), "기록안하는중", Toast.LENGTH_SHORT).show();
         }

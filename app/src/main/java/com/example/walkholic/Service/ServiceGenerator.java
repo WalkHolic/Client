@@ -46,6 +46,7 @@ public class ServiceGenerator {
 
 
             if (!httpClient.interceptors().contains(interceptor)) {
+                Log.d(TAG, "add Interceptor");
                 httpClient.addInterceptor(interceptor);
 
                 builder.client(httpClient.build());
@@ -53,6 +54,10 @@ public class ServiceGenerator {
                 Log.d(TAG, "createService: Build");
             }
         }
+        return retrofit.create(serviceClass);
+    }
+
+    public static <S> S getService(Class<S> serviceClass){
         return retrofit.create(serviceClass);
     }
 

@@ -21,6 +21,15 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="341dp">
 
+            <Button
+                android:id="@+id/shareButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="500dp"
+                android:background="@drawable/play"
+                android:text=""
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <LinearLayout
                 android:id="@+id/linearLayoutTmap_walking"
@@ -67,6 +76,14 @@
                     android:background="#F5E8FF"
                     android:text="되돌리기"
                     android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/drawButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="터치로 그리기 종료"
+                    android:background="#F5E8FF"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>
@@ -177,33 +194,34 @@
 
         <Button
             android:id="@+id/btn_home"
-            android:background="@drawable/act_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/act_home"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_search"
-            android:background="@drawable/act_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_search"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_walking"
-            android:background="@drawable/act_walking_sel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_walking_sel"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <Button
             android:id="@+id/btn_mypage"
-            android:background="@drawable/act_mypage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
+            android:background="@drawable/act_mypage"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </LinearLayout>

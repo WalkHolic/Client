@@ -1,17 +1,18 @@
-package com.example.walkholic.DTO;
+package com.example.walkholic.DataClass.Response;
 
-import java.util.List;
+import com.example.walkholic.DataClass.Data.ParkInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RoadPathRes {
+import java.util.List;
 
+public class ParkRes {
     @SerializedName("error")
     @Expose
     private String error;
     @SerializedName("data")
     @Expose
-    private List<RoadPath> data = null;
+    private List<ParkInfo> data = null;
 
     public String getError() {
         return error;
@@ -21,17 +22,17 @@ public class RoadPathRes {
         this.error = error;
     }
 
-    public List<RoadPath> getData() {
+    public List<ParkInfo> getData() {
         return data;
     }
 
-    public void setData(List<RoadPath> data) {
+    public void setData(List<ParkInfo> data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "RoadPath{" +
+        return "ParkList{" +
                 "error='" + error + '\'' +
                 ", data=" + data +
                 '}';

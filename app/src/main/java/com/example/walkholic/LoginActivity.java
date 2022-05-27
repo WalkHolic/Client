@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.walkholic.DTO.UserRes;
+import com.example.walkholic.DataClass.Response.UserRes;
 import com.example.walkholic.Service.PreferenceManager;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -148,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         ServerRequestApi loginService = retrofit.create(ServerRequestApi.class);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
+        Log.d(TAG, "google id token : " + idtoken);
         loginService.login(token).enqueue(new Callback<UserRes>() {
             @Override
             public void onResponse(Call<UserRes> call, Response<UserRes> response) {
@@ -158,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     String jwt = user.getData().get(0).getToken();
                     PreferenceManager.setString(context, "token", jwt);
                     Log.d(TAG, "onResponse: " + PreferenceManager.getString(context, "token"));
+                    ServiceGenerator.createService(ServerRequestApi.class, jwt);
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d("onResponse Fail : ", response.message());
