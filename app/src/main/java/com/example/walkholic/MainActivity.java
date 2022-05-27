@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Glide.with(this)
                 .load(photoUrl)
                 .into(iv_profile);
+        iv_profile.setClipToOutline(true);
         dayinfo = findViewById(R.id.dateInfo);
         long now = System.currentTimeMillis();
         Date date = new Date(now);
