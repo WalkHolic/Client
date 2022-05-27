@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         ServerRequestApi loginService = retrofit.create(ServerRequestApi.class);
         // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-        Log.d(TAG, "google id token" + idtoken);
+        Log.d(TAG, "google id token : " + idtoken);
         loginService.login(token).enqueue(new Callback<UserRes>() {
             @Override
             public void onResponse(Call<UserRes> call, Response<UserRes> response) {
