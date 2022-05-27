@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.18914868105515587" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_walking.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/dialog.xml" value="0.1875" />
@@ -68,13 +69,16 @@
         <entry key="app/src/main/res/layout/activity_logo.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_recomm_item.xml" value="0.11911231884057971" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_search_park.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_search_shared.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_search_walk.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_walk_list.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_walking.xml" value="0.11911231884057971" />
+        <entry key="app/src/main/res/layout/activity_writereview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/frag_homeback.xml" value="0.11911231884057971" />
+        <entry key="app/src/main/res/layout/review.xml" value="0.1" />
       </map>
     </option>
   </component>

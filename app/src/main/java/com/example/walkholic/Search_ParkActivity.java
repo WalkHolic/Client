@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.walkholic.DataClass.Data.ParkInfo;
@@ -21,6 +23,7 @@ import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
@@ -45,8 +48,10 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
-
     Button btn_set_location;
+
+    TextInputEditText textInputEditText;
+    ImageButton imageButton;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -113,7 +118,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         tMapView.setLocationPoint(mlon, mlat);
         tMapView.setCenterPoint(mlon, mlat);
-
         btn_home =  findViewById(R.id.btn_home);
         btn_search =  findViewById(R.id.btn_search);
         btn_walking =  findViewById(R.id.btn_walking);
@@ -124,6 +128,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared = findViewById(R.id.btn_search_shared);
 
         btn_set_location = findViewById(R.id.btn_set_location);
+
+        imageButton = findViewById(R.id.imageButton);
+        textInputEditText = findViewById(R.id.textInputEditText);
 
 
         btn_home.setOnClickListener(this);
@@ -137,6 +144,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         btn_set_location.setOnClickListener(this);
 
+        imageButton.setOnClickListener(this);
     }
 
     @Override
@@ -183,6 +191,12 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
                 getParkByCurrentLocation(mlat, mlon);
                 break;
+
+            case R.id.imageButton:
+                Log.d("dlgochan", "Click imageButton with " + textInputEditText.getText().toString());
+                Intent intent8 = new Intent(getApplicationContext(), SearchListActivity.class);
+                intent8.putExtra("keyword", textInputEditText.getText().toString());
+                startActivity(intent8);
         }
     }
 
