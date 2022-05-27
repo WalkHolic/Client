@@ -77,7 +77,6 @@ public class WriteReviewActivity extends AppCompatActivity {
         imageView = findViewById(R.id.user_image);
 // 버튼 이벤트 추가
         reg_button.setOnClickListener(view -> {
-            Log.d("dlgochan", "reg_button click!!");
 // 리뷰 등록 함수
             // 사진
             File realFile = null;
