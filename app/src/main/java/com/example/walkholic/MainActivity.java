@@ -158,14 +158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dayinfo.setText(strDate);
 
 
-
-
-
-
-
-
-
-
         btn_home =  findViewById(R.id.btn_home);
         btn_search =  findViewById(R.id.btn_search);
         btn_walking =  findViewById(R.id.btn_walking);
