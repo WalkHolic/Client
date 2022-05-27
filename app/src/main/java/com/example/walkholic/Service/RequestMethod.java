@@ -2,6 +2,8 @@ package com.example.walkholic.Service;
 
 import android.util.Log;
 
+import com.example.walkholic.DataClass.Data.ParkOption;
+import com.example.walkholic.DataClass.Data.User;
 import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.DataClass.Response.RoadPathRes;
@@ -32,29 +34,25 @@ public class RequestMethod{
     private UserRoadPathRes userRoadPathRes;
     private UserRoadSharedRes userRoadSharedRes;
 
+
+
+
+    //////////////////////// 공원
+
     public void getParkById(int id) {
     }
 
+    //완
     public void getParkByCurrentLocation(double lat, double lng){
-        //이해찬 추가
-        /////////////////////////////////////////////////////////////////////////
         final String TAG = "dlgochan";
-        // 안드로이드 앱 내부 파일 (SharedPreference) 에서 jwt 값 가져오기
-//        context = this;
-//        String token = PreferenceManager.getString(context, "token");
-//        Log.d(TAG, "onCreate Token: " + token);
-        //서비스 생성 (항상 헤더에 토큰을 담아서 리퀘스트)
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        // 알맞는 request 형식 (여기서는 token) 을 파라미터로 담아서 리퀘스트
-//        service.getParkByCurrentLocation(currentLat, currentLng).enqueue(new Callback<ParkList>() {
-        service.getParkByCurrentLocation(lat, lng).enqueue(new Callback<ParkRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.getParkByCurrentLocation(lat, lng).enqueue(new Callback<ParkRes>() {
             @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
                     parkRes = response.body();
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
-
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
@@ -71,25 +69,23 @@ public class RequestMethod{
             public void onFailure(Call<ParkRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
-
             }
         });
-
     }
 
-    public void getParkByFilter(double lat, double lng) {
-    }
-
-    public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
+    //완
+    public void getParkByFilter(double lat, double lng, ParkOption option){
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
+        service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
             @Override
-            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
                 if (response.isSuccessful()) {
-                    reviewRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
+                    // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -101,22 +97,31 @@ public class RequestMethod{
             }
 
             @Override
-            public void onFailure(Call<ReviewRes> call, Throwable t) {
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
     }
 
-    public void getParkReview(int id) {
+
+
+
+
+    //////////////////////// 산책로
+
+    public void getRoadByCurrentLocation(double lat, double lng){
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getParkReview(id).enqueue(new Callback<ReviewRes>() {
+        service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() {
             @Override
-            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
                 if (response.isSuccessful()) {
-                    reviewRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                    // 리스폰스 성공 시 200 OK
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
                 } else {
+                    // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -128,37 +133,12 @@ public class RequestMethod{
             }
 
             @Override
-            public void onFailure(Call<ReviewRes> call, Throwable t) {
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
-    }
 
-    public void delParkReview(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.delParkReview(id).enqueue(new Callback<ReviewRes>() {
-            @Override
-            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
-                if (response.isSuccessful()) {
-                    reviewRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ReviewRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
     }
 
     public void RoadById(int id) {
@@ -191,6 +171,105 @@ public class RequestMethod{
         });
     }
 
+
+
+
+
+
+
+    //////////////////////// 유저
+
+    // 완
+    public void getUserRoadByHashtag(String hashtag){
+        final String TAG = "dlgochan";
+
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadByHashtag(hashtag).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
+    }
+
+    // 빠르게 테스트 필요
+    public void createMyRoad(UserRoadRequestDto roadRequestDto) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.createMyRoad(roadRequestDto).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getUserRoadById(int uid) {
+    }
+
+    public void getMyRoadPath(int rid) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getMyRoadPath(rid).enqueue(new Callback<UserRoadPathRes>() {
+            @Override
+            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadPathRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
     public void getUserRoadByCurrentLocation(double lat, double lng){
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -217,35 +296,6 @@ public class RequestMethod{
             @Override
             public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-
-            }
-        });
-
-    }
-
-    public void createMyRoad(@Body UserRoadRequestDto roadRequestDto) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.createMyRoad(roadRequestDto).enqueue(new Callback<UserRoadRes>() {
-            @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
-                if (response.isSuccessful()) {
-                    userRoadRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -339,23 +389,20 @@ public class RequestMethod{
         });
     }
 
-    public Call<UserRes> login(RequestBody token) {
-        return null;
-    }
 
-    public void getRoadByCurrentLocation(double lat, double lng){
+
+    //////////////// 리뷰
+    //완
+    public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
             @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
                 if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    roadRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
-
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
                 } else {
-                    // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -367,13 +414,93 @@ public class RequestMethod{
             }
 
             @Override
-            public void onFailure(Call<RoadRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
-
     }
+
+    public void getParkReview(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkReview(id).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void delParkReview(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.delParkReview(id).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void updateParkReview(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.updateParkReview(id).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
 
 
     public void uploadRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
@@ -404,7 +531,6 @@ public class RequestMethod{
 
     }
 
-
     public void getRoadReview(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -431,7 +557,6 @@ public class RequestMethod{
             }
         });
     }
-
 
     public void delRoadReview(int id) {
         final String TAG = "dlgochan";
@@ -460,13 +585,34 @@ public class RequestMethod{
         });
     }
 
+    public void updateRoadReview(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.updateRoadReview(id).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
 
-    public void getUserRoadByHashtag(String keyword) {
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
 
-    public void getUserRoadById(int uid) {
-    }
 
     public void uploadUserRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
@@ -553,87 +699,6 @@ public class RequestMethod{
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.updateUserRoadReview(id).enqueue(new Callback<ReviewRes>() {
-            @Override
-            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
-                if (response.isSuccessful()) {
-                    reviewRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ReviewRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void getMyRoadPath(int rid) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getMyRoadPath(rid).enqueue(new Callback<UserRoadPathRes>() {
-            @Override
-            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
-                if (response.isSuccessful()) {
-                    userRoadPathRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void updateParkReview(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.updateParkReview(id).enqueue(new Callback<UserRoadRes>() {
-            @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
-                if (response.isSuccessful()) {
-                    userRoadRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void updateRoadReview(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.updateRoadReview(id).enqueue(new Callback<ReviewRes>() {
             @Override
             public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
                 if (response.isSuccessful()) {
