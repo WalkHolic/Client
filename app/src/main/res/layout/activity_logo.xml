@@ -7,10 +7,10 @@
     tools:context=".LogoActivity">
 
     <ImageView
-        android:id="@+id/parkimageView"
+        android:id="@+id/logo2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/logo"
+        android:src="@drawable/logo2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

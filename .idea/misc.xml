@@ -24,7 +24,6 @@
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walking.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/cloudview_home.xml" value="0.2" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/frag_homeback.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/mipmap-anydpi-v26/walkholic_icon.xml" value="0.141" />
@@ -64,6 +63,7 @@
         <entry key="app/src/main/res/drawable/round_background_border_black.xml" value="0.166" />
         <entry key="app/src/main/res/drawable/round_layout.xml" value="0.166" />
         <entry key="app/src/main/res/drawable/walkholic_icon_background.xml" value="0.166" />
+        <entry key="app/src/main/res/layout/acitivity_writeriview2.xml" value="0.1816123188405797" />
         <entry key="app/src/main/res/layout/activity_item_clicked.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_list_item.xml" value="0.22780797101449277" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.11911231884057971" />
@@ -77,6 +77,7 @@
         <entry key="app/src/main/res/layout/activity_walk_list.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_walking.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_writereview.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/cloudview_home.xml" value="0.1953125" />
         <entry key="app/src/main/res/layout/dialog.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/frag_homeback.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/review.xml" value="0.1" />
