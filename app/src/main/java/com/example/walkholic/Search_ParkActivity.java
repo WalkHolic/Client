@@ -10,31 +10,40 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
 import com.example.walkholic.DataClass.Data.ParkInfo;
+import com.example.walkholic.DataClass.Data.ParkOption;
 import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.ListItem.SearchItem;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
+import com.skt.Tmap.poi_item.TMapPOIItem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
+public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener, TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
+
+    private boolean TrackingMode = true;
     Button btn_home;
     Button btn_search;
     Button btn_walking;
@@ -44,6 +53,10 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_shared;
 
     Button btn_set_location;
+
+    TextInputEditText textInputEditText;
+    ImageButton imageButton;
+
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -59,6 +72,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Double mlon;
 
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,25 +116,49 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
+        // 키워드 검색으로 요청할 때
+        if (getIntent().getStringExtra("itemName") != null) {
+            TrackingMode = false;
+            String itemName = getIntent().getStringExtra("itemName");
+            mlat = getIntent().getDoubleExtra("itemLat", 37.2844252); // default: 아주대 위경도
+            mlon = getIntent().getDoubleExtra("itemLng", 127.043568);
 
-        mlat = tMapGPS.getLocation().getLatitude();
-        mlon = tMapGPS.getLocation().getLongitude();
-        Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+            Log.d("dlgochan", "search Item 위도: " + mlat + "경도: " + mlon);
+
+            // 마커 생성
+            TMapPoint tMapPointItem = new TMapPoint(mlat, mlon);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+            tMapMarkerItem.setTMapPoint(tMapPointItem);         // Marker의 위치
+            tMapMarkerItem.setName(itemName);              // Marker의 이름
+            tMapView.addMarkerItem(itemName, tMapMarkerItem);
+            tMapView.setCenterPoint(mlon, mlat);
+
+        } else { // 그냥 GPS
+            TrackingMode = true;
+
+            tMapView.setLocationPoint(mlon, mlat);
+            tMapView.setCenterPoint(mlon, mlat);
+            Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
 
 
-        tMapView.setLocationPoint(mlon, mlat);
-        tMapView.setCenterPoint(mlon, mlat);
+        }
 
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
 
         btn_search_park = findViewById(R.id.btn_search_park);
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
 
         btn_set_location = findViewById(R.id.btn_set_location);
+        imageButton = findViewById(R.id.imageButton);
+        textInputEditText = findViewById(R.id.textInputEditText);
 
 
         btn_home.setOnClickListener(this);
@@ -132,6 +171,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
+        imageButton.setOnClickListener(this);
     }
 
     @Override
@@ -178,31 +218,51 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 getParkByCurrentLocation(mlat, mlon);
 
                 break;
+            case R.id.imageButton:
+                ArrayList<SearchItem> searchList = new ArrayList<>();
+                Log.d("dlgochan", "Click imageButton with " + textInputEditText.getText().toString());
+
+                tmapdata.findAllPOI(textInputEditText.getText().toString(), poiItem -> {
+                    if (poiItem == null) return;
+                    for (int i = 0; i < poiItem.size(); i++) {
+                        TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
+                        String poiName = item.getPOIName();
+                        String poiAddress = item.getPOIAddress().replace("null", "");
+                        TMapPoint point = item.getPOIPoint();
+                        SearchItem searchItem = new SearchItem(poiName, poiAddress, point.getLatitude(), point.getLongitude());
+                        searchList.add(searchItem);
+                    }
+                });
+
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        Log.d("dlgochan", "searchList size: " + searchList.size());
+                        Intent intent8 = new Intent(getApplicationContext(), TmapSearchListActivity.class);
+                        intent8.putExtra("keyword", textInputEditText.getText().toString());
+                        intent8.putParcelableArrayListExtra("searchList", searchList);
+                        startActivity(intent8);
+                    }
+                }, 500);
+                break;
         }
     }
 
     @Override
     public void onLocationChange(Location location) {
 
-        mlat = location.getLatitude();
-        mlon = location.getLongitude();
+        if (TrackingMode) {
+            mlat = location.getLatitude();
+            mlon = location.getLongitude();
 
-        Log.e("asdasd", "위치변경");
-        //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
-        tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
-        tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
-        /*TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
-
-        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
-        tMapMarkerItem.setIcon(markerIcon); // 마커 아이콘 지정
-
-        tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
-        tMapMarkerItem.setName("marker");
-        tMapView.addMarkerItem("marker", tMapMarkerItem);*/
+            Log.e("dlgochan", "위치변경 탐지");
+            //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
+            tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
+            tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
+        }
 
     }
 
-    public void getParkByCurrentLocation(double lat, double lng){
+    public void getParkByCurrentLocation(double lat, double lng) {
         //이해찬 추가
         /////////////////////////////////////////////////////////////////////////
         final String TAG = "dlgochan";
@@ -246,6 +306,38 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    public void getParkByFilter(double lat, double lng, ParkOption option) {
+        final String TAG = "dlgochan";
+
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
+    }
+
     public void addMarketMarker(List<ParkInfo> marketList) {
         final String TAG = "dlgochan";
         // Marker img -> bitmap
@@ -264,11 +356,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 double lon = marketList.get(i).getLng();           // 경도
                 String ParkId = marketList.get(i).getParkId();
                 int ID = marketList.get(i).getId();
-
-
-
-
-
 
 
                 // TMapPoint
@@ -301,13 +388,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
 
 
-
-
-
                 // add Marker on T Map View
                 // id로 Marker을 식별
                 tMapView.addMarkerItem("marketLocation" + i, tMapMarkerItem);
-
 
 
             }
@@ -315,7 +398,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
             Log.d(TAG, "onFailure : 널");
         }
-
 
 
     }
@@ -327,7 +409,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
 
 
-        MyTMapMarkerItem parkInfo = (MyTMapMarkerItem)tMapMarkerItem;
+        MyTMapMarkerItem parkInfo = (MyTMapMarkerItem) tMapMarkerItem;
         Log.d(TAG, "풍선뷰 파크아이디:" + parkInfo.getId());
         int Id = parkInfo.getId();
 

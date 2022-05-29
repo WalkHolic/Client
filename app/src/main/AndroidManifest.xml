@@ -28,19 +28,22 @@
             android:name=".Search_SharedActivity"
             android:exported="false" />
         <activity
+            android:name=".Search_ParkActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_WalkActivity"
             android:exported="false" />
         <activity
             android:name=".WriteReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".TmapSearchListActivity"
+            android:exported="false" />
+        <activity
             android:name=".WalkListActivity"
             android:exported="false" />
         <activity
             android:name=".WalkingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Search_ParkActivity"
             android:exported="false" />
         <activity
             android:name=".ParkCloudviewHomeActivity"
