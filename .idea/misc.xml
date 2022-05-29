@@ -4,10 +4,6 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.18914868105515587" />
-        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master/app/src/main/res/layout/activity_myroad.xml" value="0.35643115942028986" />
-        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master/app/src/main/res/layout/activity_walk_list.xml" value="0.22" />
-        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master/app/src/main/res/layout/activity_walking.xml" value="0.13043478260869565" />
-        <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master/app/src/main/res/layout/dialog.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_walking.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/dialog.xml" value="0.1875" />
@@ -26,11 +22,9 @@
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_park.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.24320652173913043" />
-        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_tmap_search_list.xml" value="0.1125" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walking.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog_item.xml" value="0.1125" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/frag_homeback.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/mipmap-anydpi-v26/walkholic_icon.xml" value="0.141" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.143" />
@@ -92,6 +86,7 @@
         <entry key="app/src/main/res/layout/park_cloudview_home.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/layout/park_cloudview_review.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/layout/review.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/bottom_navi.xml" value="0.19114583333333332" />
       </map>
     </option>
   </component>

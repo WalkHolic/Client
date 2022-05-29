@@ -47,7 +47,7 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btn_park_facility"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
