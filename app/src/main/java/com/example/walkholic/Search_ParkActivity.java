@@ -127,7 +127,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
             // 마커 생성
             TMapPoint tMapPointItem = new TMapPoint(mlat, mlon);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
             TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
             tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
             tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
@@ -138,6 +138,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         } else { // 그냥 GPS
             TrackingMode = true;
+            mlat = tMapGPS.getLocation().getLatitude();
+            mlon = tMapGPS.getLocation().getLongitude();
 
             tMapView.setLocationPoint(mlon, mlat);
             tMapView.setCenterPoint(mlon, mlat);
@@ -231,6 +233,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                         TMapPoint point = item.getPOIPoint();
                         SearchItem searchItem = new SearchItem(poiName, poiAddress, point.getLatitude(), point.getLongitude());
                         searchList.add(searchItem);
+                        Log.d("dlgochan", "search: " + poiName + poiAddress + point.toString());
                     }
                 });
 
