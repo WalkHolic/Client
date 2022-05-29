@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:fontFamily="@font/patrickhandsc_regular"
         android:id="@+id/reviewText"
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -26,6 +27,7 @@
         >
 
         <TextView
+            android:fontFamily="@font/patrickhandsc_regular"
             android:id="@+id/titleText"
             android:layout_width="398dp"
             android:layout_height="40dp"
@@ -55,6 +57,7 @@
         ></RatingBar>
 
     <EditText
+        android:fontFamily="@font/patrickhandsc_regular"
         android:id="@+id/reviewEdit"
         android:layout_width="match_parent"
         android:layout_height="228dp"
@@ -111,6 +114,7 @@
         android:layout_height="70dp"
         android:layout_weight="1"
         android:orientation="horizontal"
+
         >
 
         <Button

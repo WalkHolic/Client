@@ -47,6 +47,7 @@
 
                     <TextView
                         android:id="@+id/nickName"
+                        android:fontFamily="@font/patrickhandsc_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -62,6 +63,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:fontFamily="@font/patrickhandsc_regular"
                         android:id="@+id/dateInfo"
                         android:layout_width="250dp"
                         android:layout_height="25dp"
@@ -127,10 +129,12 @@
                             android:layout_height="10dp" />
 
                         <TextView
+                            android:fontFamily="@font/patrickhandsc_regular"
                             android:id="@+id/badge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="          BADGE"
+                            android:paddingLeft="60dp"
+                            android:text="BADGE"
                             android:textColor="#FF6B6F91"
                             android:textSize="9pt" />
 
@@ -175,6 +179,7 @@
 
                         <TextView
                             android:id="@+id/textView8"
+                            android:fontFamily="@font/patrickhandsc_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="25sp"
@@ -186,6 +191,7 @@
 
                         <ImageView
                             android:id="@+id/imageView5"
+                            android:fontFamily="@font/patrickhandsc_regular"
                             android:layout_width="10dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -194,6 +200,7 @@
 
                     <TextView
                         android:id="@+id/stepCountView"
+                        android:fontFamily="@font/patrickhandsc_regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="step"
@@ -251,6 +258,7 @@
 
                     <TextView
                         android:id="@+id/cals"
+                        android:fontFamily="@font/patrickhandsc_regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="kcal"
