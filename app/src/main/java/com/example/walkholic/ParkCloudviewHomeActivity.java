@@ -36,6 +36,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     Button btn_mypage;
     Button btn_back;
     Button btn_park_review;
+    Button btn_park_facility;
 
 
     ImageView parkimageview;
@@ -180,6 +181,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         btn_mypage =  findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
         btn_park_review = findViewById(R.id.btn_park_review);
+        btn_park_facility = findViewById(R.id.btn_park_facility);
 
 
 
@@ -190,6 +192,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_park_review.setOnClickListener(this);
+        btn_park_facility.setOnClickListener(this);
 
 
 
@@ -225,6 +228,12 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 Intent intent5 = new Intent(getApplicationContext(), ParkCloudviewReviewActivity.class);
                 int Id = ParkId_int;
                 intent5.putExtra("ID", Id);
+                startActivity(intent5);
+                break;
+            case R.id.btn_park_facility:
+                Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewFacilityActivity.class);
+                int Id1 = ParkId_int;
+                intent6.putExtra("ID", Id1);
                 startActivity(intent5);
                 break;
 
