@@ -46,6 +46,15 @@
             android:name=".ParkCloudviewHomeActivity"
             android:exported="false" />
         <activity
+            android:name=".ReviewListActivity_park"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewListActivity_trail"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewListActivity_sharetrail"
+            android:exported="false" />
+        <activity
             android:name=".LogoActivity"
             android:exported="true"
             android:theme="@style/Theme.WALKHOLIC">
