@@ -234,7 +234,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewFacilityActivity.class);
                 int Id1 = ParkId_int;
                 intent6.putExtra("ID", Id1);
-                startActivity(intent5);
+                startActivity(intent6);
                 break;
 
         }

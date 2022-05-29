@@ -60,7 +60,7 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.park_cloudview_home);
+        setContentView(R.layout.park_cloudview_facility);
 
         Intent intent = getIntent();
         ParkId_int = intent.getIntExtra("ID",ParkId_int);
@@ -77,11 +77,22 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
 
                 Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
 
+                if(sport != null){
+                    facility_sport.setText(sport);
+                }
+                if(amuse != null){
+                    facility_amuse.setText(amuse);
+                }
+                if(conv != null){
+                    facility_conv.setText(conv);
+                }
+                if(etc != null){
+                    facility_etc.setText(etc);
+                }
 
-                facility_sport.setText(sport);
-                facility_amuse.setText(amuse);
-                facility_conv.setText(conv);
-                facility_etc.setText(etc);
+
+
+
             }
         }, 500); // 0.5초후
 

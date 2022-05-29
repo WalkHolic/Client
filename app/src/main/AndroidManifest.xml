@@ -25,6 +25,9 @@
             android:name=".ParkCloudviewReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".ParkCloudviewFacilityActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_SharedActivity"
             android:exported="false" />
         <activity

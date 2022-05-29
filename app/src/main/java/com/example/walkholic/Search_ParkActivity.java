@@ -68,8 +68,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     //T Map Data
     TMapData tmapdata;
 
-    Double mlat = 127.0;
-    Double mlon = 32.0;
+    Double mlat;
+    Double mlon;
 
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
     Handler mHandler = new Handler();
