@@ -4,42 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@drawable/walkholic">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:src="@drawable/walkholic"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="120dp"
-        android:layout_marginStart="20dp"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitStart"/>
-
-    <TextView
-        android:id="@+id/login_desc"
-        android:layout_width="300dp"
-        android:layout_height="78dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="220dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/inter"
-        android:text="@string/login_desc"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/walkHolic_logo"
-        android:layout_width="300dp"
-        android:layout_height="78dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="300dp"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/inter"
-        android:text="@string/walkHolic_logo"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="#A274CD" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_login_button"

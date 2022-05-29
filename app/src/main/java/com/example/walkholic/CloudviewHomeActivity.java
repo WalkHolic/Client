@@ -46,6 +46,7 @@ public class CloudviewHomeActivity extends AppCompatActivity implements View.OnC
     String manageAgency;
     String AddrNew;
     String Addr;
+    String ParkId;
 
     TextView txt_name;
     TextView txt_type;
@@ -80,6 +81,7 @@ public class CloudviewHomeActivity extends AppCompatActivity implements View.OnC
         manageAgency = parkInfo.getManageAgency();
         AddrNew = parkInfo.getAddrNew();
         Addr = parkInfo.getAddr();
+        ParkId = parkInfo.getParkId();
 
 
 
@@ -145,7 +147,7 @@ public class CloudviewHomeActivity extends AppCompatActivity implements View.OnC
         txt_addrNew.setText(AddrNew);
         txt_addr.setText(Addr);
 
-      //  Log.d(TAG, "풍선뷰 정보 :  " + name + type + contact + manageAgency + AddrNew + Addr );
+        Log.d(TAG, "풍선뷰 정보 :  " + name + type + contact + manageAgency + AddrNew + Addr + ParkId );
        // Log.d(TAG, "풍선뷰 정보 :  " + parkInfo.getPngPath() );
 
 

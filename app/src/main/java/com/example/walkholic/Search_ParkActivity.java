@@ -16,8 +16,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.walkholic.DTO.ParkInfo;
-import com.example.walkholic.DTO.ParkRes;
+import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
+import com.example.walkholic.DataClass.Data.ParkInfo;
+import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
@@ -175,7 +176,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_set_location:
                 //getParkByCurrentLocation(37.3015045429, 127.0312636113);
                 Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-                getParkByCurrentLocation(mlat, mlat);
+                getParkByCurrentLocation(mlat, mlon);
 
                 break;
         }
@@ -255,9 +256,19 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             for (int i = 0; i < marketList.size(); i++) {
 
                 String storeName = marketList.get(i).getName();     // 이름
-                String address = marketList.get(i).getAddr();         // 주소
+                String type = marketList.get(i).getType();
+                String contact = marketList.get(i).getContact();
+                String manageAgency = marketList.get(i).getManageAgency();
+                String address = marketList.get(i).getAddrNew();         // 주소
+                String addr = marketList.get(i).getAddr();
                 double lat = marketList.get(i).getLat();            // 위도
                 double lon = marketList.get(i).getLng();           // 경도
+                String ParkId = marketList.get(i).getParkId();
+
+
+
+
+
 
 
 
@@ -266,7 +277,24 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
                 // TMapMarkerItem
                 // Marker Initial Settings
-                TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+                MyTMapMarkerItem tMapMarkerItem = new MyTMapMarkerItem();
+
+
+                //공원정보 값 전달
+                tMapMarkerItem.setName(storeName);
+                tMapMarkerItem.setType(type);
+                tMapMarkerItem.setContact(contact);
+                tMapMarkerItem.setManageAgency(manageAgency);
+                tMapMarkerItem.setAddrNew(address);
+                tMapMarkerItem.setAddr(addr);
+                tMapMarkerItem.setPngPath(marketList.get(i).getPngPath());
+                tMapMarkerItem.setParkId(ParkId);
+
+
+                // TMapMarkerItem
+                // Marker Initial Settings
+
+
                 tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
                 tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
                 tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
@@ -278,6 +306,9 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
                 tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
                 tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
+
+
+
 
 
                 // add Marker on T Map View
@@ -302,5 +333,13 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         final String TAG = "dlgochan";
         // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "풍선뷰 클릭?");
+
+        MyTMapMarkerItem parkInfo = (MyTMapMarkerItem)tMapMarkerItem;
+
+        Intent intent = new Intent(getApplicationContext(), CloudviewHomeActivity.class);
+        intent.putExtra("park", parkInfo);
+        startActivity(intent);
+
+
     }
 }
