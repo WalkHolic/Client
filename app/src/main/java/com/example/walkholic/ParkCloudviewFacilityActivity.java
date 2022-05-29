@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ParkCloudviewFacilityActivity extends AppCompatActivity implements View.OnClickListener{
+public class ParkCloudviewFacilityActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     final String TAG = "dlgochan";
@@ -39,10 +39,10 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
 
 
     ImageView parkimageview;
-    String sport;
-    String amuse;
-    String conv;
-    String etc;
+    String sport = "없음";
+    String amuse = "없음";
+    String conv = "없음";
+    String etc = "없음";
     String png_path;
 
     int ParkId_int;
@@ -63,34 +63,41 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
         setContentView(R.layout.park_cloudview_facility);
 
         Intent intent = getIntent();
-        ParkId_int = intent.getIntExtra("ID",ParkId_int);
+        ParkId_int = intent.getIntExtra("ID", ParkId_int);
+        facility_amuse = findViewById(R.id.facility_amuse);
+        facility_sport = findViewById(R.id.facility_sport);
+        facility_conv = findViewById(R.id.facility_conv);
+        facility_etc = findViewById(R.id.facility_etc);
 
         getParkById(ParkId_int);
 
-        mHandler.postDelayed(new Runnable()  {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
-                sport = parkRes.getData().get(0).getFacilitySport();
-                amuse = parkRes.getData().get(0).getFacilityAmuse();
-                conv = parkRes.getData().get(0).getFacilityConv();
-                etc = parkRes.getData().get(0).getFacilityEtc();
-                etc += ", " + parkRes.getData().get(0).getFacilityCul();
-
                 Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
 
-                if(sport != null){
-                    facility_sport.setText(sport);
+                if (parkRes.getData().get(0).getFacilitySport() != null) {
+                    sport = parkRes.getData().get(0).getFacilitySport();
                 }
-                if(amuse != null){
-                    facility_amuse.setText(amuse);
+                if (parkRes.getData().get(0).getFacilityAmuse() != null) {
+                    amuse = parkRes.getData().get(0).getFacilityAmuse();
                 }
-                if(conv != null){
-                    facility_conv.setText(conv);
+                if (parkRes.getData().get(0).getFacilityConv() != null) {
+                    conv = parkRes.getData().get(0).getFacilityConv();
                 }
-                if(etc != null){
-                    facility_etc.setText(etc);
+                if (parkRes.getData().get(0).getFacilityEtc() != null) {
+                    etc = parkRes.getData().get(0).getFacilityEtc();
+                    if (parkRes.getData().get(0).getFacilityCul() != null) {
+                        etc += ", " + parkRes.getData().get(0).getFacilityCul();
+                    }
+                } else {
+                    if (parkRes.getData().get(0).getFacilityCul() != null) {
+                        etc = parkRes.getData().get(0).getFacilityCul();
+                    }
                 }
-
-
+                facility_sport.setText(sport);
+                facility_amuse.setText(amuse);
+                facility_conv.setText(conv);
+                facility_etc.setText(etc);
 
 
             }
@@ -101,15 +108,13 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
 
         Glide.with(this).load(png_path).into(parkimageview);
 
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
         btn_park_review = findViewById(R.id.btn_park_review);
         btn_park_info = findViewById(R.id.btn_park_info);
-
-
 
 
         btn_home.setOnClickListener(this);

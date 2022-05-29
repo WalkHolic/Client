@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,7 @@ public class TrailListViewAdapter extends BaseAdapter {
     List<UserRoad> userRoadList;
     List<UserRoadPath> userRoadPathList;
     UserRoadRes userRoadRes;
+    Button btn_hash;
     public TrailListViewAdapter(Context inContext) {
         this.context = inContext;
     }
@@ -170,9 +173,52 @@ public class TrailListViewAdapter extends BaseAdapter {
     }
 
     private void showDialog2(int i){
+        LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout loginLayout = (LinearLayout) vi.inflate(R.layout.dialog, null);
+
+        final EditText name = loginLayout.findViewById(R.id.road_name);
+        final EditText desc = loginLayout.findViewById(R.id.road_desc);
+        final EditText hash = loginLayout.findViewById(R.id.road_hash);
+        final TextView hashlist = loginLayout.findViewById(R.id.hashText);
+        final List<String> tempString = new ArrayList<String>();
+        final String[] hashs = new String[]{"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "데이트코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
+        final String[] textTags = {""};
+        btn_hash = loginLayout.findViewById(R.id.btn_hash);
+
+        btn_hash.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(), "버튼클릭", Toast.LENGTH_SHORT).show();
+                // TODO : click event
+                new androidx.appcompat.app.AlertDialog.Builder(loginLayout.getContext()).setTitle("해시태그 선택")
+                        .setMultiChoiceItems(hashs, null, new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                                        if (b) {
+                                            tempString.add(hashs[i]);
+                                        } else {
+                                            tempString.remove(i);
+                                        }
+                                    }
+                                }
+                        )
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (String temp : tempString
+                                ) {
+                                    textTags[0] = textTags[0] + "#" + temp + " ";
+                                }
+                                hashlist.setText(textTags[0]);
+                            }
+                        }).show();
+
+            }
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        builder.setTitle("산책로 삭제").setMessage("해당 산책로를 삭제하시겠습니까?");
+        builder.setTitle("산책로 수정").setMessage("");
 
         builder.setPositiveButton("변경", new DialogInterface.OnClickListener() {
             @Override
