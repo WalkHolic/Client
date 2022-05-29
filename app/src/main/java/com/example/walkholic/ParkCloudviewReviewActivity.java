@@ -114,7 +114,6 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
                 }
 
 
-
                 txt_name.setText(name);
                 txt_type.setText(type);
                 txt_contact.setText(contact);
