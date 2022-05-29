@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
 import com.example.walkholic.DataClass.Data.ParkInfo;
@@ -264,7 +263,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 double lat = marketList.get(i).getLat();            // 위도
                 double lon = marketList.get(i).getLng();           // 경도
                 String ParkId = marketList.get(i).getParkId();
-
+                int ID = marketList.get(i).getId();
 
 
 
@@ -281,14 +280,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
 
                 //공원정보 값 전달
-                tMapMarkerItem.setName(storeName);
-                tMapMarkerItem.setType(type);
-                tMapMarkerItem.setContact(contact);
-                tMapMarkerItem.setManageAgency(manageAgency);
-                tMapMarkerItem.setAddrNew(address);
-                tMapMarkerItem.setAddr(addr);
-                tMapMarkerItem.setPngPath(marketList.get(i).getPngPath());
                 tMapMarkerItem.setParkId(ParkId);
+                tMapMarkerItem.setId(ID);
 
 
                 // TMapMarkerItem
@@ -332,12 +325,14 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
         final String TAG = "dlgochan";
         // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "풍선뷰 클릭?");
+
 
         MyTMapMarkerItem parkInfo = (MyTMapMarkerItem)tMapMarkerItem;
+        Log.d(TAG, "풍선뷰 파크아이디:" + parkInfo.getId());
+        int Id = parkInfo.getId();
 
-        Intent intent = new Intent(getApplicationContext(), CloudviewHomeActivity.class);
-        intent.putExtra("park", parkInfo);
+        Intent intent = new Intent(getApplicationContext(), ParkCloudviewHomeActivity.class);
+        intent.putExtra("ID", Id);
         startActivity(intent);
 
 

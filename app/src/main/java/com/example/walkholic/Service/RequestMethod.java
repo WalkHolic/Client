@@ -40,6 +40,33 @@ public class RequestMethod{
     //////////////////////// 공원
 
     public void getParkById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkById(id).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    parkRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     //완
