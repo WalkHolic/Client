@@ -739,7 +739,7 @@ public class RequestMethod {
         });
     }
 
-    public void updateMyRoad(int rid, UserRoadUpdateRequestDto userRoadRequestDto, MultipartBody.Part file) {
+    public void updateMyRoad(int rid, RequestBody userRoadRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.updateMyRoad(rid, userRoadRequestDto, file).enqueue(new Callback<UserRoadRes>() {

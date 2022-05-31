@@ -141,7 +141,7 @@ public class ModifyTrail extends AppCompatActivity {
             // 사진
             File realFile = null;
             MultipartBody.Part thumbnail = null;
-            /*if (imageUri != null) {
+            if (imageUri != null) {
                 Log.d("dlgochan", "image_uri: " + imageUri);
                 String realImagePath = getRealPathFromUri(imageUri);
                 if(realImagePath == null){
@@ -153,13 +153,20 @@ public class ModifyTrail extends AppCompatActivity {
                 Log.d("dlgochan", "fileName: " + realFile.getName());
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
                 thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
-            }*/
+            }
             // 산책로 정보 갱신
-            dto.setTrailName(trailName.getText().toString());
-            dto.setDescription(trailDesc.getText().toString());
+
+            UserRoadUpdateRequestDto tmp = new UserRoadUpdateRequestDto();
+            tmp.setTrailName(trailName.getText().toString());
+            tmp.setDescription(trailDesc.getText().toString());
+            Gson gson = new Gson();
+            String stringDto = gson.toJson(tmp);
+            RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
+
+
             
             //업로드
-            updateMyRoad(id, dto, thumbnail);
+            updateMyRoad(id, requestBody1, thumbnail);
             Intent intent1 = new Intent(getApplicationContext(), WalkListActivity.class);
             startActivity(intent1);
             finish();
@@ -231,7 +238,7 @@ public class ModifyTrail extends AppCompatActivity {
         getContent.launch("image/*");
     }
 
-    public void updateMyRoad(int rid, UserRoadUpdateRequestDto userRoadRequestDto, MultipartBody.Part file) {
+    public void updateMyRoad(int rid, RequestBody userRoadRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.updateMyRoad(rid, userRoadRequestDto, file).enqueue(new Callback<UserRoadRes>() {

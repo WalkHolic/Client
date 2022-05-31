@@ -148,7 +148,7 @@ public interface ServerRequestApi {
     @PUT("/user/road/{rid}")
         // 내 산책로 수정
     Call<UserRoadRes> updateMyRoad(@Path("rid") int rid,
-                                   @Part("userRoadUpdateRequestDto") UserRoadUpdateRequestDto userRoadRequestDto,
+                                   @Part("userRoadUpdateRequestDto") RequestBody userRoadUpdateRequestDto,
                                    @Part MultipartBody.Part file);
 
     @GET("/user/road/{rid}/share")
