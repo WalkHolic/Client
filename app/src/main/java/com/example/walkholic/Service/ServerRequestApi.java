@@ -145,6 +145,7 @@ public interface ServerRequestApi {
         // 내 산책로 삭제
     Call<UserRoadRes> delMyRoad(@Path("rid") int rid);
 
+    @Multipart
     @PUT("/user/road/{rid}")
         // 내 산책로 수정
     Call<UserRoadRes> updateMyRoad(@Path("rid") int rid,

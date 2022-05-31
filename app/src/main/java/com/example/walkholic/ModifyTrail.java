@@ -74,6 +74,7 @@ public class ModifyTrail extends AppCompatActivity {
 
     private int id = -1;
     private String name = null;
+    private int road_id = -99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,9 @@ public class ModifyTrail extends AppCompatActivity {
 //        id = getIntent().getStringExtra("id");
 //        name = getIntent().getStringExtra("name");
         name = "Test Name";
-        id = getIntent().getIntExtra("rid",0);
+        road_id = getIntent().getIntExtra("rid",-1);
+
+
 // 컴포넌트 초기화
         dto = new UserRoadUpdateRequestDto();
 
@@ -146,7 +149,6 @@ public class ModifyTrail extends AppCompatActivity {
                 String realImagePath = getRealPathFromUri(imageUri);
                 if(realImagePath == null){
                     Log.d("dlgochan", "realImagePath is Null@@");
-                    finish();
                 }
                 realFile = new File(realImagePath);
                 Log.d("dlgochan", "realImagePath: " + realImagePath);
@@ -156,17 +158,17 @@ public class ModifyTrail extends AppCompatActivity {
             }
             // 산책로 정보 갱신
 
-            UserRoadUpdateRequestDto tmp = new UserRoadUpdateRequestDto();
-            tmp.setTrailName(trailName.getText().toString());
-            tmp.setDescription(trailDesc.getText().toString());
+
+            dto.setTrailName(trailName.getText().toString());
+            dto.setDescription(trailDesc.getText().toString());
             Gson gson = new Gson();
-            String stringDto = gson.toJson(tmp);
+            String stringDto = gson.toJson(dto);
             RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
 
 
             
             //업로드
-            updateMyRoad(id, requestBody1, thumbnail);
+            updateMyRoad(road_id, requestBody1, thumbnail);
             Intent intent1 = new Intent(getApplicationContext(), WalkListActivity.class);
             startActivity(intent1);
             finish();
@@ -204,6 +206,7 @@ public class ModifyTrail extends AppCompatActivity {
 
     private String getRealPathFromUri(Uri contentUri) {
         if (contentUri.getPath().startsWith("/storage")) {
+            Log.d("dlgochan", "if- contentUri.getPath() : " + contentUri.getPath());
             return contentUri.getPath();
         }
         String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
@@ -213,6 +216,7 @@ public class ModifyTrail extends AppCompatActivity {
         try {
             int columnIndex = cursor.getColumnIndex(columns[0]);
             if (cursor.moveToFirst()) {
+                Log.d("dlgochan", "cursor.getString(columnIndex) : " + cursor.getString(columnIndex));
                 return cursor.getString(columnIndex);
             }
         } finally {

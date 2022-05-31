@@ -123,7 +123,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 // 시간 지난 후 실행할 코딩
                 displayList();
             }
-        }, 1000); // 0.5초후
+        }, 500); // 0.5초후
 
 
     }
