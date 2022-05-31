@@ -15,9 +15,11 @@ import com.example.walkholic.ListItem.ItemListAdapter;
 import com.example.walkholic.ListItem.SearchItem;
 import java.util.ArrayList;
 
-public class TmapSearchListActivity extends AppCompatActivity {
+public class TmapSearchListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "dlgochan";
+
+    Button btn_back;
 
     ListView mListView;
 
@@ -26,6 +28,9 @@ public class TmapSearchListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmap_search_list);
+
+        btn_back = findViewById(R.id.back_btn);
+        btn_back.setOnClickListener(this);
 
         ArrayList<SearchItem> searchList = new ArrayList<>();
 
@@ -50,5 +55,15 @@ public class TmapSearchListActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.back_btn:
+                onBackPressed();
+                break;
+
+        }
     }
 }
