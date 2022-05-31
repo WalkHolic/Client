@@ -1,6 +1,8 @@
 package com.example.walkholic;
 
 import android.Manifest;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,26 +10,41 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
+import com.example.walkholic.DataClass.Data.ParkInfo;
+import com.example.walkholic.DataClass.Data.ParkOption;
+import com.example.walkholic.DataClass.Data.Road;
+import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.RoadRes;
+import com.example.walkholic.ListItem.SearchItem;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
+import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
+import com.skt.Tmap.poi_item.TMapPOIItem;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_WalkActivity extends AppCompatActivity implements View.OnClickListener,  TMapGpsManager.onLocationChangedCallback {
+public class Search_WalkActivity extends AppCompatActivity implements View.OnClickListener, TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
+    private boolean TrackingMode = true;
     Button btn_home;
     Button btn_search;
     Button btn_walking;
@@ -35,6 +52,12 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
+
+    Button btn_set_location;
+
+    TextInputEditText textInputEditText;
+    ImageButton imageButton;
+
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -46,7 +69,11 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     //T Map Data
     TMapData tmapdata;
 
-    private RoadRes roadRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
+    Double mlat;
+    Double mlon;
+
+    private RoadRes roadRes;
+    Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +115,52 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
-        tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
-        tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
+        // 키워드 검색으로 요청할 때
+        Log.d("dlgochan", "키워드 이름: " + getIntent().getStringExtra("itemName"));
+        if (getIntent().getStringExtra("itemName") != null) {
+            TrackingMode = false;
+            String itemName = getIntent().getStringExtra("itemName");
+            mlat = getIntent().getDoubleExtra("itemLat", 37.2844252); // default: 아주대 위경도
+            mlon = getIntent().getDoubleExtra("itemLng", 127.043568);
 
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+            Log.d("dlgochan", "search Item 위도: " + mlat + "경도: " + mlon);
+
+            // 마커 생성
+            TMapPoint tMapPointItem = new TMapPoint(mlat, mlon);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
+            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+            tMapMarkerItem.setTMapPoint(tMapPointItem);         // Marker의 위치
+            tMapMarkerItem.setName(itemName);              // Marker의 이름
+            tMapView.addMarkerItem(itemName, tMapMarkerItem);
+            tMapView.setCenterPoint(mlon, mlat);
+
+        } else { // 그냥 GPS
+            TrackingMode = true;
+            mlat = tMapGPS.getLocation().getLatitude();
+            mlon = tMapGPS.getLocation().getLongitude();
+
+            tMapView.setLocationPoint(mlon, mlat);
+            tMapView.setCenterPoint(mlon, mlat);
+            Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+
+
+        }
+
+
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
 
         btn_search_park = findViewById(R.id.btn_search_park);
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
+
+        btn_set_location = findViewById(R.id.btn_set_location);
+        imageButton = findViewById(R.id.imageButton);
+        textInputEditText = findViewById(R.id.textInputEditText);
 
 
         btn_home.setOnClickListener(this);
@@ -110,80 +172,109 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_walk.setOnClickListener(this);
         btn_search_shared.setOnClickListener(this);
 
-        getRoadByCurrentLocation(37.3015045429, 127.0312636113);
+        btn_set_location.setOnClickListener(this);
+        imageButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_home:
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.btn_search:
-                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                Intent intent2 = new Intent(this, Search_ParkActivity.class);
                 startActivity(intent2);
                 finish();
                 break;
-            case R.id.btn_walking:
-                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
-                startActivity(intent3);
-                finish();
-                break;
+//            case R.id.btn_walking:
+//                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
+//                startActivity(intent3);
+//                finish();
+//                break;
             case R.id.btn_mypage:
-                Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
+                Intent intent4 = new Intent(this, WalkListActivity.class);
                 startActivity(intent4);
                 finish();
                 break;
             case R.id.btn_search_park:
-                Intent intent5 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                Intent intent5 = new Intent(this, Search_ParkActivity.class);
                 startActivity(intent5);
                 finish();
                 break;
-            case R.id.btn_search_walk:
-                Intent intent6 = new Intent(getApplicationContext(), Search_WalkActivity.class);
-                startActivity(intent6);
-                finish();
-                break;
+//            case R.id.btn_search_walk:
+//                Intent intent6 = new Intent(this, Search_WalkActivity.class);
+//                startActivity(intent6);
+//                finish();
+//                break;
             case R.id.btn_search_shared:
-                Intent intent7 = new Intent(getApplicationContext(), Search_SharedActivity.class);
+                Intent intent7 = new Intent(this, Search_SharedActivity.class);
                 startActivity(intent7);
                 finish();
                 break;
+            case R.id.btn_set_location:
+                Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+                getRoadByCurrentLocation(mlat, mlon);
+                break;
+            case R.id.imageButton:
+                ArrayList<SearchItem> searchList = new ArrayList<>();
+                Log.d("dlgochan", "Click imageButton with " + textInputEditText.getText().toString());
 
+                tmapdata.findAllPOI(textInputEditText.getText().toString(), poiItem -> {
+                    if (poiItem == null) return;
+                    for (int i = 0; i < poiItem.size(); i++) {
+                        TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
+                        String poiName = item.getPOIName();
+                        String poiAddress = item.getPOIAddress().replace("null", "");
+                        TMapPoint point = item.getPOIPoint();
+                        SearchItem searchItem = new SearchItem(poiName, poiAddress, point.getLatitude(), point.getLongitude());
+                        searchList.add(searchItem);
+                        Log.d("dlgochan", "search: " + poiName + poiAddress + point.toString());
+                    }
+                });
+
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        Log.d("dlgochan", "searchList size: " + searchList.size());
+                        Intent intent8 = new Intent(getApplicationContext(), TmapSearchListActivity.class);
+                        intent8.putExtra("keyword", textInputEditText.getText().toString());
+                        intent8.putParcelableArrayListExtra("searchList", searchList);
+                        intent8.putExtra("road", true);
+                        startActivity(intent8);
+                    }
+                }, 500);
         }
     }
 
     @Override
     public void onLocationChange(Location location) {
 
-        Log.e("asdasd", "위치변경");
-        //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
-        tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
-        tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
-        /*TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+        if (TrackingMode) {
+            mlat = location.getLatitude();
+            mlon = location.getLongitude();
 
-        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
-        tMapMarkerItem.setIcon(markerIcon); // 마커 아이콘 지정
-
-        tMapMarkerItem.setTMapPoint(new TMapPoint(location.getLongitude(), location.getLatitude()));
-        tMapMarkerItem.setName("marker");
-        tMapView.addMarkerItem("marker", tMapMarkerItem);*/
+            Log.e("dlgochan", "위치변경 탐지");
+            //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
+            tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
+            tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
+        }
 
     }
 
     public void getRoadByCurrentLocation(double lat, double lng){
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+        service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() {
             @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
                     roadRes = response.body();
                     Log.d(TAG, "onResponse Success : " + roadRes.toString());
-
+                    addMarketMarker(roadRes.getData());
+                    tMapView.setZoomLevel(13);
                 } else {
                     // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
@@ -200,9 +291,67 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<RoadRes> call, Throwable t) {
                 // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
                 Log.d(TAG, "onFailure : " + t.getMessage());
-
             }
         });
 
+    }
+
+    public void addMarketMarker(List<Road> marketList) {
+        final String TAG = "dlgochan";
+        // Marker img -> bitmap
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.info);
+        try {
+            for (int i = 0; i < marketList.size(); i++) {
+
+                String storeName = marketList.get(i).getRoadName();     // 이름
+                String address = marketList.get(i).getStartRoadAddr();
+                double lat = marketList.get(i).getStartLat();            // 위도
+                double lon = marketList.get(i).getStartLng();           // 경도
+                Integer roadId = marketList.get(i).getId();
+
+                // TMapPoint
+                TMapPoint tMapPoint = new TMapPoint(lat, lon);
+
+                // TMapMarkerItem
+                // Marker Initial Settings
+                TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+
+                tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+                tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+                tMapMarkerItem.setTMapPoint(tMapPoint);         // Marker의 위치
+                tMapMarkerItem.setName(storeName);              // Marker의 이름
+
+                // Balloon View Initial Settings
+                tMapMarkerItem.setCanShowCallout(true);         // Balloon View 사용
+                tMapMarkerItem.setCalloutTitle(storeName);      // Main Message
+                tMapMarkerItem.setCalloutSubTitle(address);     // Sub Message
+                tMapMarkerItem.setAutoCalloutVisible(false);    // 초기 접속 시 Balloon View X
+                tMapMarkerItem.setCalloutRightButtonImage(bitmap2); //구름뷰 오른쪽 비트맨 클릭시 onCalloutRightButton호출
+
+                // add Marker on T Map View
+                // id로 Marker을 식별
+                tMapView.addMarkerItem(roadId.toString(), tMapMarkerItem);
+
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, "onFailure : " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+        final String TAG = "dlgochan";
+        // Toast.makeText(this, "풍선뷰 클릭", Toast.LENGTH_SHORT).show();
+
+        Log.d(TAG, "풍선뷰 roadId: " + tMapMarkerItem.getID());
+        Integer roadId = Integer.parseInt(tMapMarkerItem.getID());
+
+        Intent intent = new Intent(getApplicationContext(), RoadCloudviewHomeActivity.class);
+        intent.putExtra("lat", mlat);
+        intent.putExtra("lng", mlon);
+        intent.putExtra("roadId", roadId);
+        startActivity(intent);
     }
 }
