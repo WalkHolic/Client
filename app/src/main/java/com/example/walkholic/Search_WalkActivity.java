@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -52,7 +53,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
-
+    Button btn_current_location;
     Button btn_set_location;
 
     TextInputEditText textInputEditText;
@@ -97,7 +98,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
         // T Map View Using Linear Layout
-        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_park);
+        FrameLayout linearLayoutTmap = (FrameLayout) findViewById(R.id.linearLayoutTmap_park);
         linearLayoutTmap.addView(tMapView);
 
         // Request For GPS permission
@@ -153,8 +154,9 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_park = findViewById(R.id.btn_search_park);
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
-
         btn_set_location = findViewById(R.id.btn_set_location);
+        btn_current_location = findViewById(R.id.btn_current_location);
+
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
 
@@ -169,6 +171,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
+        btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
     }
 
@@ -241,6 +244,9 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                         startActivity(intent8);
                     }
                 }, 500);
+            case R.id.btn_current_location:
+                TrackingMode = true;
+                Log.e("dlgochan", "새로고침 버튼 클릭!");
         }
     }
 
@@ -251,7 +257,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             mlat = location.getLatitude();
             mlon = location.getLongitude();
 
-            Log.e("dlgochan", "위치변경 탐지");
+            Log.e("dlgochan", "위치변경 탐지: " + mlat + " / " + mlon);
             //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
             tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());

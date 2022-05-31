@@ -101,28 +101,34 @@
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
-
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
             <Button
                 android:id="@+id/btn_set_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="현지도에서 산책로 검색"
-                android:background="@drawable/border_menu"/>
-        </LinearLayout>
-
-
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:text="현 지도에서 검색"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/round_menu"/>
+            <Button
+                android:id="@+id/btn_current_location"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="10dp"
+                android:background="@drawable/search2_remove" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
