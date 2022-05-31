@@ -175,25 +175,6 @@ public class TrailListViewAdapter extends BaseAdapter {
         list.add(listdata);
     }
 
-    private String getRealPathFromUri(Uri contentUri) {
-        if (contentUri.getPath().startsWith("/storage")) {
-            return contentUri.getPath();
-        }
-        String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
-        String[] columns = {MediaStore.Files.FileColumns.DATA};
-        String selection = MediaStore.Files.FileColumns._ID + "=" + id;
-        Cursor cursor = contentResolver.query(MediaStore.Files.getContentUri("external"), columns, selection, null, null);
-        try {
-            int columnIndex = cursor.getColumnIndex(columns[0]);
-            if (cursor.moveToFirst()) {
-                return cursor.getString(columnIndex);
-            }
-        } finally {
-            cursor.close();
-        }
-        return null;
-    }
-
 
 
     public void removeItemInList(int num) {

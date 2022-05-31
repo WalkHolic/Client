@@ -141,7 +141,7 @@ public class ModifyTrail extends AppCompatActivity {
             // 사진
             File realFile = null;
             MultipartBody.Part thumbnail = null;
-            if (imageUri != null) {
+            /*if (imageUri != null) {
                 Log.d("dlgochan", "image_uri: " + imageUri);
                 String realImagePath = getRealPathFromUri(imageUri);
                 if(realImagePath == null){
@@ -153,15 +153,15 @@ public class ModifyTrail extends AppCompatActivity {
                 Log.d("dlgochan", "fileName: " + realFile.getName());
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
                 thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
-            }
+            }*/
             // 산책로 정보 갱신
             dto.setTrailName(trailName.getText().toString());
             dto.setDescription(trailDesc.getText().toString());
             
             //업로드
             updateMyRoad(id, dto, thumbnail);
-            Intent intent2 = new Intent(getApplicationContext(), WalkListActivity.class);
-            startActivity(intent2);
+            Intent intent1 = new Intent(getApplicationContext(), WalkListActivity.class);
+            startActivity(intent1);
             finish();
 
 
