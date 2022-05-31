@@ -117,18 +117,13 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
 
         imageView = findViewById(R.id.user_image);
 
-        // 임시 리뷰 Dto 생성
-        reviewRequestDto = new ReviewRequestDto();
-        reviewRequestDto.setContent("좋아요");
-        reviewRequestDto.setScore(4.0);
-        Log.d("dlgochan", "reviewRequestDto: " + reviewRequestDto.toString());
         load();
         handler.postDelayed(new Runnable() {
             public void run() {
                 // 시간 지난 후 실행할 코딩
                 displayList();
             }
-        }, 1000); // 0.5초후
+        }, 500); // 0.5초후
 
 
     }
@@ -161,48 +156,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent4);
                 finish();
                 break;
-            case R.id.btn_review:
-                Intent intent5 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
-                startActivity(intent5);
-                finish();
-                break;
-            case R.id.btn_PostPicture:
-                File realFile = null;
-                MultipartBody.Part thumbnail = null;
-                if (imageUri != null) {
-                    String realImagePath = getRealPathFromUri(imageUri);
-                    realFile = new File(realImagePath);
-                    Log.d("dlgochan", "realImagePath: " + realImagePath);
-                    Log.d("dlgochan", "fileName: " + realFile.getName());
-                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
-                    thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
-                }
-                Gson gson = new Gson();
-                String stringDto = gson.toJson(reviewRequestDto);
-                RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
-                uploadParkReview(3, requestBody1, thumbnail);
-                break;
-            case R.id.btn_UploadPicture:
-                imageUri = null;
-                DialogInterface.OnClickListener albumListner = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        doTakeAlbumAction();
-                    }
-                };
-                DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                };
 
-                new AlertDialog.Builder(this)
-                        .setTitle("업로드할 이미지 선택")
-                        .setNeutralButton("앨범선택", albumListner)
-                        .setNegativeButton("취소", cancelListener)
-                        .show();
-                break;
         }
     }
 
@@ -298,66 +252,8 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private String getRealPathFromUri(Uri contentUri) {
-        if (contentUri.getPath().startsWith("/storage")) {
-            return contentUri.getPath();
-        }
-        String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
-        String[] columns = {MediaStore.Files.FileColumns.DATA};
-        String selection = MediaStore.Files.FileColumns._ID + "=" + id;
-        Cursor cursor = getContentResolver().query(MediaStore.Files.getContentUri("external"), columns, selection, null, null);
-        try {
-            int columnIndex = cursor.getColumnIndex(columns[0]);
-            if (cursor.moveToFirst()) {
-                return cursor.getString(columnIndex);
-            }
-        } finally {
-            cursor.close();
-        }
-        return null;
-    }
 
-    // 앨범 선택
-    ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    if (result != null) {
-                        Log.d("dlgochan", "result: " + result);
-                        imageUri = result;
-                        imageView.setImageURI(result);
-                    }
-                }
-            });
 
-    public void doTakeAlbumAction() {
-        getContent.launch("image/*");
-    }
 
-    public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.uploadParkReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
-            @Override
-            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
-                if (response.isSuccessful()) {
-                    reviewRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ReviewRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
 }

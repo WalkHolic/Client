@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -73,6 +74,38 @@
             android:text="해시태그를 선택해주세요"
             android:layout_marginTop="5dp"/>
 
+        <ImageView
+            android:id="@+id/trailImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:srcCompat="@drawable/empty_image"
+            android:layout_marginTop="20dp"
+           />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_modify_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/list_item"
+                android:text="변경"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_modify_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_modify_ok"
+                app:layout_constraintStart_toEndOf="@+id/btn_modify_ok"
+                app:layout_constraintTop_toTopOf="@+id/btn_modify_ok"
+                android:background="@drawable/list_item"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>

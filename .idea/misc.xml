@@ -12,14 +12,14 @@
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_walking.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/dialog.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/xml/filepaths.xml" value="0.358695652173913" />
-<<<<<<< HEAD
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/border.xml" value="0.1" />
-=======
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_myroad.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_modify_trail.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_myroad.xml" value="0.33" />
+        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_walking.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_writeriview.xml" value="0.35643115942028986" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/dialog.xml" value="0.33" />
->>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2145" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/logout_btn.xml" value="0.2145" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/drawable/profile_layout.xml" value="0.2145" />
@@ -35,17 +35,16 @@
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_park.xml" value="0.15104166666666666" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.24320652173913043" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_tmap_search_list.xml" value="0.1125" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/activity_walking.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/dialog_item.xml" value="0.1125" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/frag_homeback.xml" value="0.25364583333333335" />
-<<<<<<< HEAD
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/park_cloudview_home.xml" value="0.2" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/park_cloudview_review.xml" value="0.264" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/park_review_item.xml" value="0.4" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/layout/stroke.xml" value="0.1" />
-=======
->>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/Client/app/src/main/res/mipmap-anydpi-v26/walkholic_icon.xml" value="0.141" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.143" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0509/WALKHOLIC/app/src/main/res/drawable/ic_launcher_background.xml" value="0.143" />
@@ -76,14 +75,25 @@
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0530/WALKHOLIC/app/src/main/res/layout/frag_homeback.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0530/WALKHOLIC/app/src/main/res/layout/frag_play.xml" value="0.13385416666666666" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0530/WALKHOLIC/app/src/main/res/layout/frag_search.xml" value="0.24947916666666667" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.18697916666666667" />
         <entry key="..\:/data/Client/app/src/main/res/drawable/border.xml" value="0.1565" />
         <entry key="..\:/data/Client/app/src/main/res/drawable/border_menu.xml" value="0.1055" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_review_list_trail.xml" value="0.23641304347826086" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_park.xml" value="0.11684782608695653" />
-        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.18697916666666667" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.128" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.15052083333333333" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.152" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_walking.xml" value="0.10914855072463768" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_writereview.xml" value="0.1" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/dialog.xml" value="0.10914855072463768" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/dialog_item.xml" value="0.10914855072463768" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_facility.xml" value="0.10260416666666666" />
         <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_home.xml" value="0.176" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_review.xml" value="0.1" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/road_cloudview_home.xml" value="0.12158054711246201" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/road_cloudview_path.xml" value="0.176" />
+        <entry key="app/src/main/res/drawable/border_menu.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/gradient.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/profile_layout.xml" value="0.1015" />
         <entry key="app/src/main/res/drawable/round_background_border_black.xml" value="0.166" />

@@ -1,7 +1,9 @@
 package com.example.walkholic.Service;
 
+import android.text.style.UpdateAppearance;
 import android.util.Log;
 
+import com.example.walkholic.DataClass.DTO.UserRoadUpdateRequestDto;
 import com.example.walkholic.DataClass.Data.ParkOption;
 import com.example.walkholic.DataClass.Data.User;
 import com.example.walkholic.DataClass.Response.ParkRes;
@@ -23,9 +25,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
-public class RequestMethod{
+public class RequestMethod {
     private ParkRes parkRes;
     private UserRoadRes userRoadRes;
     private RoadRes roadRes;
@@ -33,8 +36,6 @@ public class RequestMethod{
     private RoadPathRes roadPathRes;
     private UserRoadPathRes userRoadPathRes;
     private UserRoadSharedRes userRoadSharedRes;
-
-
 
 
     //////////////////////// 공원
@@ -70,7 +71,7 @@ public class RequestMethod{
     }
 
     //완
-    public void getParkByCurrentLocation(double lat, double lng){
+    public void getParkByCurrentLocation(double lat, double lng) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getParkByCurrentLocation(lat, lng).enqueue(new Callback<ParkRes>() {
@@ -101,7 +102,7 @@ public class RequestMethod{
     }
 
     //완
-    public void getParkByFilter(double lat, double lng, ParkOption option){
+    public void getParkByFilter(double lat, double lng, ParkOption option) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
@@ -132,12 +133,9 @@ public class RequestMethod{
     }
 
 
-
-
-
     //////////////////////// 산책로
 
-    public void getRoadByCurrentLocation(double lat, double lng){
+    public void getRoadByCurrentLocation(double lat, double lng) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getRoadByCurrentLocation(lat, lng).enqueue(new Callback<RoadRes>() {
@@ -168,7 +166,34 @@ public class RequestMethod{
 
     }
 
-    public void RoadById(int id) {
+    public void getRoadById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadById(id).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public void getRoadPathByRid(int rid) {
@@ -179,7 +204,7 @@ public class RequestMethod{
             public void onResponse(Call<RoadPathRes> call, Response<RoadPathRes> response) {
                 if (response.isSuccessful()) {
                     roadPathRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                    Log.d(TAG, "onResponse Success : " + roadPathRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -199,15 +224,10 @@ public class RequestMethod{
     }
 
 
-
-
-
-
-
     //////////////////////// 유저
 
     // 완
-    public void getUserRoadByHashtag(String hashtag){
+    public void getUserRoadByHashtag(String hashtag) {
         final String TAG = "dlgochan";
 
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -297,7 +317,7 @@ public class RequestMethod{
         });
     }
 
-    public void getUserRoadByCurrentLocation(double lat, double lng){
+    public void getUserRoadByCurrentLocation(double lat, double lng) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getUserRoadByCurrentLocation(lat, lng).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
@@ -417,7 +437,6 @@ public class RequestMethod{
     }
 
 
-
     //////////////// 리뷰
     //완
     public void uploadParkReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
@@ -527,7 +546,6 @@ public class RequestMethod{
             }
         });
     }
-
 
 
     public void uploadRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
@@ -640,7 +658,6 @@ public class RequestMethod{
     }
 
 
-
     public void uploadUserRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -744,6 +761,33 @@ public class RequestMethod{
 
             @Override
             public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void updateMyRoad(int rid, RequestBody userRoadRequestDto, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.updateMyRoad(rid, userRoadRequestDto, file).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });

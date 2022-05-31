@@ -7,6 +7,14 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/back_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/cloud_view_top_btn_bg"
+        android:text=""
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
