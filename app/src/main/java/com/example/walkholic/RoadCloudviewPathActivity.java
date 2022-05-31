@@ -203,9 +203,9 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
                 tMapView.addTMapPolyLine("Line" + i, tMapPolyLine);
                 tMapView.setCenterPoint(tMapPointStart.getLongitude(), tMapPointStart.getLatitude());
                 try {
-                    Thread.sleep(600);
+                    Thread.sleep(500);
                 } catch (Exception e) {
-
+                    Log.d(TAG, "경로 보여주기 예외: " + e.getMessage());
                 }
             }
         }).start();
