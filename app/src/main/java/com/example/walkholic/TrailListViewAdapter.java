@@ -1,10 +1,18 @@
 package com.example.walkholic;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,29 +25,47 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.bumptech.glide.Glide;
+import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
 import com.example.walkholic.DataClass.Data.UserRoad;
 import com.example.walkholic.DataClass.Data.UserRoadPath;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 public class TrailListViewAdapter extends BaseAdapter {
     ArrayList<com.example.walkholic.TrailListViewAdapterData> list = new ArrayList<TrailListViewAdapterData>();
+    private static final int PICK_FROM_ALBUM = 1;
 
     Context context;
+    ContentResolver contentResolver;
     UserRoad temp = new UserRoad();
     List<UserRoad> userRoadList;
     List<UserRoadPath> userRoadPathList;
     UserRoadRes userRoadRes;
     Button btn_hash;
+    Handler handler = new Handler();
+    MultipartBody.Part trailImage = null;
+    private Uri imageUri;
+
     public TrailListViewAdapter(Context inContext) {
         this.context = inContext;
     }
@@ -65,12 +91,15 @@ public class TrailListViewAdapter extends BaseAdapter {
 
         final Context context = viewGroup.getContext();
 
+
         //리스트뷰에 아이템이 인플레이트 되어있는지 확인한후
         //아이템이 없다면 아래처럼 아이템 레이아웃을 인플레이트 하고 view객체에 담는다.
         if (view == null) {
+
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_myroad, viewGroup, false);
         }
+        final Context context2 = view.getContext();
 
         //이제 아이템에 존재하는 텍스트뷰 객체들을 view객체에서 찾아 가져온다
         ImageView trailImage = (ImageView) view.findViewById(R.id.trailImage);
@@ -84,12 +113,20 @@ public class TrailListViewAdapter extends BaseAdapter {
         TextView trailStart = (TextView) view.findViewById(R.id.trailStart);
         //TextView trailEnd = (TextView)view.findViewById(R.id.trailEnd);
         TextView trailDesc = (TextView) view.findViewById(R.id.trailDescription);
+
         Button btn_delete = (Button) view.findViewById(R.id.btn_deleteTrail);
+        Button btn_modify = (Button) view.findViewById(R.id.btn_modifyTrail);
+
+        contentResolver = view.getContext().getContentResolver();
 
 
         //현재 포지션에 해당하는 아이템에 글자를 적용하기 위해 list배열에서 객체를 가져온다.
         com.example.walkholic.TrailListViewAdapterData listdata = list.get(i);
 
+        //URI로 이미지 미리보기 띄우기
+        if (listdata.getImageURL() != null) {
+            Glide.with(context2.getApplicationContext()).load(listdata.getImageURL()).into(trailImage);
+        }
         trailName.setText(listdata.getTrailName());
         String tempp = "";
         for (int y = 0; y <= listdata.getHashtags().size() - 1; y++) {
@@ -118,6 +155,15 @@ public class TrailListViewAdapter extends BaseAdapter {
                 showDialog(i);
             }
         });
+        btn_modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context.getApplicationContext(), ModifyTrail.class);
+                intent.putExtra("rid", listdata.getRid());
+                context.startActivity(intent);
+            }
+        });
+
 
         return view;
     }
@@ -140,10 +186,12 @@ public class TrailListViewAdapter extends BaseAdapter {
         list.add(listdata);
     }
 
+
     public void removeItemInList(int num) {
         list.remove(num);
     }
 
+    //산책로 삭제 다이얼로그
     private void showDialog(int i) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -153,11 +201,11 @@ public class TrailListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 delMyRoad(list.get(i).getRid());
-                Intent intent = ((Activity)context).getIntent();
-                ((Activity)context).finish(); //현재 액티비티 종료 실시
-                ((Activity)context).overridePendingTransition(0, 0); //효과 없애기
-                ((Activity)context).startActivity(intent); //현재 액티비티 재실행 실시
-                ((Activity)context).overridePendingTransition(0, 0); //효과 없애기
+                Intent intent = ((Activity) context).getIntent();
+                ((Activity) context).finish(); //현재 액티비티 종료 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
+                ((Activity) context).startActivity(intent); //현재 액티비티 재실행 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
             }
         });
 
@@ -172,75 +220,6 @@ public class TrailListViewAdapter extends BaseAdapter {
         alertDialog.show();
     }
 
-    private void showDialog2(int i){
-        LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout loginLayout = (LinearLayout) vi.inflate(R.layout.dialog, null);
-
-        final EditText name = loginLayout.findViewById(R.id.road_name);
-        final EditText desc = loginLayout.findViewById(R.id.road_desc);
-        final EditText hash = loginLayout.findViewById(R.id.road_hash);
-        final TextView hashlist = loginLayout.findViewById(R.id.hashText);
-        final List<String> tempString = new ArrayList<String>();
-        final String[] hashs = new String[]{"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "데이트코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
-        final String[] textTags = {""};
-        btn_hash = loginLayout.findViewById(R.id.btn_hash);
-
-        btn_hash.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(), "버튼클릭", Toast.LENGTH_SHORT).show();
-                // TODO : click event
-                new androidx.appcompat.app.AlertDialog.Builder(loginLayout.getContext()).setTitle("해시태그 선택")
-                        .setMultiChoiceItems(hashs, null, new DialogInterface.OnMultiChoiceClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                                        if (b) {
-                                            tempString.add(hashs[i]);
-                                        } else {
-                                            tempString.remove(i);
-                                        }
-                                    }
-                                }
-                        )
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                for (String temp : tempString
-                                ) {
-                                    textTags[0] = textTags[0] + "#" + temp + " ";
-                                }
-                                hashlist.setText(textTags[0]);
-                            }
-                        }).show();
-
-            }
-        });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setTitle("산책로 수정").setMessage("");
-
-        builder.setPositiveButton("변경", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                delMyRoad(list.get(i).getRid());
-                Intent intent = ((Activity)context).getIntent();
-                ((Activity)context).finish(); //현재 액티비티 종료 실시
-                ((Activity)context).overridePendingTransition(0, 0); //효과 없애기
-                ((Activity)context).startActivity(intent); //현재 액티비티 재실행 실시
-                ((Activity)context).overridePendingTransition(0, 0); //효과 없애기
-            }
-        });
-
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
 
     public void delMyRoad(int rid) {
         final String TAG = "dlgochan";
@@ -271,4 +250,6 @@ public class TrailListViewAdapter extends BaseAdapter {
             }
         });
     }
+
+
 }
