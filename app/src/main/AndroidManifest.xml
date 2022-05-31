@@ -25,6 +25,9 @@
             android:name=".ParkCloudviewReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".ParkCloudviewFacilityActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_SharedActivity"
             android:exported="false" />
         <activity
@@ -47,6 +50,15 @@
             android:exported="false" />
         <activity
             android:name=".ParkCloudviewHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewListActivity_park"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewListActivity_trail"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewListActivity_sharetrail"
             android:exported="false" />
         <activity
             android:name=".LogoActivity"

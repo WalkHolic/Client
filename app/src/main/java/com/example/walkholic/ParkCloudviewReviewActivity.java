@@ -122,6 +122,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
 
                 ParkReviewAdapter reviewAdapter = new ParkReviewAdapter(getApplicationContext(), reviewDatalist);
                 listView.setAdapter(reviewAdapter);
+
             }
         }, 500); // 0.5초후
     }
@@ -160,16 +161,6 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
                 break;
         }
     }
-
-//    public ArrayList<ReviewData> InitializeReview() {
-//        reviewDatalist = new ArrayList<ReviewData>();
-//
-//        for (int i = 0; i < reviewRes.getData().size(); i++) {
-//            reviewDatalist.add(new ReviewData(usernamelist.get(i), commentlist.get(i), pngpathlist.get(i)));
-//
-//        }
-//        return reviewDatalist;
-//    }
 
     @Override
     public void onBackPressed() {
