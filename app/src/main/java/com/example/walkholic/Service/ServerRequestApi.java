@@ -63,8 +63,7 @@ public interface ServerRequestApi {
 
 
     /* Road (기본 산책로) */
-    @GET("/road/path/roadId/{id}")
-    // road id 로 산책로 조
+    @GET("/road/{id}")
     Call<RoadRes> getRoadById(@Path("id") int id);
 
     @GET("/road/path/roadId/{rid}")

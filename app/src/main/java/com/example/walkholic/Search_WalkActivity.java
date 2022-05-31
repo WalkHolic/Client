@@ -135,7 +135,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             tMapMarkerItem.setName(itemName);              // Marker의 이름
             tMapView.addMarkerItem(itemName, tMapMarkerItem);
             tMapView.setCenterPoint(mlon, mlat);
-
         } else { // 그냥 GPS
             TrackingMode = true;
             mlat = tMapGPS.getLocation().getLatitude();
@@ -144,10 +143,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             tMapView.setLocationPoint(mlon, mlat);
             tMapView.setCenterPoint(mlon, mlat);
             Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-
-
         }
-
 
         btn_home = findViewById(R.id.btn_home);
         btn_search = findViewById(R.id.btn_search);
