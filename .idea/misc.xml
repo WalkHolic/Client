@@ -69,8 +69,24 @@
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0530/WALKHOLIC/app/src/main/res/layout/frag_play.xml" value="0.13385416666666666" />
         <entry key="..\:/Users/kjh71/AndroidStudioProjects/WALK HOLIC0530/WALKHOLIC/app/src/main/res/layout/frag_search.xml" value="0.24947916666666667" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.18697916666666667" />
+        <entry key="..\:/data/Client/app/src/main/res/drawable/border.xml" value="0.1565" />
+        <entry key="..\:/data/Client/app/src/main/res/drawable/border_menu.xml" value="0.1055" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_review_list_trail.xml" value="0.23641304347826086" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search.xml" value="0.1" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_park.xml" value="0.11684782608695653" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_shared.xml" value="0.128" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_search_walk.xml" value="0.15052083333333333" />
         <entry key="..\:/data/Client/app/src/main/res/layout/activity_walk_list.xml" value="0.152" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_walking.xml" value="0.10914855072463768" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/activity_writereview.xml" value="0.1" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/dialog.xml" value="0.10914855072463768" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/dialog_item.xml" value="0.10914855072463768" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_facility.xml" value="0.10260416666666666" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_home.xml" value="0.176" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_review.xml" value="0.1" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/road_cloudview_home.xml" value="0.12158054711246201" />
+        <entry key="..\:/data/Client/app/src/main/res/layout/road_cloudview_path.xml" value="0.176" />
+        <entry key="app/src/main/res/drawable/border_menu.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/gradient.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/profile_layout.xml" value="0.1015" />
         <entry key="app/src/main/res/drawable/round_background_border_black.xml" value="0.166" />

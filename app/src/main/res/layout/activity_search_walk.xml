@@ -65,36 +65,56 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_search_park"
-                android:background="@drawable/act_search_park"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="공원"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_walk"
-                android:background="@drawable/act_search_walk_sel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_menu"
+                android:text="산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_shared"
-                android:background="@drawable/act_search_shared"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="공유 산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btn_set_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="현지도에서 산책로 검색"
+                android:background="@drawable/border_menu"/>
+        </LinearLayout>
 
 
     </LinearLayout>
