@@ -80,7 +80,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_park);
-
+        mlat = 37.0;
+        mlon = 127.0;
 
         //T Map Data
         tmapdata = new TMapData();

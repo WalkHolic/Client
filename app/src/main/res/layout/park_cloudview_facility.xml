@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/back_btn"
@@ -20,24 +19,22 @@
         android:id="@+id/parkimageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/basic_park"
-
-        />
+        tools:srcCompat="@drawable/basic_park" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        >
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_park_info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="홈"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:background="@drawable/border_menu"
+            android:background="@drawable/cloudview_home_btn_bg"
+            android:text=""
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
@@ -45,142 +42,109 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="리뷰"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:background="@color/white"
+            android:background="@drawable/cloudview_review_btn_bg"
+            android:text=""
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/btn_park_facility"
+            android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="시설"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:background="@color/white"
+            android:background="@drawable/cloudview_facility_btn_bg"
+            android:text=""
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="스포츠 시설"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/facility_sport"
+            android:layout_width="292dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:text="없음" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txt_name"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="TextView"
+            android:text="놀이 시설"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_type"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="25dp"
-            android:text="TextView" />
+            android:id="@+id/facility_amuse"
+            android:layout_width="292dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:text="없음" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/telephone" />
+        android:layout_height="80dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txt_contact"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="TextView" />
+            android:text="편의 시설"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_manageAgency"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="15dp"
-            android:text="TextView" />
+            android:id="@+id/facility_conv"
+            android:layout_width="292dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:text="없음" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/address" />
+        android:layout_height="80dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txt_addrNew"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/address" />
+            android:text="기타"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txt_addr"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
+            android:id="@+id/facility_etc"
+            android:layout_width="292dp"
+            android:layout_height="33dp"
             android:layout_marginStart="30dp"
-            android:text="TextView" />
+            android:layout_marginTop="10dp"
+            android:text="없음" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:src="@drawable/horse" />
-
-        <TextView
-            android:id="@+id/txt_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="30dp"
-            android:text="현위치로부터 떨어진 거리" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

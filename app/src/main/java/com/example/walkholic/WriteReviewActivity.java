@@ -2,18 +2,17 @@ package com.example.walkholic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -27,17 +26,8 @@ import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -53,28 +43,35 @@ public class WriteReviewActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     // 사용할 컴포넌트 선언
-    EditText content_et;
-    Button reg_button, btn_PostPicture;
+    private EditText reviewEdit;
+    private Button reg_button;
+    private RatingBar reviewRating;
+    private TextView titleText;
 
     // 리퀘스트 사용 변수
-    Uri imageUri;
-    ImageView imageView;
+    private Uri imageUri;
+    private ImageView reviewImageview;
     private ReviewRes reviewRes = new ReviewRes();
     private int id = -1;
+    private String name = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_writereview);
+        setContentView(R.layout.activity_writeriview);
 
         //원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
 //        id = getIntent().getStringExtra("id");
+//        name = getIntent().getStringExtra("name");
+        name = "Test Name";
         id = 2222;
 // 컴포넌트 초기화
-        content_et = findViewById(R.id.content_et);
+        titleText = findViewById(R.id.titleText);
+        titleText.setText(name);
+        reviewEdit = findViewById(R.id.reviewEdit);
+        reviewRating = findViewById(R.id.reviewRating);
         reg_button = findViewById(R.id.reg_button);
-        btn_PostPicture = findViewById(R.id.btn_PostPicture);
-        imageView = findViewById(R.id.user_image);
+        reviewImageview = findViewById(R.id.reviewImageview);
 // 버튼 이벤트 추가
         reg_button.setOnClickListener(view -> {
 // 리뷰 등록 함수
@@ -91,8 +88,8 @@ public class WriteReviewActivity extends AppCompatActivity {
             }
             // 리뷰
             ReviewRequestDto tmp = new ReviewRequestDto();
-            tmp.setContent(content_et.getText().toString());
-            tmp.setScore(5.0);
+            tmp.setContent(reviewEdit.getText().toString());
+            tmp.setScore((double)reviewRating.getRating());
             Gson gson = new Gson();
             String stringDto = gson.toJson(tmp);
             RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
@@ -104,7 +101,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         });
 
         // 사진 등록 버튼
-        btn_PostPicture.setOnClickListener(view -> {
+        reviewImageview.setOnClickListener(view -> {
             imageUri = null;
             DialogInterface.OnClickListener albumListner = new DialogInterface.OnClickListener() {
                 @Override
@@ -153,7 +150,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                     if (result != null) {
                         Log.d("dlgochan", "result: " + result);
                         imageUri = result;
-                        imageView.setImageURI(result);
+                        reviewImageview.setImageURI(result);
                     }
                 }
             });

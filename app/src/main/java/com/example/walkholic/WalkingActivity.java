@@ -2,6 +2,7 @@ package com.example.walkholic;
 
 import static java.lang.Thread.sleep;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -10,12 +11,17 @@ import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
 import com.example.walkholic.DataClass.Data.Road;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
+import com.example.walkholic.Service.ServiceGenerator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.Manifest;
@@ -28,6 +34,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -50,21 +57,33 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class WalkingActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback, TMapView.OnClickListenerCallback, TMapView.OnLongClickListenerCallback, View.OnClickListener {
     //UID 예시 아마 안쓸거임
     private long uid = 1;
 
+    UserRoadRequestDto road;
+
+    Dialog dialog2;
+    AlertDialog dialog;
+
     Button btn_home;
     Button btn_search;
     Button btn_walking;
     Button btn_mypage;
+
+    Button btn_hash;
 
     ListViewAdapter adapter;
 
@@ -92,6 +111,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
     String trailPoints = "";
 
+    private UserRoadRes userRoadRes;
+
     private String address1 = "aa";
     private String address2 = "bb";
 
@@ -105,6 +126,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     FloatingActionButton fab, fab1, fab2, fab3;
     TextView fab1_text, fab2_text, fab3_text;
     Button recordButton, drawBackButton, clearButton, drawButton;
+    List<CheckBox> checkBoxes;
 
     //산책로이름, 산책로 설명, 해시태그
     private String road_name = "새 산책로";
@@ -116,6 +138,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
     protected void onCreate(Bundle savedInstanceState) {
 
         adapter = new ListViewAdapter();
+
+        road = new UserRoadRequestDto();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walking);
@@ -160,6 +184,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         tMapGPS.OpenGps();
         tMapView.setLocationPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
         tMapView.setCenterPoint(tMapGPS.getLocation().getLongitude(), tMapGPS.getLocation().getLatitude());
+        Log.d("helllllo", "long= " + tMapGPS.getLocation().getLongitude() + "lat= " + tMapGPS.getLocation().getLatitude());
 
 
         btn_home = findViewById(R.id.btn_home);
@@ -256,7 +281,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                     drawBackButton.setVisibility(View.VISIBLE);
                     //drawSwitch.setVisibility(View.VISIBLE);
                     clearTrail();
-                    showDialog();
+
                     Toast.makeText(getApplicationContext(), "그리기 시작", Toast.LENGTH_SHORT).show();
                     isDrawing = true;
                     newTrail = new Trail();
@@ -290,7 +315,8 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                     newTrail.calTotalDistance();
                     isDrawing = false;
                     // db초기화
-                    dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 1);
+
+                    //dbHelper.onUpgrade(dbHelper.getWritableDatabase(), 1, 1);
                     try {
                         TMapPoint point2 = newTrail.coorList.get(newTrail.coorList.size() - 1);
                         Log.d("TmapTest", "" + point2.getLatitude());
@@ -312,12 +338,12 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                     //Toast.makeText(getApplicationContext(), "총 거리 : " + newTrail.totalDistance + "km", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), "시작주소 : " + address1 , Toast.LENGTH_SHORT).show();
 
-
                     try {
                         if (newTrail.totalDistance != 0)
-                            dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
-                            pointsToString(newTrail);
-                    } catch (JSONException e) {
+                            //dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
+                            showDialog(newTrail);
+
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //Toast.makeText(getApplicationContext(), "디비저장\n" + dbHelper.getResult() , Toast.LENGTH_LONG).show();
@@ -338,7 +364,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
 
                 //기록 새로 시작하기
                 clearTrail();
-                showDialog();
+
                 Toast.makeText(getApplicationContext(), "기록 시작", Toast.LENGTH_SHORT).show();
                 isRecording = true;
                 newTrail = new Trail();
@@ -367,34 +393,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 drawTrail(newTrail);
                 //dbHelper.insert("새산책로", newTrail.coorList,);
                 newTrail.calTotalDistance();
-                try {
-                    TMapPoint point2 = newTrail.coorList.get(newTrail.coorList.size() - 1);
-                    Log.d("TmapTest", "" + point2.getLatitude());
-                    Log.d("TmapTest", "" + point2.getLongitude());
-
-                    tmapdata.convertGpsToAddress(point2.getLatitude(), point2.getLongitude(), new TMapData.ConvertGPSToAddressListenerCallback() {
-                        @Override
-                        public void onConvertToGPSToAddress(String addr) {
-                            Log.d("TmapTest", "*** updatePositionInfo - addr: " + addr);
-                        }
-                    });
-                    //address = tmapdata.convertGpsToAddress(point.getLatitude(), point.getLongitude());
-
-                } catch (Exception e) {
-                    Log.d("error", "*** Exception: " + e.getLocalizedMessage());
-                    e.printStackTrace();
-                }
-                //Toast.makeText(getApplicationContext(), "총 거리 : " + newTrail.totalDistance + "km", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getApplicationContext(), "시작주소 : " + address1 , Toast.LENGTH_SHORT).show();
-                try {
-                    if (newTrail.totalDistance != 0)
-                        dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                newTrail = null;
+                showDialog(newTrail);
 
                 break;
 
@@ -404,6 +403,34 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                 break;
 
         }
+    }
+
+    // 빠르게 테스트 필요
+    public void createMyRoad(UserRoadRequestDto roadRequestDto) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.createMyRoad(roadRequestDto).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -435,11 +462,27 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         Trail tempTrail = inTrail;
         trailPoints = trailPoints + "[";
         for (int i = 0; i < tempTrail.coorList.size(); i++) {
-            if(i!=0) trailPoints += ",";
-                trailPoints = trailPoints + "[" + tempTrail.coorList.get(i).getLatitude() +","+ tempTrail.coorList.get(i).getLongitude() + "]";
+            if (i != 0) trailPoints += ",";
+            trailPoints = trailPoints + "[" + tempTrail.coorList.get(i).getLatitude() + "," + tempTrail.coorList.get(i).getLongitude() + "]";
         }
         trailPoints = trailPoints + "]";
         Log.d("json Test", "list : " + trailPoints);
+    }
+
+    public List<List<Double>> pointsToList(Trail inTrail) {
+        Trail tempTrail = inTrail;
+        List<List<Double>> tempList1 = new ArrayList<>();
+        for (int i = 0; i < tempTrail.coorList.size(); i++) {
+            List<Double> tempList2 = new ArrayList<>();
+            tempList2.add(tempTrail.coorList.get(i).getLatitude());
+            tempList2.add(tempTrail.coorList.get(i).getLongitude());
+            tempList1.add(tempList2);
+            //Log.d("json Test", "list2 : " + tempList2.toString());
+            //Log.d("json Test", "list3 : " + tempList1.toString());
+
+        }
+        Log.d("json Test", "list4 : " + tempList1.toString());
+        return tempList1;
     }
 
     public void anim() {
@@ -568,22 +611,102 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         tMapView.removeAllTMapCircle();
     }
 
-    private void showDialog() {
+    private void showDialog2() {
+
+    }
+
+    private void showDialog(Trail inTrail) {
         LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout loginLayout = (LinearLayout) vi.inflate(R.layout.dialog, null);
 
         final EditText name = loginLayout.findViewById(R.id.road_name);
         final EditText desc = loginLayout.findViewById(R.id.road_desc);
         final EditText hash = loginLayout.findViewById(R.id.road_hash);
+        final TextView hashlist = loginLayout.findViewById(R.id.hashText);
+        final List<String> tempString = new ArrayList<String>();
+        final String[] hashs = new String[]{"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "데이트코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
+        final String[] textTags = {""};
+        btn_hash = loginLayout.findViewById(R.id.btn_hash);
 
-        new AlertDialog.Builder(this).setTitle("산책로 정보입력").setView(loginLayout).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        btn_hash.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                road_name = name.getText().toString();
-                road_desc = desc.getText().toString();
-                road_hash = hash.getText().toString();
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(), "버튼클릭", Toast.LENGTH_SHORT).show();
+                // TODO : click event
+                new AlertDialog.Builder(loginLayout.getContext()).setTitle("해시태그 선택")
+                        .setMultiChoiceItems(hashs, null, new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                                        if (b) {
+                                            tempString.add(hashs[i]);
+                                        } else {
+                                            tempString.remove(i);
+                                        }
+                                    }
+                                }
+                        )
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                for (String temp : tempString
+                                ) {
+                                    textTags[0] = textTags[0] + "#" + temp + " ";
+                                }
+                                hashlist.setText(textTags[0]);
+                            }
+                        }).show();
+
             }
-        }).show();
+        });
+
+        new AlertDialog.Builder(this).setTitle("산책로 정보입력").setView(loginLayout)
+
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        road_name = name.getText().toString();
+                        road_desc = desc.getText().toString();
+                        //road_hash = hash.getText().toString();
+                        try {
+                            TMapPoint point2 = inTrail.coorList.get(inTrail.coorList.size() - 1);
+                            Log.d("TmapTest", "" + point2.getLatitude());
+                            Log.d("TmapTest", "" + point2.getLongitude());
+
+                            tmapdata.convertGpsToAddress(point2.getLatitude(), point2.getLongitude(), new TMapData.ConvertGPSToAddressListenerCallback() {
+                                @Override
+                                public void onConvertToGPSToAddress(String addr) {
+                                    Log.d("TmapTest", "*** updatePositionInfo - addr: " + addr);
+                                }
+                            });
+                            //address = tmapdata.convertGpsToAddress(point.getLatitude(), point.getLongitude());
+
+                        } catch (Exception e) {
+                            Log.d("error", "*** Exception: " + e.getLocalizedMessage());
+                            e.printStackTrace();
+                        }
+                        //Toast.makeText(getApplicationContext(), "총 거리 : " + newTrail.totalDistance + "km", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "시작주소 : " + address1 , Toast.LENGTH_SHORT).show();
+                        try {
+
+                            if (inTrail.totalDistance != 0)
+                                //dbHelper.insert(uid, road_name, road_desc, newTrail.coorList, newTrail.totalDistString, address1);
+                                road.setTrailName(road_name);
+                            road.setDescription(road_desc);
+                            road.setDistance(inTrail.totalDistance);
+                            road.setStartAddr(address1);
+                            road.setTrailPoints(pointsToList(inTrail));
+                            //tempTag.add(road_hash);
+                            road.setHashtag(tempString);
+                            //pointsToString(inTrail);
+                            createMyRoad(road);
+                            Log.d("TmapTest", "*** name,desc,hash : " + road_name + ", " + road_desc + ", " + road_hash);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        newTrail = null;
+                    }
+                }).show();
     }
 
     //화면 캡쳐하기
