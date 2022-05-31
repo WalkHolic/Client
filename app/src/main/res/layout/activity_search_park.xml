@@ -100,7 +100,8 @@
                 android:id="@+id/btn_set_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="현지도에서 공원 검색"
+                android:background="@drawable/border_menu"/>
         </LinearLayout>
 
 

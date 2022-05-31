@@ -117,6 +117,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         tMapGPS.OpenGps();
         // 키워드 검색으로 요청할 때
+        Log.d("dlgochan", "키워드 이름: " + getIntent().getStringExtra("itemName"));
         if (getIntent().getStringExtra("itemName") != null) {
             TrackingMode = false;
             String itemName = getIntent().getStringExtra("itemName");
@@ -184,11 +185,11 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.btn_search:
-                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
-                startActivity(intent2);
-                finish();
-                break;
+//            case R.id.btn_search:
+//                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+//                startActivity(intent2);
+//                finish();
+//                break;
             case R.id.btn_walking:
                 Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
                 startActivity(intent3);
@@ -199,11 +200,11 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent4);
                 finish();
                 break;
-            case R.id.btn_search_park:
-                Intent intent5 = new Intent(getApplicationContext(), Search_ParkActivity.class);
-                startActivity(intent5);
-                finish();
-                break;
+//            case R.id.btn_search_park:
+//                Intent intent5 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+//                startActivity(intent5);
+//                finish();
+//                break;
             case R.id.btn_search_walk:
                 Intent intent6 = new Intent(getApplicationContext(), Search_WalkActivity.class);
                 startActivity(intent6);
@@ -246,7 +247,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                         startActivity(intent8);
                     }
                 }, 500);
-                break;
         }
     }
 
@@ -418,6 +418,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = new Intent(getApplicationContext(), ParkCloudviewHomeActivity.class);
         intent.putExtra("ID", Id);
+        intent.putExtra("lat", mlat);
+        intent.putExtra("lng", mlon);
         startActivity(intent);
 
 
