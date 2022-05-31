@@ -12,7 +12,8 @@
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/activity_walking.xml" value="0.358695652173913" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/layout/dialog.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/AndroidStudy/capstone/Client-master2/app/src/main/res/xml/filepaths.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_myroad.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_modify_trail.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_myroad.xml" value="0.5" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_walking.xml" value="0.1875" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/activity_writeriview.xml" value="0.35643115942028986" />
         <entry key="..\:/Users/Ho/Desktop/Client/app/src/main/res/layout/dialog.xml" value="0.33" />
@@ -76,6 +77,7 @@
         <entry key="..\:/data/Client/app/src/main/res/layout/dialog.xml" value="0.10914855072463768" />
         <entry key="..\:/data/Client/app/src/main/res/layout/dialog_item.xml" value="0.10914855072463768" />
         <entry key="..\:/data/Client/app/src/main/res/layout/park_cloudview_home.xml" value="0.176" />
+        <entry key="app/src/main/res/drawable/border_menu.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/gradient.xml" value="0.1395" />
         <entry key="app/src/main/res/drawable/profile_layout.xml" value="0.1015" />
         <entry key="app/src/main/res/drawable/round_background_border_black.xml" value="0.166" />
@@ -87,6 +89,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_logo.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_myroad.xml" value="0.1453804347826087" />
         <entry key="app/src/main/res/layout/activity_recomm_item.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_search_park.xml" value="0.20530158886011102" />

@@ -623,6 +623,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
         final EditText desc = loginLayout.findViewById(R.id.road_desc);
         final EditText hash = loginLayout.findViewById(R.id.road_hash);
         final TextView hashlist = loginLayout.findViewById(R.id.hashText);
+
         final List<String> tempString = new ArrayList<String>();
         final String[] hashs = new String[]{"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "데이트코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
         final String[] textTags = {""};
@@ -653,6 +654,7 @@ public class WalkingActivity extends AppCompatActivity implements TMapGpsManager
                                     textTags[0] = textTags[0] + "#" + temp + " ";
                                 }
                                 hashlist.setText(textTags[0]);
+                                textTags[0]="";
                             }
                         }).show();
 
