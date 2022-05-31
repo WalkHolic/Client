@@ -99,9 +99,9 @@ public interface ServerRequestApi {
     // 해시태그로 산책로 검색
     Call<UserRoadRes> getUserRoadByHashtag(@Query("keyword") String keyword);
 
-    @GET("/user/road/{uid}/paths")
+    @GET("/user/road/{rid}")
         // user id로 산책로 조희
-    Call<UserRoadRes> getUserRoadById(@Query("uid") int uid);
+    Call<UserRoadRes> getUserRoadById(@Path("rid") int rid);
 
     @GET("/user/road/nearRoads")
         // 근처 공유 산책로 조희
