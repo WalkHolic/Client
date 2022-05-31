@@ -47,6 +47,8 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     String Addr;
     String png_path;
 
+    boolean path_check = false;
+
     int ParkId_int;
 
     TextView txt_name;
@@ -56,7 +58,6 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     TextView txt_addrNew;
     TextView txt_addr;
     private ParkRes parkRes;
-    private ParkRes parkRes2;
 
     Handler mHandler = new Handler();
 
@@ -79,13 +80,19 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
 
         mHandler.postDelayed(new Runnable()  {
             public void run() {
-                name = parkRes.getData().get(0).getName();
-                type = parkRes.getData().get(0).getType();
-                contact = parkRes.getData().get(0).getContact();
-                manageAgency = parkRes.getData().get(0).getManageAgency();
-                AddrNew = parkRes.getData().get(0).getAddrNew();
-                Addr = parkRes.getData().get(0).getAddr();
-                png_path = parkRes.getData().get(0).getPngPath();
+                try{
+                    name = parkRes.getData().get(0).getName();
+                    type = parkRes.getData().get(0).getType();
+                    contact = parkRes.getData().get(0).getContact();
+                    manageAgency = parkRes.getData().get(0).getManageAgency();
+                    AddrNew = parkRes.getData().get(0).getAddrNew();
+                    Addr = parkRes.getData().get(0).getAddr();
+                    png_path = parkRes.getData().get(0).getPngPath();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
 
                 Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
 
@@ -115,6 +122,18 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                     Addr = "공원 지번주소가 등록되지 않았습니다";
                 }
 
+                if(png_path == null){
+                    path_check = true;
+                }
+
+
+                if(path_check){
+                    parkimageview.setImageResource(R.drawable.basic_park);
+
+                }else{
+                    Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
+                }
+
 
 
                 txt_name.setText(name);
@@ -141,7 +160,6 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 try {
                     url = new URL(parkInfo.getPngPath());
                     Log.d(TAG, "URL :  " + url);
-
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -153,7 +171,9 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
 
         Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
 
-        Glide.with(this).load(png_path).into(parkimageview);
+
+
+
 
 
 
@@ -164,7 +184,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         txt_addrNew.setText(AddrNew);
         txt_addr.setText(Addr);
 
-       // Log.d(TAG, "풍선뷰 정보 :  " + parkInfo.getPngPath() );
+        // Log.d(TAG, "풍선뷰 정보 :  " + parkInfo.getPngPath() );
 
 
 

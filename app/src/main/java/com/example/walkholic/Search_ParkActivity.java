@@ -138,6 +138,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         } else { // 그냥 GPS
             TrackingMode = true;
+            mlat = tMapGPS.getLocation().getLatitude();
+            mlon = tMapGPS.getLocation().getLongitude();
 
             tMapView.setLocationPoint(mlon, mlat);
             tMapView.setCenterPoint(mlon, mlat);
