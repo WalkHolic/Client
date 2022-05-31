@@ -20,9 +20,13 @@
         android:id="@+id/parkimageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+<<<<<<< HEAD
+        tools:srcCompat="@drawable/basic_park" />
+=======
         android:src="@drawable/basic_park"
 
         />
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,14 +34,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_park_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="홈"
             android:textSize="20dp"
             android:textStyle="bold"
+<<<<<<< HEAD
+=======
             android:background="@drawable/border_menu"
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
@@ -98,7 +105,11 @@
             android:layout_marginStart="10dp"
             android:layout_width="15dp"
             android:layout_height="15dp"
+<<<<<<< HEAD
+            />
+=======
             android:src="@drawable/telephone" />
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
 
         <TextView
             android:id="@+id/txt_contact"
@@ -112,8 +123,13 @@
             android:id="@+id/txt_manageAgency"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+<<<<<<< HEAD
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="100dp"
+=======
             android:layout_marginStart="50dp"
             android:layout_marginTop="15dp"
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
             android:text="TextView" />
     </LinearLayout>
 
@@ -127,7 +143,11 @@
             android:layout_marginStart="10dp"
             android:layout_width="15dp"
             android:layout_height="15dp"
+<<<<<<< HEAD
+            />
+=======
             android:src="@drawable/address" />
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
 
         <TextView
             android:id="@+id/txt_addrNew"
@@ -148,7 +168,11 @@
             android:layout_marginStart="10dp"
             android:layout_width="15dp"
             android:layout_height="15dp"
+<<<<<<< HEAD
+            />
+=======
             android:src="@drawable/address" />
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
 
         <TextView
             android:id="@+id/txt_addr"
@@ -161,23 +185,40 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+<<<<<<< HEAD
+        android:layout_height="wrap_content"
+=======
         android:layout_height="0dp"
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageView
+<<<<<<< HEAD
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp" />
+=======
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:src="@drawable/horse" />
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
 
         <TextView
             android:id="@+id/txt_distance"
             android:layout_width="wrap_content"
+<<<<<<< HEAD
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="12dp"
+=======
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             android:layout_marginStart="30dp"
+>>>>>>> d057569580f3a855dfbbf7467d988d7640669d5f
             android:text="현위치로부터 떨어진 거리" />
 
     </LinearLayout>

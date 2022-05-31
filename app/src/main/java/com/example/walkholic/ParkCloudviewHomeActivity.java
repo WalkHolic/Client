@@ -51,6 +51,8 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     double lng;
     String distance;
 
+    boolean path_check = false;
+
     int ParkId_int;
 
     TextView txt_name;
@@ -61,7 +63,6 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     TextView txt_addr;
     TextView txt_distance;
     private ParkRes parkRes;
-    private ParkRes parkRes2;
 
     Handler mHandler = new Handler();
 
@@ -104,6 +105,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
 
         mHandler.postDelayed(new Runnable()  {
             public void run() {
+
                 name = parkRes.getData().get(0).getName();
                 type = parkRes.getData().get(0).getType();
                 contact = parkRes.getData().get(0).getContact();
@@ -137,9 +139,11 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 if(Addr == null){
                     Addr = "공원 지번주소가 등록되지 않았습니다";
                 }
+
                 if (png_path != null) {
                     Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
                 }
+
                 txt_name.setText(name);
                 txt_type.setText(type);
                 txt_contact.setText(contact);
@@ -151,6 +155,15 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         }, 300); // 0.3초후
 
 //        Glide.with(this).load(png_path).into(parkimageview);
+
+        Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
+
+        txt_name.setText(name);
+        txt_type.setText(type);
+        txt_contact.setText(contact);
+        txt_manageAgency.setText(manageAgency);
+        txt_addrNew.setText(AddrNew);
+        txt_addr.setText(Addr);
 
     }
 
