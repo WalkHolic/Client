@@ -245,6 +245,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                         Intent intent8 = new Intent(getApplicationContext(), TmapSearchListActivity.class);
                         intent8.putExtra("keyword", textInputEditText.getText().toString());
                         intent8.putParcelableArrayListExtra("searchList", searchList);
+                        intent8.putExtra("park", true);
                         startActivity(intent8);
                     }
                 }, 500);

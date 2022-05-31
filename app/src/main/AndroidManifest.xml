@@ -28,6 +28,12 @@
             android:name=".ParkCloudviewFacilityActivity"
             android:exported="false" />
         <activity
+            android:name=".RoadCloudviewHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RoadCloudviewPathActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_SharedActivity"
             android:exported="false" />
         <activity
