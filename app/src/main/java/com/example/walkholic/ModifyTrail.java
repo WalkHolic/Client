@@ -231,21 +231,6 @@ public class ModifyTrail extends AppCompatActivity {
     }
 
 
-//    filepath는 String 변수로 갤러리에서 이미지를 가져올 때 photoUri.getPath()를 통해 받아온다.
-//    File file = new File(filepath);
-//    InputStream inputStream = null;
-//    try {
-//    inputStream = getContext().getContentResolver().openInputStream(photoUri);
-//    }catch(IOException e) { e.printStackTrace(); }
-//    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-//    RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
-//    MultipartBody.Part uploadFile = MultipartBody.Part.createFormData("postImg", file.getName() ,requestBody);
-
-
-
-
 
 
 
