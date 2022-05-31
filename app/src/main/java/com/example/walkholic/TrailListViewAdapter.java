@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -28,6 +29,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
 import com.example.walkholic.DataClass.Data.UserRoad;
 import com.example.walkholic.DataClass.Data.UserRoadPath;
@@ -37,6 +39,7 @@ import com.example.walkholic.Service.ServiceGenerator;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,7 @@ public class TrailListViewAdapter extends BaseAdapter {
     List<UserRoadPath> userRoadPathList;
     UserRoadRes userRoadRes;
     Button btn_hash;
+    Handler handler = new Handler();
     MultipartBody.Part trailImage = null;
     private Uri imageUri;
 
@@ -87,12 +91,15 @@ public class TrailListViewAdapter extends BaseAdapter {
 
         final Context context = viewGroup.getContext();
 
+
         //리스트뷰에 아이템이 인플레이트 되어있는지 확인한후
         //아이템이 없다면 아래처럼 아이템 레이아웃을 인플레이트 하고 view객체에 담는다.
         if (view == null) {
+
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_myroad, viewGroup, false);
         }
+        final Context context2 = view.getContext();
 
         //이제 아이템에 존재하는 텍스트뷰 객체들을 view객체에서 찾아 가져온다
         ImageView trailImage = (ImageView) view.findViewById(R.id.trailImage);
@@ -116,6 +123,10 @@ public class TrailListViewAdapter extends BaseAdapter {
         //현재 포지션에 해당하는 아이템에 글자를 적용하기 위해 list배열에서 객체를 가져온다.
         com.example.walkholic.TrailListViewAdapterData listdata = list.get(i);
 
+        //URI로 이미지 미리보기 띄우기
+        if (listdata.getImageURL() != null) {
+            Glide.with(context2.getApplicationContext()).load(listdata.getImageURL()).into(trailImage);
+        }
         trailName.setText(listdata.getTrailName());
         String tempp = "";
         for (int y = 0; y <= listdata.getHashtags().size() - 1; y++) {
@@ -147,8 +158,8 @@ public class TrailListViewAdapter extends BaseAdapter {
         btn_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context.getApplicationContext(),ModifyTrail.class);
-                intent.putExtra("rid",i);
+                Intent intent = new Intent(context.getApplicationContext(), ModifyTrail.class);
+                intent.putExtra("rid", listdata.getRid());
                 context.startActivity(intent);
             }
         });
@@ -174,7 +185,6 @@ public class TrailListViewAdapter extends BaseAdapter {
         //값들의 조립이 완성된 listdata객체 한개를 list배열에 추가
         list.add(listdata);
     }
-
 
 
     public void removeItemInList(int num) {
@@ -209,7 +219,6 @@ public class TrailListViewAdapter extends BaseAdapter {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
 
     public void delMyRoad(int rid) {
