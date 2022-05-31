@@ -4,28 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.Response.ParkRes;
+import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ParkCloudviewReviewActivity extends AppCompatActivity implements View.OnClickListener{
+public class ParkCloudviewReviewActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     final String TAG = "dlgochan";
@@ -36,33 +36,21 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_mypage;
     Button btn_back;
     Button btn_review;
+    Button btn_park_home;
 
-
-    URL url;
-    Bitmap bitmap;
-
+    ListView listView;
 
     ImageView parkimageview;
-    String name;
-    String type;
-    String contact;
-    String manageAgency;
-    String AddrNew;
-    String Addr;
     String png_path;
 
     int ParkId_int;
 
-    TextView txt_name;
-    TextView txt_type;
-    TextView txt_contact;
-    TextView txt_manageAgency;
-    TextView txt_addrNew;
-    TextView txt_addr;
+    boolean path_check = false;
+
     private ParkRes parkRes;
+    private ReviewRes reviewRes;
 
     Handler mHandler = new Handler();
-
 
     @SuppressLint("ResourceType")
     @Override
@@ -70,120 +58,73 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.park_cloudview_review);
 
-
-        Intent intent = getIntent();
-        ParkId_int = intent.getIntExtra("ID",ParkId_int);
-        getParkById(ParkId_int);
-
-        mHandler.postDelayed(new Runnable()  {
-            public void run() {
-                name = parkRes.getData().get(0).getName();
-                type = parkRes.getData().get(0).getType();
-                contact = parkRes.getData().get(0).getContact();
-                manageAgency = parkRes.getData().get(0).getManageAgency();
-                AddrNew = parkRes.getData().get(0).getAddrNew();
-                Addr = parkRes.getData().get(0).getAddr();
-                png_path = parkRes.getData().get(0).getPngPath();
-
-                Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
-
-                Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
-
-                if(name == null){
-                    name = "공원 이름이 아직 없습니다";
-                }
-
-                if(type == null){
-                    type = "공원 타입이 등록되지 않았습니다";
-                }
-
-                if(contact == null){
-                    contact = "공원 연락처가 등록되지 않았습니다";
-                }
-
-                if(manageAgency == null){
-                    manageAgency = "공원 관리소가 등록되지 않았습니다";
-                }
-
-                if(AddrNew == null){
-                    AddrNew = "공원 도로명주소가 등록되지 않았습니다";
-                }
-
-                if(Addr == null){
-                    Addr = "공원 지번주소가 등록되지 않았습니다";
-                }
-
-
-                txt_name.setText(name);
-                txt_type.setText(type);
-                txt_contact.setText(contact);
-                txt_manageAgency.setText(manageAgency);
-                txt_addrNew.setText(AddrNew);
-                txt_addr.setText(Addr);
-            }
-        }, 500); // 0.5초후
-
-
         parkimageview = findViewById(R.id.parkimageView);
-        txt_name = findViewById(R.id.txt_name);
-        txt_type = findViewById(R.id.txt_type);
-        txt_contact = findViewById(R.id.txt_contact);
-        txt_manageAgency = findViewById(R.id.txt_manageAgency);
-        txt_addrNew = findViewById(R.id.txt_addrNew);
-        txt_addr = findViewById(R.id.txt_addr);
-
-
-        /*try {
-            new Thread(() -> {
-                try {
-                    url = new URL(parkInfo.getPngPath());
-                    Log.d(TAG, "URL :  " + url);
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            Glide.with(this).load(parkInfo.getPngPath()).into(parkimageview);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
-
-        Glide.with(this).load(png_path).into(parkimageview);
-
-
-
 
         // Log.d(TAG, "풍선뷰 정보 :  " + parkInfo.getPngPath() );
-
-
-
-
-
-
-
-
-
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
         btn_review = findViewById(R.id.btn_park_review);
+        btn_park_home = findViewById(R.id.btn_park_home);
 
-
-
-
+        listView = findViewById(R.id.park_review_list);
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_review.setOnClickListener(this);
+        btn_park_home.setOnClickListener(this);
 
+        ArrayList<String> usernamelist = new ArrayList<>();
+        ArrayList<String> commentlist = new ArrayList<>();
+        ArrayList<String> pngpathlist = new ArrayList<>();
+        Intent intent = getIntent();
+        ParkId_int = intent.getIntExtra("ID", ParkId_int);
+        getParkById(ParkId_int);
+        getParkReview(ParkId_int);
 
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                png_path = parkRes.getData().get(0).getPngPath();
 
+                if (png_path == null) {
+                    path_check = true;
+                }
+                if (path_check) {
+                    parkimageview.setImageResource(R.drawable.basic_park);
+
+                } else {
+                    Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
+                }
+
+//                Log.d(TAG, "널 아님!");
+                for (int i = 0; i < reviewRes.getData().size(); i++) {
+                    String username = reviewRes.getData().get(i).getUserName();
+                    String comment = reviewRes.getData().get(i).getContent();
+                    String pngpath = reviewRes.getData().get(i).getPngPath();
+
+                    Log.d(TAG, "유저이름 : " + username);
+                    Log.d(TAG, "리뷰 : " + comment);
+                    Log.d(TAG, "사진경로 : " + pngpath);
+
+                    usernamelist.add(username);
+                    commentlist.add(comment);
+                    pngpathlist.add(pngpath);
+                }
+                Log.d(TAG, usernamelist.toString());
+                ArrayList<ParkReviewData> reviewDatalist = new ArrayList<ParkReviewData>();
+                for (int i = 0; i < usernamelist.size(); i++) {
+                    reviewDatalist.add(new ParkReviewData(usernamelist.get(i), commentlist.get(i), pngpathlist.get(i)));
+                }
+
+                ParkReviewAdapter reviewAdapter = new ParkReviewAdapter(getApplicationContext(), reviewDatalist);
+                listView.setAdapter(reviewAdapter);
+
+            }
+        }, 500); // 0.5초후
     }
 
     @Override
@@ -212,14 +153,14 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
             case R.id.back_btn:
                 onBackPressed();
                 break;
-            case R.id.btn_park_review:
-                Intent intent5 = new Intent(getApplicationContext(), ParkCloudviewReviewActivity.class);
+            case R.id.btn_park_home:
+                Intent intent5 = new Intent(getApplicationContext(), ParkCloudviewHomeActivity.class);
+                int Id = ParkId_int;
+                intent5.putExtra("ID", Id);
                 startActivity(intent5);
                 break;
-
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -255,4 +196,32 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
             }
         });
     }
+
+    public void getParkReview(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkReview(id).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
 }

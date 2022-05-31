@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.DocumentsContract;
@@ -89,17 +90,18 @@ public class TrailListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        final Context context = viewGroup.getContext();
+        final Context context3 = viewGroup.getContext();
 
 
         //리스트뷰에 아이템이 인플레이트 되어있는지 확인한후
         //아이템이 없다면 아래처럼 아이템 레이아웃을 인플레이트 하고 view객체에 담는다.
         if (view == null) {
 
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context3.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.activity_myroad, viewGroup, false);
         }
-        final Context context2 = view.getContext();
+
+        Context context2 = view.getContext();
 
         //이제 아이템에 존재하는 텍스트뷰 객체들을 view객체에서 찾아 가져온다
         ImageView trailImage = (ImageView) view.findViewById(R.id.trailImage);
@@ -123,9 +125,12 @@ public class TrailListViewAdapter extends BaseAdapter {
         //현재 포지션에 해당하는 아이템에 글자를 적용하기 위해 list배열에서 객체를 가져온다.
         com.example.walkholic.TrailListViewAdapterData listdata = list.get(i);
 
+        Log.d("dlgochan", "listdata url : " + listdata.getImageURL());
         //URI로 이미지 미리보기 띄우기
         if (listdata.getImageURL() != null) {
             Glide.with(context2.getApplicationContext()).load(listdata.getImageURL()).into(trailImage);
+        }else{
+            Glide.with(context2.getApplicationContext()).load(R.drawable.basic_park).into(trailImage);
         }
         trailName.setText(listdata.getTrailName());
         String tempp = "";

@@ -18,35 +18,44 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
-            android:orientation="horizontal"
-            android:weightSum="100" >
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:weightSum="100">
+
             <TextView
                 android:id="@+id/user_name"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="100"
-                android:text="산책로명"
-                android:textSize="20sp"
-                android:background="#B2EBF4"
-                android:gravity="center"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="name"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/review_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="review txt" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="60"
+            android:layout_weight="1"
             android:orientation="horizontal"
-            android:weightSum="100" >
-            <TextView
-                android:id="@+id/trailInfo"
+            android:weightSum="100">
+
+            <ImageView
+                android:id="@+id/review_park_img"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="100"
-                android:textSize="16sp"
-                android:text="정보"
-                android:background="#B7F0B1"
-                android:gravity="center"/>
+                app:srcCompat="@drawable/basic_park" />
+
         </LinearLayout>
 
     </LinearLayout>
