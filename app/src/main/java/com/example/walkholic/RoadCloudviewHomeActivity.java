@@ -230,6 +230,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
                 intent6.putExtra("lat", startLat);
                 intent6.putExtra("lng", startLng);
                 startActivity(intent6);
+                finish();
                 break;
 
         }

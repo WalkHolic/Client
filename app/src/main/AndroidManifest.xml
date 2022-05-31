@@ -37,6 +37,9 @@
             android:name=".RoadCloudviewPathActivity"
             android:exported="false" />
         <activity
+            android:name=".UserRoadCloudviewHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Search_SharedActivity"
             android:exported="false" />
         <activity

@@ -40,6 +40,7 @@
                 android:background="@color/white"
                 android:text="홈"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -51,6 +52,7 @@
                 android:background="@color/white"
                 android:text="리뷰"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -62,6 +64,7 @@
                 android:background="@drawable/border_menu"
                 android:text="경로"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>

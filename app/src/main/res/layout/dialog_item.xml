@@ -17,6 +17,7 @@
             android:text="item1"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:fontFamily="@font/custom_font_family"
             android:id="@+id/itemTitle"/>
 
         <TextView
@@ -25,6 +26,7 @@
             android:layout_marginStart="20dp"
             android:text="주소입니다"
             android:textSize="15sp"
+            android:fontFamily="@font/custom_font_family"
             android:gravity="center"
             android:id="@+id/itemAddress"/>
     </LinearLayout>
