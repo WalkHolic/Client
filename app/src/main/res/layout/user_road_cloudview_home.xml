@@ -40,6 +40,7 @@
                 android:background="@drawable/border_menu"
                 android:text="홈"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -51,6 +52,7 @@
                 android:background="@color/white"
                 android:text="리뷰"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -62,6 +64,7 @@
                 android:background="@color/white"
                 android:text="경로"
                 android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
                 android:textStyle="bold"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
@@ -87,6 +90,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:text="TextView"
+                        android:fontFamily="@font/custom_font_family"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -109,6 +113,7 @@
                                 android:layout_marginStart="15dp"
                                 android:layout_marginEnd="20dp"
                                 android:text="#해시태그 #예시"
+                                android:fontFamily="@font/custom_font_family"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
@@ -130,6 +135,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
+                                android:fontFamily="@font/custom_font_family"
                                 android:text="총 거리" />
                         </LinearLayout>
 
@@ -151,6 +157,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:layout_marginStart="25dp"
+                                android:fontFamily="@font/custom_font_family"
                                 android:text="총 걸음 수" />
                         </LinearLayout>
 
@@ -172,6 +179,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="25dp"
+                                android:fontFamily="@font/custom_font_family"
                                 android:text="총 걸리는 시간" />
                         </LinearLayout>
 
@@ -197,6 +205,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/custom_font_family"
                         android:text="도로명 주소" />
                 </LinearLayout>
 
@@ -218,6 +227,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/custom_font_family"
                         android:text="옛 주소" />
                 </LinearLayout>
 
@@ -239,6 +249,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="12dp"
+                        android:fontFamily="@font/custom_font_family"
                         android:text="현위치로부터 떨어진 거리" />
 
                 </LinearLayout>
@@ -262,6 +273,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/custom_font_family"
                         android:text="산책로 설명" />
                 </LinearLayout>
 

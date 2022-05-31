@@ -56,7 +56,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
     Button btn_set_location;
 
     TextInputEditText textInputEditText;
-    ImageButton imageButton;
+    Button imageButton;
 
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
@@ -281,7 +281,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
                 double lat = marketList.get(i).getStartLat();            // 위도
                 double lon = marketList.get(i).getStartLng();           // 경도
                 Integer userRoadId = marketList.get(i).getId();
-
+                Log.d(TAG, "마커 찍기: " + storeName + userRoadId);
                 // TMapPoint
                 TMapPoint tMapPoint = new TMapPoint(lat, lon);
 
