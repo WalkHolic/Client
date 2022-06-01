@@ -27,6 +27,7 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class RequestMethod {
     private ParkRes parkRes;
@@ -812,6 +813,33 @@ public class RequestMethod {
 
             @Override
             public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getRoadByHashtag(String keyword) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadByHashtag(keyword).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
