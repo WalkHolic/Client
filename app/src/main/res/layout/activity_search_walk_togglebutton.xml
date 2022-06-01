@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:orientation="horizontal">
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_나들이"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -102,10 +102,12 @@
                     android:layout_marginEnd="2dp"
                     android:background="@drawable/round_menu"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#나들이"
+                    android:checked="false"
+                    android:textOff="#나들이"
+                    android:textOn="#나들이!"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_물놀이"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -114,9 +116,10 @@
                     android:background="@drawable/round_menu"
                     android:fontFamily="@font/custom_font_family"
                     android:textSize="12dp"
-                    android:text="#물놀이"
+                    android:textOff="#물놀이"
+                    android:textOn="#물놀이!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_아이와함께"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -125,9 +128,10 @@
                     android:layout_marginEnd="2dp"
                     android:textSize="12dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#아이와함께"
+                    android:textOff="#아이와함께"
+                    android:textOn="#아이와함께!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_걷기좋은"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -136,9 +140,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#걷기좋은"
+                    android:textOff="#걷기좋은"
+                    android:textOn="#걷기좋은!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_드라이브코스"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -147,9 +152,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#드라이브코스"
+                    android:textOff="#드라이브코스"
+                    android:textOn="#드라이브코스!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_데이트코스"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -158,9 +164,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#데이트코스"
+                    android:textOff="#데이트코스"
+                    android:textOn="#데이트코스!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_분위기좋은"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -169,9 +176,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#분위기좋은"
+                    android:textOff="#분위기좋은"
+                    android:textOn="#분위기좋은!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_런닝"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -180,9 +188,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#런닝"
+                    android:textOff="#런닝"
+                    android:textOn="#런닝!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_벚꽃명소"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -191,9 +200,10 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#벚꽃명소"
+                    android:textOff="#벚꽃명소"
+                    android:textOn="#벚꽃명소!"
                     android:textColor="@color/white" />
-                <Button
+                <ToggleButton
                     android:id="@+id/btn_hashtag_힐링"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
@@ -202,7 +212,8 @@
                     android:background="@drawable/round_menu"
                     android:layout_marginEnd="2dp"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#힐링"
+                    android:textOff="#힐링"
+                    android:textOn="#힐링!"
                     android:textColor="@color/white" />
             </LinearLayout>
         </HorizontalScrollView>
@@ -211,6 +222,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_hashtag_refresh"
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:background="@drawable/refresh_btn" />
+            <Button
+                android:id="@+id/btn_hashtag_search"
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:background="@drawable/hastag_search_btn" />
 
             <Button
                 android:id="@+id/btn_set_location"

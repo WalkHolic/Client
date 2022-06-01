@@ -1,31 +1,24 @@
 package com.example.walkholic;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
-import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
-import com.example.walkholic.DataClass.Data.ParkInfo;
-import com.example.walkholic.DataClass.Data.ParkOption;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.walkholic.DataClass.Data.Road;
-import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.ListItem.SearchItem;
 import com.example.walkholic.Service.ServerRequestApi;
@@ -47,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Search_WalkActivity extends AppCompatActivity implements View.OnClickListener, TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
+public class Search_WalkActivity_toggleButton extends AppCompatActivity implements View.OnClickListener, TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
     private boolean TrackingMode = true;
     Button btn_home;
@@ -59,20 +52,25 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_shared;
     Button btn_current_location;
     Button btn_set_location;
+    Button btn_hashtag_refresh;
+    Button btn_hashtag_search;
 
-    Button btn_hashtag_나들이;
-    Button btn_hashtag_물놀이;
-    Button btn_hashtag_아이와함께;
-    Button btn_hashtag_걷기좋은;
-    Button btn_hashtag_드라이브코스;
-    Button btn_hashtag_데이트코스;
-    Button btn_hashtag_분위기좋은;
-    Button btn_hashtag_런닝;
-    Button btn_hashtag_벚꽃명소;
-    Button btn_hashtag_힐링;
+    ToggleButton btn_hashtag_나들이;
+    ToggleButton btn_hashtag_물놀이;
+    ToggleButton btn_hashtag_아이와함께;
+    ToggleButton btn_hashtag_걷기좋은;
+    ToggleButton btn_hashtag_드라이브코스;
+    ToggleButton btn_hashtag_데이트코스;
+    ToggleButton btn_hashtag_분위기좋은;
+    ToggleButton btn_hashtag_런닝;
+    ToggleButton btn_hashtag_벚꽃명소;
+    ToggleButton btn_hashtag_힐링;
 
     TextInputEditText textInputEditText;
     Button imageButton;
+
+    boolean checkHashtag[] = new boolean[10];
+    String hashtagType[] = {"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -88,7 +86,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Double mlon;
 
     private RoadRes roadRes;
-    private RoadRes roadHashtagRes;
     Handler mHandler = new Handler();
 
     @Override
@@ -96,6 +93,8 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_walk);
+
+        Arrays.fill(checkHashtag, false);
 
         //T Map Data
         tmapdata = new TMapData();
@@ -172,19 +171,22 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_set_location = findViewById(R.id.btn_set_location);
         btn_current_location = findViewById(R.id.btn_current_location);
 
+        btn_hashtag_refresh = findViewById(R.id.btn_hashtag_refresh);
+        btn_hashtag_search= findViewById(R.id.btn_hashtag_search);
+
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
 
-        btn_hashtag_나들이 = findViewById(R.id.btn_hashtag_나들이);
-        btn_hashtag_물놀이 = findViewById(R.id.btn_hashtag_물놀이);
-        btn_hashtag_아이와함께 = findViewById(R.id.btn_hashtag_아이와함께);
-        btn_hashtag_걷기좋은 =  findViewById(R.id.btn_hashtag_걷기좋은);
-        btn_hashtag_드라이브코스 = findViewById(R.id.btn_hashtag_드라이브코스);
-        btn_hashtag_데이트코스 = findViewById(R.id.btn_hashtag_데이트코스);
-        btn_hashtag_분위기좋은 = findViewById(R.id.btn_hashtag_분위기좋은);
-        btn_hashtag_런닝 = findViewById(R.id.btn_hashtag_런닝);
-        btn_hashtag_벚꽃명소 = findViewById(R.id.btn_hashtag_벚꽃명소);
-        btn_hashtag_힐링 = findViewById(R.id.btn_hashtag_힐링);
+        btn_hashtag_나들이 = (ToggleButton) findViewById(R.id.btn_hashtag_나들이);
+        btn_hashtag_물놀이 = (ToggleButton) findViewById(R.id.btn_hashtag_물놀이);
+        btn_hashtag_아이와함께 = (ToggleButton) findViewById(R.id.btn_hashtag_아이와함께);
+        btn_hashtag_걷기좋은 = (ToggleButton) findViewById(R.id.btn_hashtag_걷기좋은);
+        btn_hashtag_드라이브코스 = (ToggleButton) findViewById(R.id.btn_hashtag_드라이브코스);
+        btn_hashtag_데이트코스 = (ToggleButton) findViewById(R.id.btn_hashtag_데이트코스);
+        btn_hashtag_분위기좋은 = (ToggleButton) findViewById(R.id.btn_hashtag_분위기좋은);
+        btn_hashtag_런닝 = (ToggleButton) findViewById(R.id.btn_hashtag_런닝);
+        btn_hashtag_벚꽃명소 = (ToggleButton) findViewById(R.id.btn_hashtag_벚꽃명소);
+        btn_hashtag_힐링 = (ToggleButton) findViewById(R.id.btn_hashtag_힐링);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -198,17 +200,131 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_set_location.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
+        btn_hashtag_refresh.setOnClickListener(this);
+        btn_hashtag_search.setOnClickListener(this);
 
-        btn_hashtag_나들이.setOnClickListener(this);
-        btn_hashtag_물놀이.setOnClickListener(this);
-        btn_hashtag_아이와함께.setOnClickListener(this);
-        btn_hashtag_걷기좋은.setOnClickListener(this);
-        btn_hashtag_드라이브코스.setOnClickListener(this);
-        btn_hashtag_데이트코스.setOnClickListener(this);
-        btn_hashtag_분위기좋은.setOnClickListener(this);
-        btn_hashtag_런닝.setOnClickListener(this);
-        btn_hashtag_벚꽃명소.setOnClickListener(this);
-        btn_hashtag_힐링.setOnClickListener(this);
+        btn_hashtag_나들이.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_나들이.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[0] = true;
+                    Log.d("dlgochan", Arrays.toString(checkHashtag));
+                } else {
+                    btn_hashtag_나들이.setTextColor(Color.WHITE);
+                    checkHashtag[0] = false;
+                    Log.d("dlgochan", Arrays.toString(checkHashtag));
+                }
+            }
+        });
+        btn_hashtag_물놀이.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_물놀이.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[1] = true;
+                } else {
+                    btn_hashtag_물놀이.setTextColor(Color.WHITE);
+                    checkHashtag[1] = false;
+                }
+            }
+        });
+        btn_hashtag_아이와함께.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_아이와함께.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[2] = true;
+                } else {
+                    btn_hashtag_아이와함께.setTextColor(Color.WHITE);
+                    checkHashtag[2] = false;
+                }
+            }
+        });
+        btn_hashtag_걷기좋은.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_걷기좋은.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[3] = true;
+                } else {
+                    btn_hashtag_걷기좋은.setTextColor(Color.WHITE);
+                    checkHashtag[3] = false;
+                }
+            }
+        });
+        btn_hashtag_드라이브코스.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_드라이브코스.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[4] = true;
+                } else {
+                    btn_hashtag_드라이브코스.setTextColor(Color.WHITE);
+                    checkHashtag[4] = false;
+                }
+            }
+        });
+        btn_hashtag_데이트코스.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_데이트코스.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[5] = true;
+                } else {
+                    btn_hashtag_데이트코스.setTextColor(Color.WHITE);
+                    checkHashtag[5] = false;
+                }
+            }
+        });
+        btn_hashtag_분위기좋은.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_분위기좋은.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[6] = true;
+                } else {
+                    btn_hashtag_분위기좋은.setTextColor(Color.WHITE);
+                    checkHashtag[6] = false;
+                }
+            }
+        });
+        btn_hashtag_런닝.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_런닝.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[7] = true;
+                } else {
+                    btn_hashtag_런닝.setTextColor(Color.WHITE);
+                    checkHashtag[7] = false;
+                }
+            }
+        });
+        btn_hashtag_벚꽃명소.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_벚꽃명소.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[8] = true;
+                } else {
+                    btn_hashtag_벚꽃명소.setTextColor(Color.WHITE);
+                    checkHashtag[8] = false;
+                }
+            }
+        });
+        btn_hashtag_힐링.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btn_hashtag_힐링.setTextColor(Color.parseColor("#FFFFCC"));
+                    checkHashtag[9] = true;
+                } else {
+                    btn_hashtag_힐링.setTextColor(Color.WHITE);
+                    checkHashtag[9] = false;
+                }
+            }
+        });
 
     }
 
@@ -284,44 +400,26 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_current_location:
                 TrackingMode = true;
                 Log.d("dlgochan", "새로고침 버튼 클릭!");
-                break;
-            case R.id.btn_hashtag_나들이:
-                searchHashtag("나들이");
-                break;
-            case R.id.btn_hashtag_물놀이:
-                searchHashtag("물놀이");
-                break;
-            case R.id.btn_hashtag_아이와함께:
-                searchHashtag("아이와함께");
-                break;
-            case R.id.btn_hashtag_걷기좋은:
-                searchHashtag("걷기좋은");
-                break;
-            case R.id.btn_hashtag_드라이브코스:
-                searchHashtag("드라이브코스");
-                break;
-            case R.id.btn_hashtag_데이트코스:
-                searchHashtag("데이트코스");
-                break;
-            case R.id.btn_hashtag_분위기좋은:
-                searchHashtag("분위기좋은");
-                break;
-            case R.id.btn_hashtag_런닝:
-                searchHashtag("런닝");
-                break;
-            case R.id.btn_hashtag_벚꽃명소:
-                searchHashtag("벚꽃명소");
-                break;
-            case R.id.btn_hashtag_힐링:
-                searchHashtag("힐링");
-                break;
-
+            case R.id.btn_hashtag_refresh:
+                btn_hashtag_나들이.setChecked(false);
+                btn_hashtag_물놀이.setChecked(false);
+                btn_hashtag_아이와함께.setChecked(false);
+                btn_hashtag_걷기좋은.setChecked(false);
+                btn_hashtag_드라이브코스.setChecked(false);
+                btn_hashtag_데이트코스.setChecked(false);
+                btn_hashtag_분위기좋은.setChecked(false);
+                btn_hashtag_런닝.setChecked(false);
+                btn_hashtag_벚꽃명소.setChecked(false);
+                btn_hashtag_힐링.setChecked(false);
+                Arrays.fill(checkHashtag, false);
+            case R.id.btn_hashtag_search:
+                List<String> hashtags = new ArrayList<String>();
+                for (int i = 0; i < checkHashtag.length; i++) {
+                    if (checkHashtag[i] == true) {
+                        hashtags.add(hashtagType[i]);
+                    }
+                }
         }
-    }
-
-    public void searchHashtag(String keyword) {
-        tMapView.setCenterPoint(126.996421, 37.4332181); // 서울, 수원 중간 과천으로 중심 이동
-        getRoadByHashtag(keyword);
     }
 
     @Override
@@ -353,7 +451,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                     tMapView.setZoomLevel(13);
                 } else {
                     // 리스폰스 실패  400, 500 등
-                    tMapView.removeAllMarkerItem();
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -374,7 +471,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addMarketMarker(List<Road> marketList) {
-        tMapView.removeAllMarkerItem();
         final String TAG = "dlgochan";
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
@@ -433,33 +529,4 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         startActivity(intent);
     }
 
-    public void getRoadByHashtag(String keyword) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadByHashtag(keyword).enqueue(new Callback<RoadRes>() {
-            @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
-                if (response.isSuccessful()) {
-                    roadHashtagRes = response.body();
-                    addMarketMarker(roadHashtagRes.getData());
-                    tMapView.setZoomLevel(10);
-                    Log.d(TAG, "onResponse Success : " + roadHashtagRes.toString());
-                } else {
-                    tMapView.removeAllMarkerItem();
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RoadRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
 }

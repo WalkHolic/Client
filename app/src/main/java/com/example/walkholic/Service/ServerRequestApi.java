@@ -74,6 +74,10 @@ public interface ServerRequestApi {
         // 근처 산책로 조희
     Call<RoadRes> getRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
 
+    @GET("/road/hashtag")
+        // 해시태그로 산책로 검색
+    Call<RoadRes> getRoadByHashtag(@Query("keyword") String keyword);
+
     // 리뷰 관련
     @POST("/road/{id}/review")
     // 산책로 리뷰 작성
