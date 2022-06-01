@@ -241,6 +241,7 @@ public class UserRoadCloudviewPathActivity extends AppCompatActivity implements 
                 Intent intent5 = new Intent(this, UserRoadCloudviewHomeActivity.class);
                 intent5.putExtra("userRoadId", userRoadId);
                 startActivity(intent5);
+                finish();
                 break;
         }
     }

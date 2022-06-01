@@ -321,6 +321,8 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
 
     public void searchHashtag(String keyword) {
         tMapView.setCenterPoint(126.996421, 37.4332181); // 서울, 수원 중간 과천으로 중심 이동
+        tMapView.setZoomLevel(10);
+        TrackingMode = false;
         getRoadByHashtag(keyword);
     }
 
@@ -442,7 +444,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     roadHashtagRes = response.body();
                     addMarketMarker(roadHashtagRes.getData());
-                    tMapView.setZoomLevel(10);
                     Log.d(TAG, "onResponse Success : " + roadHashtagRes.toString());
                 } else {
                     tMapView.removeAllMarkerItem();

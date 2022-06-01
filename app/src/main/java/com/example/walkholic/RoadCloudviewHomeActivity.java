@@ -219,11 +219,12 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
             case R.id.back_btn:
                 onBackPressed();
                 break;
-            case R.id.btn_road_home:
-                Intent intent5 = new Intent(this, RoadCloudviewHomeActivity.class);
-                intent5.putExtra("roadId", roadId);
-                startActivity(intent5);
-                break;
+//            case R.id.btn_road_home:
+//                Intent intent5 = new Intent(this, RoadCloudviewHomeActivity.class);
+//                intent5.putExtra("roadId", roadId);
+//                startActivity(intent5);
+//                finish();
+//                break;
             case R.id.btn_road_path:
                 Intent intent6 = new Intent(this, RoadCloudviewPathActivity.class);
                 intent6.putExtra("roadId", roadId);
