@@ -58,6 +58,16 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
     TextInputEditText textInputEditText;
     Button imageButton;
 
+    Button btn_hashtag_나들이;
+    Button btn_hashtag_물놀이;
+    Button btn_hashtag_아이와함께;
+    Button btn_hashtag_걷기좋은;
+    Button btn_hashtag_드라이브코스;
+    Button btn_hashtag_데이트코스;
+    Button btn_hashtag_분위기좋은;
+    Button btn_hashtag_런닝;
+    Button btn_hashtag_벚꽃명소;
+    Button btn_hashtag_힐링;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -73,6 +83,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
     Double mlon;
 
     private UserRoadRes userRoadRes;
+    private UserRoadRes userRoadHashtagRes;
     Handler mHandler = new Handler();
 
     @Override
@@ -159,6 +170,16 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
 
+        btn_hashtag_나들이 = findViewById(R.id.btn_hashtag_나들이);
+        btn_hashtag_물놀이 = findViewById(R.id.btn_hashtag_물놀이);
+        btn_hashtag_아이와함께 = findViewById(R.id.btn_hashtag_아이와함께);
+        btn_hashtag_걷기좋은 =  findViewById(R.id.btn_hashtag_걷기좋은);
+        btn_hashtag_드라이브코스 = findViewById(R.id.btn_hashtag_드라이브코스);
+        btn_hashtag_데이트코스 = findViewById(R.id.btn_hashtag_데이트코스);
+        btn_hashtag_분위기좋은 = findViewById(R.id.btn_hashtag_분위기좋은);
+        btn_hashtag_런닝 = findViewById(R.id.btn_hashtag_런닝);
+        btn_hashtag_벚꽃명소 = findViewById(R.id.btn_hashtag_벚꽃명소);
+        btn_hashtag_힐링 = findViewById(R.id.btn_hashtag_힐링);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -172,6 +193,17 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
         btn_set_location.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
+
+        btn_hashtag_나들이.setOnClickListener(this);
+        btn_hashtag_물놀이.setOnClickListener(this);
+        btn_hashtag_아이와함께.setOnClickListener(this);
+        btn_hashtag_걷기좋은.setOnClickListener(this);
+        btn_hashtag_드라이브코스.setOnClickListener(this);
+        btn_hashtag_데이트코스.setOnClickListener(this);
+        btn_hashtag_분위기좋은.setOnClickListener(this);
+        btn_hashtag_런닝.setOnClickListener(this);
+        btn_hashtag_벚꽃명소.setOnClickListener(this);
+        btn_hashtag_힐링.setOnClickListener(this);
     }
 
     @Override
@@ -249,7 +281,44 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
                 TrackingMode = true;
                 Log.e("dlgochan", "새로고침 버튼 클릭!");
                 break;
+            case R.id.btn_hashtag_나들이:
+                searchHashtag("나들이");
+                break;
+            case R.id.btn_hashtag_물놀이:
+                searchHashtag("물놀이");
+                break;
+            case R.id.btn_hashtag_아이와함께:
+                searchHashtag("아이와함께");
+                break;
+            case R.id.btn_hashtag_걷기좋은:
+                searchHashtag("걷기좋은");
+                break;
+            case R.id.btn_hashtag_드라이브코스:
+                searchHashtag("드라이브코스");
+                break;
+            case R.id.btn_hashtag_데이트코스:
+                searchHashtag("데이트코스");
+                break;
+            case R.id.btn_hashtag_분위기좋은:
+                searchHashtag("분위기좋은");
+                break;
+            case R.id.btn_hashtag_런닝:
+                searchHashtag("런닝");
+                break;
+            case R.id.btn_hashtag_벚꽃명소:
+                searchHashtag("벚꽃명소");
+                break;
+            case R.id.btn_hashtag_힐링:
+                searchHashtag("힐링");
+                break;
         }
+    }
+
+    public void searchHashtag(String keyword) {
+        tMapView.setCenterPoint(126.996421, 37.4332181); // 서울, 수원 중간 과천으로 중심 이동
+        tMapView.setZoomLevel(10);
+        TrackingMode = false;
+        getUserRoadByHashtag(keyword);
     }
 
     @Override
@@ -358,4 +427,35 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
         });
     }
 
+    public void getUserRoadByHashtag(String hashtag) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadByHashtag(hashtag).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) { // Call<타입> : 타입을 잘 맞춰주시면 됩니다. ex) 산책로 조회는 RoadList, 산책로 경로 조회는 RoadPath
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    userRoadHashtagRes = response.body();
+                    addMarketMarker(userRoadHashtagRes.getData());
+                    Log.d(TAG, "onResponse Success : " + userRoadHashtagRes.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+
+            }
+        });
+    }
 }

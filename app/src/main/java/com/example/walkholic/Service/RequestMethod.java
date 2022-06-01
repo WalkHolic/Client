@@ -230,7 +230,6 @@ public class RequestMethod {
     // 완
     public void getUserRoadByHashtag(String hashtag) {
         final String TAG = "dlgochan";
-
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getUserRoadByHashtag(hashtag).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
             @Override
