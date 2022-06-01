@@ -136,9 +136,9 @@ public interface ServerRequestApi {
         // 내 산책로 조희
     Call<UserRoadRes> getMyRoad();
 
-    @GET("/user/road/{rid}/paths")
-        // 내 산책로 경로 조회
-    Call<UserRoadPathRes> getMyRoadPath(@Path("rid") int rid);
+    @GET("/user/road/{id}/paths")
+        // 공유 산책로 경로 조회
+    Call<UserRoadPathRes> getUserRoadPathById(@Path("id") int id);
 
     @DELETE("/user/road/{rid}")
         // 내 산책로 삭제
