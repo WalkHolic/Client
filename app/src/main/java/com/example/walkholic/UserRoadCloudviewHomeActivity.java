@@ -200,19 +200,19 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
             case R.id.back_btn:
                 onBackPressed();
                 break;
-            case R.id.btn_user_road_home:
-                Intent intent5 = new Intent(this, UserRoadCloudviewHomeActivity.class);
-                intent5.putExtra("userRoadId", userRoadId);
-                startActivity(intent5);
-                break;
-//            case R.id.btn_user_road_path:
-//                Intent intent6 = new Intent(this, UserRoadCloudviewPathActivity.class);
-//                intent6.putExtra("userRoadId", userRoadId);
-//                intent6.putExtra("lat", startLat);
-//                intent6.putExtra("lng", startLng);
-//                startActivity(intent6);
-//                finish();
+//            case R.id.btn_user_road_home:
+//                Intent intent5 = new Intent(this, UserRoadCloudviewHomeActivity.class);
+//                intent5.putExtra("userRoadId", userRoadId);
+//                startActivity(intent5);
 //                break;
+            case R.id.btn_user_road_path:
+                Intent intent6 = new Intent(this, UserRoadCloudviewPathActivity.class);
+                intent6.putExtra("userRoadId", userRoadId);
+                intent6.putExtra("lat", startLat);
+                intent6.putExtra("lng", startLng);
+                startActivity(intent6);
+                finish();
+                break;
 
         }
     }

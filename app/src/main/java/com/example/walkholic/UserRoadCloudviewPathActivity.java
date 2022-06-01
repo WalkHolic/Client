@@ -1,7 +1,6 @@
 package com.example.walkholic;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,13 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.Data.RoadPath;
-import com.example.walkholic.DataClass.Response.ParkRes;
-import com.example.walkholic.DataClass.Response.RoadPathRes;
-import com.example.walkholic.DataClass.Response.RoadRes;
+import com.example.walkholic.DataClass.Data.UserRoadPath;
+import com.example.walkholic.DataClass.Response.UserRoadPathRes;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.skt.Tmap.TMapData;
-import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
@@ -45,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RoadCloudviewPathActivity extends AppCompatActivity implements View.OnClickListener{
+public class UserRoadCloudviewPathActivity extends AppCompatActivity implements View.OnClickListener {
 
     final String TAG = "dlgochan";
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
@@ -61,22 +59,24 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
     Button btn_walking;
     Button btn_mypage;
     Button btn_back;
+    Button btn_user_road_home;
 
-    ImageView parkimageview;
+    ImageView userRoadImageView;
     String picturePath;
 
-    int roadId;
+    int userRoadId;
 
-    private RoadPathRes roadPathRes;
-    private RoadRes roadRes;
-    List<RoadPath> roadPathList;
+    private UserRoadRes userRoadRes;
+    private UserRoadPathRes userRoadPathRes;
+    List<UserRoadPath> roadPathList;
 
     Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.road_cloudview_path);
+        setContentView(R.layout.user_road_cloudview_path);
+
         //T Map Data
         tmapdata = new TMapData();
 
@@ -93,7 +93,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
         // T Map View Using Linear Layout
-        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_park);
+        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_userRoad);
         linearLayoutTmap.addView(tMapView);
 
         // Request For GPS permission
@@ -102,36 +102,39 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
         }
 
         Intent intent = getIntent();
-        roadId = intent.getIntExtra("roadId", roadId);
+        userRoadId = intent.getIntExtra("userRoadId", userRoadId);
         double mlat = intent.getDoubleExtra("lat", 37.2844252); // default: 아주대 위경도
         double mlon = intent.getDoubleExtra("lng", 127.043568);
-
-        Log.d(TAG, "받아온 위도: " + mlat + ", 경도: " + mlon);
+        Log.d(TAG, "받아온 intent 값: " + userRoadId + "/" + mlat + "/" + mlon);
 
         btn_home = findViewById(R.id.btn_home);
         btn_search = findViewById(R.id.btn_search);
         btn_walking = findViewById(R.id.btn_walking);
         btn_mypage = findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
-        parkimageview = findViewById(R.id.parkimageView);
+
+        btn_user_road_home = findViewById(R.id.btn_user_road_home);
+        userRoadImageView = (ImageView) findViewById(R.id.userRoadImageView);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
+        btn_user_road_home.setOnClickListener(this);
 
-        getRoadById(roadId);
-        getRoadPathByRid(roadId);
+        getUserRoadById(userRoadId);
+        getUserRoadPathById(userRoadId);
 
         mHandler.postDelayed(new Runnable() {
             public void run() {
-                picturePath = roadRes.getData().get(0).getPicturePath();
-                roadPathList = roadPathRes.getData();
+                picturePath = userRoadRes.getData().get(0).getPicture();
+                roadPathList = userRoadPathRes.getData();
                 Log.d(TAG, "산책로 path: " + roadPathList);
 
                 tMapView.setCenterPoint(mlon, mlat);
                 tMapView.setZoomLevel(14);
+
 
                 List<Double> latList = roadPathList.stream().map(roadPath -> roadPath.getLat()).collect(Collectors.toList());
                 List<Double> lngList = roadPathList.stream().map(roadPath -> roadPath.getLng()).collect(Collectors.toList());
@@ -142,7 +145,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
                 }
 
                 if (picturePath != null) {
-                    Glide.with(getApplicationContext()).load(picturePath).into(parkimageview);
+                    Glide.with(getApplicationContext()).load(picturePath).into(userRoadImageView);
                 }
             }
         }, 300); // 0.3초후
@@ -212,41 +215,33 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_home:
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.btn_search:
-                Intent intent2 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                Intent intent2 = new Intent(this, Search_ParkActivity.class);
                 startActivity(intent2);
                 finish();
                 break;
             case R.id.btn_walking:
-                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
+                Intent intent3 = new Intent(this, WalkingActivity.class);
                 startActivity(intent3);
                 finish();
                 break;
             case R.id.btn_mypage:
-                Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
+                Intent intent4 = new Intent(this, WalkListActivity.class);
                 startActivity(intent4);
                 finish();
                 break;
             case R.id.back_btn:
                 onBackPressed();
                 break;
-//            case R.id.btn_road_review:
-//                Intent intent5 = new Intent(getApplicationContext(), RoadCloudviewReviewActivity.class);
-//                int Id = ParkId_int;
-//                intent5.putExtra("ID", Id);
-//                startActivity(intent5);
-//                break;
-//            case R.id.btn_road_info:
-//                Intent intent6 = new Intent(getApplicationContext(), RoadCloudviewHomeActivity.class);
-//                int Id1 = ParkId_int;
-//                intent6.putExtra("ID", Id1);
-//                startActivity(intent6);
-//                break;
-
+            case R.id.btn_user_road_home:
+                Intent intent5 = new Intent(this, UserRoadCloudviewHomeActivity.class);
+                intent5.putExtra("userRoadId", userRoadId);
+                startActivity(intent5);
+                break;
         }
     }
 
@@ -256,18 +251,16 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
         super.onBackPressed();
     }
 
-    public void getRoadById(int id) {
+    public void getUserRoadById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadById(id).enqueue(new Callback<RoadRes>() {
+        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
             @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
                 if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    roadRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
                 } else {
-                    // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -279,22 +272,21 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
             }
 
             @Override
-            public void onFailure(Call<RoadRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
     }
 
-    public void getRoadPathByRid(int rid) {
+    public void getUserRoadPathById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadPathByRid(rid).enqueue(new Callback<RoadPathRes>() {
+        service.getUserRoadPathById(id).enqueue(new Callback<UserRoadPathRes>() {
             @Override
-            public void onResponse(Call<RoadPathRes> call, Response<RoadPathRes> response) {
+            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
                 if (response.isSuccessful()) {
-                    roadPathRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadPathRes.toString());
+                    userRoadPathRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadPathRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -307,7 +299,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
             }
 
             @Override
-            public void onFailure(Call<RoadPathRes> call, Throwable t) {
+            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
