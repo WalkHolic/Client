@@ -191,11 +191,13 @@
 
                         <ImageView
                             android:id="@+id/imageView5"
-                            android:fontFamily="@font/patrickhandsc_regular"
                             android:layout_width="10dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/play" />
+                            android:fontFamily="@font/patrickhandsc_regular"
+                            app:srcCompat="@drawable/walkicon" />
                     </LinearLayout>
 
                     <TextView
@@ -254,7 +256,9 @@
                             android:layout_width="10dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/play" />
+                            app:srcCompat="@drawable/calories"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="100dp"/>
                     </LinearLayout>
 
                     <TextView

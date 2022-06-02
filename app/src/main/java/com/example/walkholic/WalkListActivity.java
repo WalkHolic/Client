@@ -123,10 +123,11 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 // 시간 지난 후 실행할 코딩
                 displayList();
             }
-        }, 500); // 0.5초후
+        }, 800); // 0.5초후
 
 
     }
+
 
     @WorkerThread
     public void load() {
@@ -154,6 +155,11 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_mypage:
                 Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
                 startActivity(intent4);
+                finish();
+                break;
+            case R.id.btn_review:
+                Intent intent5 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
+                startActivity(intent5);
                 finish();
                 break;
 
@@ -222,38 +228,19 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void displayList() {
-        //Dbhelper의 읽기모드 객체를 가져와 SQLiteDatabase에 담아 사용준비
-
-
-        //Cursor라는 그릇에 목록을 담아주기
-        //Cursor cursor = database.rawQuery("SELECT * FROM Trails", null);
 
         adapter = new TrailListViewAdapter(this);
 
-        if(userRoadList == null) return;
+        if (userRoadList == null) return;
         for (int i = 0; i < userRoadList.size(); i++) {
             temp = userRoadList.get(i);
             getMyRoadPath(temp.getId());
-
-
             // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
-            adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(),temp.getId());
+            adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(), temp.getId(),temp.getShared());
         }
-        //목록의 개수만큼 순회하여 adapter에 있는 list배열에 add
-        /*while (cursor.moveToNext()) {
-            // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
-            adapter.addItemToList(cursor.getLong(0), cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5));
-
-            // Log.d("확인", "*** 0: " + cursor.getLong(0)  + cursor.getString(1) + cursor.getString(2) + cursor.getString(3) + cursor.getString(4) + cursor.getString(5));
-        }
-*/
-        //리스트뷰의 어댑터 대상을 여태 설계한 adapter로 설정
         trailListView.setAdapter(adapter);
 
     }
-
-
-
 
 
 }

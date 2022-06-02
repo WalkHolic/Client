@@ -22,6 +22,9 @@
         android:theme="@style/Theme.WALKHOLIC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ModifyReview"
+            android:exported="false" />
+        <activity
             android:name=".ModifyTrail"
             android:exported="false" />
         <activity
