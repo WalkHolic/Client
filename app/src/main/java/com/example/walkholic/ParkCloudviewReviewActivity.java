@@ -83,6 +83,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_write_review.setOnClickListener(this);
 
         ArrayList<String> usernamelist = new ArrayList<>();
+        ArrayList<Double> scoreList = new ArrayList<>();
         ArrayList<String> commentlist = new ArrayList<>();
         ArrayList<String> pngpathlist = new ArrayList<>();
         Intent intent = getIntent();
@@ -107,21 +108,24 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
                     Log.d(TAG, "널 아님!");
                     for (int i = 0; i < reviewRes.getData().size(); i++) {
                         String username = reviewRes.getData().get(i).getUserName();
+                        double score = reviewRes.getData().get(i).getScore();
                         String comment = reviewRes.getData().get(i).getContent();
                         String pngpath = reviewRes.getData().get(i).getPngPath();
 
                         Log.d(TAG, "유저이름 : " + username);
+                        Log.d(TAG, "레이팅 : " + score);
                         Log.d(TAG, "리뷰 : " + comment);
                         Log.d(TAG, "사진경로 : " + pngpath);
 
                         usernamelist.add(username);
+                        scoreList.add(score);
                         commentlist.add(comment);
                         pngpathlist.add(pngpath);
                     }
                     Log.d(TAG, usernamelist.toString());
                     ArrayList<ParkReviewData> reviewDatalist = new ArrayList<ParkReviewData>();
                     for (int i = 0; i < usernamelist.size(); i++) {
-                        reviewDatalist.add(new ParkReviewData(usernamelist.get(i), commentlist.get(i), pngpathlist.get(i)));
+                        reviewDatalist.add(new ParkReviewData(usernamelist.get(i), scoreList.get(i), commentlist.get(i), pngpathlist.get(i)));
                     }
 
                     ParkReviewAdapter reviewAdapter = new ParkReviewAdapter(getApplicationContext(), reviewDatalist);
@@ -130,7 +134,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
                 }
                 else{
                     ArrayList<ParkReviewData> reviewDatalist = new ArrayList<ParkReviewData>();
-                    reviewDatalist.add(new ParkReviewData("리뷰 작성자가 아직 없습니다", "가장 먼저 리뷰를 달아주세요", null));
+                    reviewDatalist.add(new ParkReviewData("리뷰 작성자가 아직 없습니다", 0,"가장 먼저 리뷰를 달아주세요", null));
                     ParkReviewAdapter reviewAdapter = new ParkReviewAdapter(getApplicationContext(), reviewDatalist);
                     listView.setAdapter(reviewAdapter);
                 }
@@ -181,6 +185,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
             case R.id.btn_write_review:
                 Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
                 intent7.putExtra("ID", ParkId_int);
+                intent7.putExtra("name", parkRes.getData().get(0).getName());
                 startActivity(intent7);
                 break;
         }

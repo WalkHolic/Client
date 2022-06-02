@@ -60,11 +60,10 @@ public class WriteReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writeriview);
 
-        //원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
-//        id = getIntent().getStringExtra("id");
-//        name = getIntent().getStringExtra("name");
-        name = "Test Name";
-        id = 2222;
+//        원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
+        id = getIntent().getIntExtra("ID", id);
+        name = getIntent().getStringExtra("name");
+
 // 컴포넌트 초기화
         titleText = findViewById(R.id.titleText);
         titleText.setText(name);
