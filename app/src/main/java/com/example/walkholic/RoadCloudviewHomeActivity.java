@@ -35,6 +35,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
     Button btn_mypage;
     Button btn_back;
     Button btn_road_home;
+    Button btn_road_review;
     Button btn_road_path;
 
     ImageView roadimageview;
@@ -91,6 +92,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
         btn_back = findViewById(R.id.back_btn);
         btn_road_path = findViewById(R.id.btn_road_path);
         btn_road_home = findViewById(R.id.btn_road_home);
+        btn_road_review = findViewById(R.id.btn_road_review);
         roadimageview = (ImageView) findViewById(R.id.roadimageView);
 
         txt_name = findViewById(R.id.txt_name);
@@ -111,12 +113,14 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
         btn_walking.setOnClickListener(this);
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
-        btn_road_path.setOnClickListener(this);
         btn_road_home.setOnClickListener(this);
+        btn_road_review.setOnClickListener(this);
+        btn_road_path.setOnClickListener(this);
 
         getRoadById(roadId);
 
         mHandler.postDelayed(new Runnable() {
+            @SuppressLint("ResourceType")
             public void run() {
                 roadName = roadRes.getData().get(0).getRoadName();
                 roadDesc = roadRes.getData().get(0).getRoadDesc();
@@ -140,6 +144,8 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
 
                 if (picturePath != null) {
                     Glide.with(getApplicationContext()).load(picturePath).into(roadimageview);
+                }else{
+                    roadimageview.setImageResource(R.drawable.basic_park);
                 }
                 String showHashtags = "";
                 if (hashtagList != null && !hashtagList.isEmpty()) {
@@ -225,12 +231,20 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
 //                startActivity(intent5);
 //                finish();
 //                break;
-            case R.id.btn_road_path:
-                Intent intent6 = new Intent(this, RoadCloudviewPathActivity.class);
+            case R.id.btn_road_review:
+                Intent intent6 = new Intent(this, RoadCloudviewReviewActivity.class);
                 intent6.putExtra("roadId", roadId);
                 intent6.putExtra("lat", startLat);
                 intent6.putExtra("lng", startLng);
                 startActivity(intent6);
+                finish();
+                break;
+            case R.id.btn_road_path:
+                Intent intent7 = new Intent(this, RoadCloudviewPathActivity.class);
+                intent7.putExtra("roadId", roadId);
+                intent7.putExtra("lat", startLat);
+                intent7.putExtra("lng", startLng);
+                startActivity(intent7);
                 finish();
                 break;
 

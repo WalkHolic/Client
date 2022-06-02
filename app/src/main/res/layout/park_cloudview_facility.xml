@@ -24,17 +24,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        >
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_park_info"
+            android:id="@+id/btn_park_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/cloudview_home_btn_bg"
-            android:text=""
+            android:background="@color/white"
+            android:text="홈"
+            android:textSize="20dp"
+            android:fontFamily="@font/custom_font_family"
+            android:textStyle="bold"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
@@ -42,25 +44,30 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/cloudview_review_btn_bg"
-            android:text=""
+            android:background="@color/white"
+            android:text="리뷰"
+            android:textSize="20dp"
+            android:fontFamily="@font/custom_font_family"
+            android:textStyle="bold"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btn_park_facility"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/cloudview_facility_btn_bg"
-            android:text=""
+            android:background="@drawable/border_menu"
+            android:text="시설"
+            android:textSize="20dp"
+            android:fontFamily="@font/custom_font_family"
+            android:textStyle="bold"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
     </LinearLayout>
 
     <LinearLayout
 
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -83,7 +90,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -104,7 +111,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -125,7 +132,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="vertical">
 
         <TextView
@@ -148,35 +155,105 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:background="@drawable/rectangle_border"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_home"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/act_home" />
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_search_sel" />
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_home" />
 
-        <Button
-            android:id="@+id/btn_walking"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                android:text="홈" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/act_walking" />
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_mypage"
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_search_click" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="검색" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/act_mypage" />
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_walking"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_create" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                android:text="생성" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_mypage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                android:text="마이페이지" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -34,6 +34,7 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
     Button btn_mypage;
     Button btn_back;
     Button btn_user_road_home;
+    Button btn_user_road_review;
     Button btn_user_road_path;
 
     ImageView userRoadImageView;
@@ -82,6 +83,7 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
         btn_back = findViewById(R.id.back_btn);
 
         btn_user_road_home = findViewById(R.id.btn_user_road_home);
+        btn_user_road_review = findViewById(R.id.btn_user_road_review);
         btn_user_road_path = findViewById(R.id.btn_user_road_path);
         userRoadImageView = (ImageView) findViewById(R.id.userRoadImageView);
 
@@ -101,6 +103,7 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_user_road_home.setOnClickListener(this);
+        btn_user_road_review.setOnClickListener(this);
         btn_user_road_path.setOnClickListener(this);
 
         getUserRoadById(userRoadId);
@@ -213,6 +216,15 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
                 startActivity(intent6);
                 finish();
                 break;
+            case R.id.btn_user_road_review:
+                Intent intent7 = new Intent(this, UserRoadCloudviewReviewActivity.class);
+                intent7.putExtra("userRoadId", userRoadId);
+                /*intent7.putExtra("lat", startLat);
+                intent7.putExtra("lng", startLng);*/
+                startActivity(intent7);
+                finish();
+                break;
+
 
         }
     }

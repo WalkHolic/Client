@@ -280,6 +280,8 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
             case R.id.btn_current_location:
                 TrackingMode = true;
                 Log.e("dlgochan", "새로고침 버튼 클릭!");
+                tMapView.setTrackingMode(true);
+                tMapView.setZoomLevel(17);
                 break;
             case R.id.btn_hashtag_나들이:
                 searchHashtag("나들이");

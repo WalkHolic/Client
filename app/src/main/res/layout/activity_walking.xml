@@ -188,40 +188,103 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
+        android:layout_height="85dp"
+        android:background="@drawable/rectangle_border"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_home"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:background="@drawable/act_home"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_search"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_home" />
 
-        <Button
-            android:id="@+id/btn_walking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walking_sel"
-            tools:ignore="SpeakableTextPresentCheck" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="홈"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_mypage"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:background="@drawable/act_mypage"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="검색"
+
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_walking"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_create_click" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="생성"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_mypage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/custom_font_family"
+                android:text="마이페이지"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

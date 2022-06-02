@@ -8,16 +8,37 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <Button
-        android:id="@+id/back_btn"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/cloud_view_top_btn_bg"
-        android:text=""
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="16dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/back1" />
+
+        <TextView
+            android:id="@+id/txt_user_road_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/custom_font_family"
+            android:gravity="right"
+            android:text="공유 산책로"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/parkimageView"
+        android:id="@+id/userRoadImageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         tools:srcCompat="@drawable/basic_park" />
@@ -29,7 +50,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_park_home"
+            android:id="@+id/btn_user_road_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -41,7 +62,7 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/btn_park_review"
+            android:id="@+id/btn_user_road_review"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,12 +74,12 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/btn_park_facility"
+            android:id="@+id/btn_user_road_path"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="시설"
+            android:text="경로"
             android:textSize="20dp"
             android:fontFamily="@font/custom_font_family"
             android:textStyle="bold"
@@ -78,7 +99,7 @@
             android:fillViewport="true">
 
             <ListView
-                android:id="@+id/road_review_list"
+                android:id="@+id/user_road_review_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:listSelector="@android:color/transparent"></ListView>
