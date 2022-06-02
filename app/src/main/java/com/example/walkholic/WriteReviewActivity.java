@@ -61,7 +61,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writeriview);
 
-//        원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
+//        원래는 리뷰 액티비티에서 종류(공원, 산책로, 사용자산책로)와 id값, 이름을 넘겨줘야함
         kind = getIntent().getStringExtra("kind");
         id = getIntent().getIntExtra("ID", id);
         name = getIntent().getStringExtra("name");
