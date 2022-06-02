@@ -19,6 +19,7 @@ import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
     Button btn_user_road_home;
     Button btn_user_road_review;
     Button btn_user_road_path;
+    FloatingActionButton btn_write_review;
 
     ImageView userRoadImageView;
 
@@ -82,6 +84,7 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
         btn_user_road_review = findViewById(R.id.btn_user_road_review);
         btn_user_road_path = findViewById(R.id.btn_user_road_path);
         userRoadImageView = (ImageView) findViewById(R.id.userRoadImageView);
+        btn_write_review = findViewById(R.id.btn_write_review);
 
         listView = findViewById(R.id.user_road_review_list);
 
@@ -94,6 +97,7 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
         btn_user_road_home.setOnClickListener(this);
         btn_user_road_review.setOnClickListener(this);
         btn_user_road_path.setOnClickListener(this);
+        btn_write_review.setOnClickListener(this);
 
         ArrayList<String> usernamelist = new ArrayList<>();
         ArrayList<String> commentlist = new ArrayList<>();
@@ -195,6 +199,11 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
                 intent6.putExtra("lng", startLng);
                 startActivity(intent6);
                 finish();
+                break;
+            case R.id.btn_write_review:
+                Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
+                intent7.putExtra("userRoadId", userRoadId);
+                startActivity(intent7);
                 break;
         }
     }
