@@ -41,7 +41,7 @@ public class ListViewAdapter extends BaseAdapter {
         }
 
         //이제 아이템에 존재하는 텍스트뷰 객체들을 view객체에서 찾아 가져온다
-        TextView trailName = (TextView)view.findViewById(R.id.trailName);
+        TextView trailName = (TextView)view.findViewById(R.id.user_name);
         TextView trailInfo = (TextView)view.findViewById(R.id.trailInfo);
 
         //현재 포지션에 해당하는 아이템에 글자를 적용하기 위해 list배열에서 객체를 가져온다.

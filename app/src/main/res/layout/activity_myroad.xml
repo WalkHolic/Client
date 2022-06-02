@@ -31,7 +31,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/walkholic" />
+                    app:srcCompat="@drawable/basic_park" />
 
                 <TextView
                     android:id="@+id/trailName"
@@ -139,8 +139,8 @@
 
                 <ImageView
                     android:id="@+id/imageView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     app:layout_constraintBottom_toBottomOf="@+id/trailSteps"
                     app:layout_constraintEnd_toEndOf="@+id/imageView10"
                     app:layout_constraintStart_toStartOf="@+id/imageView10"

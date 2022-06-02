@@ -65,75 +65,293 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_search_park"
-                android:background="@drawable/act_search_park"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="공원"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_walk"
-                android:background="@drawable/act_search_walk_sel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_menu"
+                android:fontFamily="@font/custom_font_family"
+                android:text="산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_shared"
-                android:background="@drawable/act_search_shared"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="공유 산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
-
-        <LinearLayout
+        <HorizontalScrollView
+            android:id="@+id/hashtag_horizontal_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_hashtag_나들이"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/round_menu"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#나들이"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+                <Button
+                    android:id="@+id/btn_hashtag_물놀이"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:background="@drawable/round_menu"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textSize="12dp"
+                    android:text="#물놀이"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_아이와함께"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#아이와함께"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_걷기좋은"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#걷기좋은"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_드라이브코스"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#드라이브코스"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_데이트코스"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#데이트코스"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_분위기좋은"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#분위기좋은"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_런닝"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#런닝"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_벚꽃명소"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#벚꽃명소"
+                    android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btn_hashtag_힐링"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:background="@drawable/round_menu"
+                    android:layout_marginEnd="2dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:text="#힐링"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </HorizontalScrollView>
+        <FrameLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" />
+            android:orientation="vertical">
 
+            <Button
+                android:id="@+id/btn_set_location"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/round_menu"
+                android:fontFamily="@font/custom_font_family"
+                android:text="현 지도에서 검색"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btn_current_location"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="10dp"
+                android:background="@drawable/search2_remove" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
+        android:layout_height="85dp"
+        android:background="@drawable/rectangle_border"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_home"
-            android:background="@drawable/act_home"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:background="@drawable/act_search_sel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_walking"
-            android:background="@drawable/act_walking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_home" />
 
-        <Button
-            android:id="@+id/btn_mypage"
-            android:background="@drawable/act_mypage"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="홈"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_search_click" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="검색"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_walking"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_create" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="생성"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_mypage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/custom_font_family"
+                android:text="마이페이지"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

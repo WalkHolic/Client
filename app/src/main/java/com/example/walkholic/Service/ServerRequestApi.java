@@ -63,8 +63,7 @@ public interface ServerRequestApi {
 
 
     /* Road (기본 산책로) */
-    @GET("/road/path/roadId/{id}")
-    // road id 로 산책로 조희
+    @GET("/road/{id}")
     Call<RoadRes> getRoadById(@Path("id") int id);
 
     @GET("/road/path/roadId/{rid}")
@@ -74,6 +73,10 @@ public interface ServerRequestApi {
     @GET("/road/nearRoads")
         // 근처 산책로 조희
     Call<RoadRes> getRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
+
+    @GET("/road/hashtag")
+        // 해시태그로 산책로 검색
+    Call<RoadRes> getRoadByHashtag(@Query("keyword") String keyword);
 
     // 리뷰 관련
     @POST("/road/{id}/review")
@@ -100,9 +103,9 @@ public interface ServerRequestApi {
     // 해시태그로 산책로 검색
     Call<UserRoadRes> getUserRoadByHashtag(@Query("keyword") String keyword);
 
-    @GET("/user/road/{uid}/paths")
+    @GET("/user/road/{rid}")
         // user id로 산책로 조희
-    Call<UserRoadRes> getUserRoadById(@Query("uid") int uid);
+    Call<UserRoadRes> getUserRoadById(@Path("rid") int rid);
 
     @GET("/user/road/nearRoads")
         // 근처 공유 산책로 조희
@@ -137,9 +140,9 @@ public interface ServerRequestApi {
         // 내 산책로 조희
     Call<UserRoadRes> getMyRoad();
 
-    @GET("/user/road/{rid}/paths")
-        // 내 산책로 경로 조회
-    Call<UserRoadPathRes> getMyRoadPath(@Path("rid") int rid);
+    @GET("/user/road/{id}/paths")
+        // 공유 산책로 경로 조회
+    Call<UserRoadPathRes> getUserRoadPathById(@Path("id") int id);
 
     @DELETE("/user/road/{rid}")
         // 내 산책로 삭제

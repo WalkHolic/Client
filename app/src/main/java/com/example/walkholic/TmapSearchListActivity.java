@@ -37,6 +37,10 @@ public class TmapSearchListActivity extends AppCompatActivity implements View.On
         String keyword = getIntent().getStringExtra("keyword");
         searchList = getIntent().getParcelableArrayListExtra("searchList");
 
+        boolean isPark = getIntent().getBooleanExtra("park", false);
+        boolean isRoad = getIntent().getBooleanExtra("road", false);
+        boolean isUserRoad = getIntent().getBooleanExtra("userRoad", false);
+
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.dialog_item, searchList);
         mListView = (ListView) findViewById(R.id.itemListView);
         mListView.setAdapter(adapter);
@@ -46,7 +50,15 @@ public class TmapSearchListActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SearchItem item = adapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                Intent intent;
+                if (isPark) {
+                    intent = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                } else if (isRoad) {
+                    intent = new Intent(getApplicationContext(), Search_WalkActivity.class);
+                } else if (isUserRoad) {
+                    intent = new Intent(getApplicationContext(), Search_SharedActivity.class);
+                } else return;
+
                 intent.putExtra("itemName", item.getName());
                 intent.putExtra("itemLat", item.getLat());
                 intent.putExtra("itemLng", item.getLng());

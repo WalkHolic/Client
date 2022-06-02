@@ -17,7 +17,7 @@ public class Road {
     private String roadDesc;
     @SerializedName("picturePath")
     @Expose
-    private Object picturePath;
+    private String picturePath;
     @SerializedName("distance")
     @Expose
     private Double distance;
@@ -53,7 +53,7 @@ public class Road {
     private String providerName;
     @SerializedName("hashtag")
     @Expose
-    private List<Object> hashtag = null;
+    private List<String> hashtag = null;
 
     public Integer getId() {
         return id;
@@ -79,11 +79,11 @@ public class Road {
         this.roadDesc = roadDesc;
     }
 
-    public Object getPicturePath() {
+    public String getPicturePath() {
         return picturePath;
     }
 
-    public void setPicturePath(Object picturePath) {
+    public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 
@@ -175,11 +175,11 @@ public class Road {
         this.providerName = providerName;
     }
 
-    public List<Object> getHashtag() {
+    public List<String> getHashtag() {
         return hashtag;
     }
 
-    public void setHashtag(List<Object> hashtag) {
+    public void setHashtag(List<String> hashtag) {
         this.hashtag = hashtag;
     }
 
