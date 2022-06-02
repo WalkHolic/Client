@@ -14,9 +14,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
 import com.example.walkholic.DataClass.Data.ParkInfo;
@@ -55,17 +57,17 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_current_location;
     Button btn_set_location;
 
-    Button btn_fil_football;
-    Button btn_fil_basketball;
-    Button btn_fil_badminton;
-    Button btn_fil_tennis;
-    Button btn_fil_gateball;
-    Button btn_fil_cycle;
-    Button btn_fil_exercise;
-    Button btn_fil_health;
-    Button btn_fil_summerhouse;
-    Button btn_fil_fountain;
-    Button btn_fil_parking;
+    ToggleButton btn_fil_football;
+    ToggleButton btn_fil_basketball;
+    ToggleButton btn_fil_badminton;
+    ToggleButton btn_fil_tennis;
+    ToggleButton btn_fil_gateball;
+    ToggleButton btn_fil_cycle;
+    ToggleButton btn_fil_exercise;
+    ToggleButton btn_fil_health;
+    ToggleButton btn_fil_summerhouse;
+    ToggleButton btn_fil_fountain;
+    ToggleButton btn_fil_parking;
 
 
     TextInputEditText textInputEditText;
@@ -219,6 +221,62 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_fil_summerhouse.setOnClickListener(this);
         btn_fil_fountain.setOnClickListener(this);
         btn_fil_parking.setOnClickListener(this);
+
+        btn_fil_football.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set축구(isChecked);
+            }
+        });
+        btn_fil_basketball.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set농구(isChecked);
+            }
+        });
+        btn_fil_badminton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set배드민턴(isChecked);
+            }
+        });
+        btn_fil_tennis.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set테니스(isChecked);
+            }
+        });
+        btn_fil_gateball.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set게이트볼(isChecked);
+            }
+        });
+        btn_fil_cycle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set사이클(isChecked);
+            }
+        });
+        btn_fil_exercise.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set운동(isChecked);
+            }
+        });
+        btn_fil_health.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set헬스(isChecked);
+            }
+        });
+        btn_fil_summerhouse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set정자(isChecked);
+            }
+        });
+        btn_fil_fountain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set분수(isChecked);
+            }
+        });
+        btn_fil_parking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set주차(isChecked);
+            }
+        });
     }
 
     @Override
@@ -260,9 +318,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.btn_set_location:
-                //getParkByCurrentLocation(37.3015045429, 127.0312636113);
                 Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-                getParkByCurrentLocation(mlat, mlon);
+                getParkByFilter(mlat, mlon, parkOption);
 
                 break;
             case R.id.imageButton:
@@ -299,64 +356,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 tMapView.setZoomLevel(17);
                 Log.d("dlgochan", "새로고침 버튼 클릭!");
                 break;
-
-            //김재현 추가 해찬님 검토바랍니다
-            case R.id.btn_fil_football:
-                setParkOption("축구");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_basketball:
-                setParkOption("농구");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_badminton:
-                setParkOption("배드민턴");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_tennis:
-                setParkOption("테니스");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_gateball:
-                setParkOption("게이트볼");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_cycle:
-                setParkOption("사이클");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_exercise:
-                setParkOption("운동");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_health:
-                setParkOption("헬스");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_summerhouse:
-                setParkOption("정자");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_fountain:
-                setParkOption("분수");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-            case R.id.btn_fil_parking:
-                setParkOption("주차");
-                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
-                getParkByFilter(mlat,mlon, parkOption);
-                break;
-
         }
     }
 
@@ -420,49 +419,6 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    //김재현 추가 해찬님 검토바랍니다
-    public void setParkOption(String option){
-        switch (option) {
-            case "축구":
-                parkOption.set축구(true);
-                break;
-            case "농구":
-                parkOption.set농구(true);
-                break;
-            case "배드민턴":
-                parkOption.set배드민턴(true);
-                break;
-            case "테니스":
-                parkOption.set테니스(true);
-                break;
-            case "게이트볼":
-                parkOption.set게이트볼(true);
-                break;
-            case "사이클":
-                parkOption.set사이클(true);
-                break;
-            case "운동":
-                parkOption.set운동(true);
-                break;
-            case "헬스":
-                parkOption.set헬스(true);
-                break;
-            case "정자":
-                parkOption.set정자(true);
-                break;
-            case "분수":
-                parkOption.set분수(true);
-                break;
-            case "주차":
-                parkOption.set주차(true);
-                break;
-
-
-        }
-    }
-
-
-
     public void getParkByFilter(double lat, double lng, ParkOption option) {
         final String TAG = "dlgochan";
 
@@ -470,11 +426,12 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
             @Override
             public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                Log.d(TAG, "onResponse Filter: " + option.toString());
+                parkRes = response.body();
+                addMarketMarker(parkRes.getData());
+                tMapView.setZoomLevel(13);
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
-                    addMarketMarker(parkRes.getData());
-                    tMapView.setZoomLevel(13);
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
@@ -498,6 +455,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addMarketMarker(List<ParkInfo> marketList) {
+        // 여기에 마커들 초기화 하는 구문 짜주세요
+
         final String TAG = "dlgochan";
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);

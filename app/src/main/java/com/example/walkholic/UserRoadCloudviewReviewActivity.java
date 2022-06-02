@@ -206,7 +206,9 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
                 break;
             case R.id.btn_write_review:
                 Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
-                intent7.putExtra("userRoadId", userRoadId);
+                intent7.putExtra("kind", "userRoad");
+                intent7.putExtra("ID", userRoadId);
+                intent7.putExtra("name", userRoadRes.getData().get(0).getTrailName());
                 startActivity(intent7);
                 break;
         }

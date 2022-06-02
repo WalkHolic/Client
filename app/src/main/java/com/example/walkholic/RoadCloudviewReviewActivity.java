@@ -207,7 +207,9 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
 
             case R.id.btn_write_review:
                 Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
-                intent7.putExtra("roadId", roadId);
+                intent7.putExtra("kind", "road");
+                intent7.putExtra("ID", roadId);
+                intent7.putExtra("name", roadRes.getData().get(0).getRoadName());
                 startActivity(intent7);
                 break;
         }
