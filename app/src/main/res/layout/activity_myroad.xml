@@ -110,7 +110,7 @@
                     android:text="수정"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.7"
+                    app:layout_constraintHorizontal_bias="0.6"
                     app:layout_constraintStart_toEndOf="@+id/hashTags"
                     app:layout_constraintTop_toTopOf="@+id/hashTags" />
 
@@ -145,7 +145,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/imageView10"
                     app:layout_constraintStart_toStartOf="@+id/imageView10"
                     app:layout_constraintTop_toTopOf="@+id/trailSteps"
-                    app:srcCompat="@drawable/horse" />
+                    app:srcCompat="@drawable/horse"/>
 
                 <ImageView
                     android:id="@+id/imageView12"
@@ -156,6 +156,16 @@
                     app:layout_constraintStart_toStartOf="@+id/imageView11"
                     app:layout_constraintTop_toTopOf="@+id/trailTime"
                     app:srcCompat="@drawable/clock1" />
+
+                <CheckBox
+                    android:id="@+id/shareCheck"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="공유"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_deleteTrail"
+                    app:layout_constraintStart_toStartOf="@+id/btn_deleteTrail"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_deleteTrail"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 

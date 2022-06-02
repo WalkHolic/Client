@@ -26,9 +26,10 @@
                 android:background="#00ff0000"
                 android:text="산책로 관리"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button5"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="14dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/button5"
@@ -37,9 +38,10 @@
                 android:background="#00ff0000"
                 android:text="리뷰 관리"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_myList2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btn_myList2"
-                tools:layout_editor_absoluteY="14dp" />
+                app:layout_constraintTop_toTopOf="@+id/btn_myList2" />
 
             <ImageView
                 android:id="@+id/imageView13"
@@ -51,22 +53,20 @@
                 app:srcCompat="@color/black" />
 
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@drawable/list_item"
             android:orientation="horizontal"
             tools:layout_editor_absoluteX="113dp"
-            tools:layout_editor_absoluteY="59dp"
-            android:background="@drawable/list_item">
+            tools:layout_editor_absoluteY="59dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parkReview"
                 android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:id="@+id/parkReview">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imageView17"
@@ -110,11 +110,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="산책로 리뷰"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView15"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView15"
-                    app:layout_constraintTop_toTopOf="@+id/imageView15"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toTopOf="@+id/imageView15" />
 
                 <ImageView
                     android:id="@+id/imageView15"
@@ -128,19 +128,19 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/shareTrailReview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/shareTrailReview">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/imageView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textColor="@color/black"
                     app:srcCompat="@drawable/sharetrail1" />
 
                 <TextView
@@ -148,11 +148,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="공유 산책로 리뷰"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView16"
-                    app:layout_constraintTop_toTopOf="@+id/imageView16"
-                    android:textColor="@color/black"/>
+                    app:layout_constraintTop_toTopOf="@+id/imageView16" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
@@ -162,11 +162,12 @@
             android:fillViewport="true">
 
             <ListView
+                android:id="@+id/parkReviewListView"
                 android:layout_width="409dp"
                 android:layout_height="73dp"
+                android:background="@drawable/list_item"
                 tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="1dp"
-                android:background="@drawable/list_item"/>
+                tools:layout_editor_absoluteY="1dp" />
 
 
         </ScrollView>
@@ -180,8 +181,7 @@
         android:layout_height="70dp"
         android:layout_gravity="bottom"
         android:layout_weight="0"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_home"

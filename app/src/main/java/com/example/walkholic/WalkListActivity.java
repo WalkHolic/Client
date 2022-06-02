@@ -123,10 +123,11 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
                 // 시간 지난 후 실행할 코딩
                 displayList();
             }
-        }, 500); // 0.5초후
+        }, 800); // 0.5초후
 
 
     }
+
 
     @WorkerThread
     public void load() {
@@ -154,6 +155,11 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_mypage:
                 Intent intent4 = new Intent(getApplicationContext(), WalkListActivity.class);
                 startActivity(intent4);
+                finish();
+                break;
+            case R.id.btn_review:
+                Intent intent5 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
+                startActivity(intent5);
                 finish();
                 break;
 
@@ -248,9 +254,6 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         trailListView.setAdapter(adapter);
 
     }
-
-
-
 
 
 }

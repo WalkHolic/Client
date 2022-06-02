@@ -28,6 +28,9 @@
             android:name=".RoadCloudviewReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".ModifyReview"
+            android:exported="false" />
+        <activity
             android:name=".ModifyTrail"
             android:exported="false" />
         <activity

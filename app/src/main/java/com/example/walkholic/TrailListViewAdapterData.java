@@ -12,6 +12,16 @@ public class TrailListViewAdapterData {
     private String trailDescription;
     private List<String> hashtags;
     private int rid;
+    private boolean shared;
+
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
 
 
     public int getRid() {
