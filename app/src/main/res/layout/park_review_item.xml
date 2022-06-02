@@ -32,12 +32,25 @@
                 android:text="name"
                 android:textSize="20sp" />
 
+            <RatingBar
+                android:id="@+id/reviewRating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:isIndicator="false"
+                android:max="5"
+                android:numStars="5"
+                android:layout_marginLeft="4dp"
+                android:rating="3"
+                android:stepSize="0.5"></RatingBar>
+
             <TextView
                 android:id="@+id/review_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
                 android:text="review txt" />
         </LinearLayout>

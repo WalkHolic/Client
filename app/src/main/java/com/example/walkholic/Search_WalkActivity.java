@@ -450,6 +450,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     roadHashtagRes = response.body();
                     addMarketMarker(roadHashtagRes.getData());
+                    tMapView.setZoomLevel(13);
                     Log.d(TAG, "onResponse Success : " + roadHashtagRes.toString());
                 } else {
                     tMapView.removeAllMarkerItem();

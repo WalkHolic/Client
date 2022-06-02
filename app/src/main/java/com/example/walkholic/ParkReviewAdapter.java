@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -44,13 +45,15 @@ public class ParkReviewAdapter extends BaseAdapter {
         View view = mLayoutInflater.inflate(R.layout.park_review_item, null);
 
         TextView user_name = (TextView)view.findViewById(R.id.user_name);
+        RatingBar rating = (RatingBar) view.findViewById(R.id.reviewRating);
         TextView review_txt = (TextView)view.findViewById(R.id.review_txt);
         ImageView review_park_img = (ImageView)view.findViewById(R.id.review_park_img);
 
-        user_name.setText(reviewData.get(position).getusername());
-        review_txt.setText(reviewData.get(position).gettxt());
+        user_name.setText(reviewData.get(position).getUsername());
+        rating.setRating((float)reviewData.get(position).getScore());
+        review_txt.setText(reviewData.get(position).getTxt());
 
-        String png_path = reviewData.get(position).getpng_path();
+        String png_path = reviewData.get(position).getPng_path();
         //review_park_img.setText(reviewData.get(position).getGrade());
         if(png_path != null){
             Glide.with(mContext.getApplicationContext()).load(png_path).into(review_park_img);

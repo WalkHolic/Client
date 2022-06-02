@@ -109,6 +109,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal|end">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_write_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="270dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/btn_write_review" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="85dp"
         android:background="@drawable/rectangle_border"
         android:orientation="horizontal">

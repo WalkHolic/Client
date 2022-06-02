@@ -439,6 +439,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
                     // 리스폰스 성공 시 200 OK
                     userRoadHashtagRes = response.body();
                     addMarketMarker(userRoadHashtagRes.getData());
+                    tMapView.setZoomLevel(13);
                     Log.d(TAG, "onResponse Success : " + userRoadHashtagRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등

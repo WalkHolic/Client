@@ -115,23 +115,168 @@
                 android:layout_margin="3dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_hashtag_힐링"
+                <ToggleButton
+                    android:id="@+id/btn_fil_football"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="2dp"
-                    android:background="@drawable/round_menu"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
                     android:fontFamily="@font/custom_font_family"
-                    android:text="#필터예시"
+                    android:textOff="축구"
+                    android:textOn="축구"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_basketball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="농구"
+                    android:textOn="농구"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_badminton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="배드민턴"
+                    android:textOn="배드민턴"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_tennis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="테니스"
+                    android:textOn="테니스"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_gateball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="게이트볼"
+                    android:textOn="게이트볼"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_cycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="사이클"
+                    android:textOn="사이클"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_exercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="운동"
+                    android:textOn="운동"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="헬스"
+                    android:textOn="헬스"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_summerhouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="정자"
+                    android:textOn="정자"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_fountain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="분수"
+                    android:textOn="분수"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="주차"
+                    android:textOn="주차"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
             </LinearLayout>
         </HorizontalScrollView>
+
         <FrameLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="453dp"
             android:orientation="vertical">
 
             <Button
@@ -140,7 +285,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center|bottom"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/round_menu"
+                android:background="@drawable/round_menu_off"
                 android:fontFamily="@font/custom_font_family"
                 android:text="현 지도에서 검색"
                 android:textColor="@color/white"
