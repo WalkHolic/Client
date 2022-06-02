@@ -62,6 +62,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
     Button btn_mypage;
     Button btn_back;
     Button btn_road_home;
+    Button btn_road_review;
 
     ImageView parkimageview;
     String picturePath;
@@ -116,6 +117,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
         btn_back = findViewById(R.id.back_btn);
         parkimageview = findViewById(R.id.parkimageView);
         btn_road_home = findViewById(R.id.btn_road_home);
+        btn_road_review = findViewById(R.id.btn_road_review);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -123,6 +125,7 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_road_home.setOnClickListener(this);
+        btn_road_review.setOnClickListener(this);
 
         getRoadById(roadId);
         getRoadPathByRid(roadId);
@@ -247,6 +250,12 @@ public class RoadCloudviewPathActivity extends AppCompatActivity implements View
                 Intent intent6 = new Intent(getApplicationContext(), RoadCloudviewHomeActivity.class);
                 intent6.putExtra("roadId", roadId);
                 startActivity(intent6);
+                finish();
+                break;
+            case R.id.btn_road_review:
+                Intent intent7 = new Intent(getApplicationContext(), RoadCloudviewReviewActivity.class);
+                intent7.putExtra("roadId", roadId);
+                startActivity(intent7);
                 finish();
                 break;
 

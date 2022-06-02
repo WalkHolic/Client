@@ -72,7 +72,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_hashtag_힐링;
 
     TextInputEditText textInputEditText;
-    Button imageButton;
+    ImageButton imageButton;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -95,7 +95,9 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_search_walk);
+
 
         //T Map Data
         tmapdata = new TMapData();
@@ -116,10 +118,12 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         FrameLayout linearLayoutTmap = (FrameLayout) findViewById(R.id.linearLayoutTmap_park);
         linearLayoutTmap.addView(tMapView);
 
+
         // Request For GPS permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+
 
         // GPS using T Map
         tMapGPS = new TMapGpsManager(this);
@@ -284,6 +288,8 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_current_location:
                 TrackingMode = true;
                 Log.d("dlgochan", "새로고침 버튼 클릭!");
+                tMapView.setTrackingMode(true);
+                tMapView.setZoomLevel(17);
                 break;
             case R.id.btn_hashtag_나들이:
                 searchHashtag("나들이");

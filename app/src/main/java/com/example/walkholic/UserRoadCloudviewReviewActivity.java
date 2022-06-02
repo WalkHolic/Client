@@ -15,6 +15,8 @@ import android.widget.ListView;
 import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.RoadRes;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 
@@ -25,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ParkCloudviewReviewActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserRoadCloudviewReviewActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     final String TAG = "dlgochan";
@@ -35,19 +37,23 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_walking;
     Button btn_mypage;
     Button btn_back;
-    Button btn_park_home;
-    Button btn_park_facility;
+    Button btn_user_road_home;
+    Button btn_user_road_review;
+    Button btn_user_road_path;
+
+    ImageView userRoadImageView;
 
     ListView listView;
 
-    ImageView parkimageview;
-    String png_path;
+    ImageView roadimageview;
 
-    int ParkId_int;
+    String picturePath;
+    Double startLat;
+    Double startLng;
 
-    boolean path_check = false;
+    int userRoadId;
 
-    private ParkRes parkRes;
+    private UserRoadRes userRoadRes;
     private ReviewRes reviewRes;
 
     Handler mHandler = new Handler();
@@ -56,48 +62,55 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.park_cloudview_review);
+        setContentView(R.layout.user_road_cloudview_review);
 
-        parkimageview = findViewById(R.id.parkimageView);
+        Intent intent = getIntent();
+        userRoadId = intent.getIntExtra("userRoadId", userRoadId);
+        double mlat = intent.getDoubleExtra("lat", 37.2844252); // default: 아주대 위경도
+        double mlon = intent.getDoubleExtra("lng", 127.043568);
+        Log.d(TAG, "받아온 intent 값: " + userRoadId + "/" + mlat + "/" + mlon);
 
-        // Log.d(TAG, "풍선뷰 정보 :  " + parkInfo.getPngPath() );
+        roadimageview = (ImageView) findViewById(R.id.roadimageView);
+
         btn_home = findViewById(R.id.btn_home);
         btn_search = findViewById(R.id.btn_search);
         btn_walking = findViewById(R.id.btn_walking);
         btn_mypage = findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
-        btn_park_home = findViewById(R.id.btn_park_home);
-        btn_park_facility = findViewById(R.id.btn_park_facility);
 
-        listView = findViewById(R.id.road_review_list);
+        btn_user_road_home = findViewById(R.id.btn_user_road_home);
+        btn_user_road_review = findViewById(R.id.btn_user_road_review);
+        btn_user_road_path = findViewById(R.id.btn_user_road_path);
+        userRoadImageView = (ImageView) findViewById(R.id.userRoadImageView);
+
+        listView = findViewById(R.id.user_road_review_list);
+
+
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
-        btn_park_home.setOnClickListener(this);
-        btn_park_facility.setOnClickListener(this);
+        btn_user_road_home.setOnClickListener(this);
+        btn_user_road_review.setOnClickListener(this);
+        btn_user_road_path.setOnClickListener(this);
 
         ArrayList<String> usernamelist = new ArrayList<>();
         ArrayList<String> commentlist = new ArrayList<>();
         ArrayList<String> pngpathlist = new ArrayList<>();
-        Intent intent = getIntent();
-        ParkId_int = intent.getIntExtra("ID", ParkId_int);
-        getParkById(ParkId_int);
-        getParkReview(ParkId_int);
+
+        getUserRoadById(userRoadId);
+        getUserRoadReview(userRoadId);
+
 
         mHandler.postDelayed(new Runnable() {
             public void run() {
-                png_path = parkRes.getData().get(0).getPngPath();
+                picturePath = userRoadRes.getData().get(0).getPicture();
 
-                if (png_path == null) {
-                    path_check = true;
-                }
-                if (path_check) {
-                    parkimageview.setImageResource(R.drawable.basic_park);
-
-                } else {
-                    Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
+                if (picturePath != null) {
+                    Glide.with(getApplicationContext()).load(picturePath).into(userRoadImageView);
+                }else{
+                    userRoadImageView.setImageResource(R.drawable.basic_park);
                 }
                 if(reviewRes != null){
                     Log.d(TAG, "널 아님!");
@@ -162,15 +175,24 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
             case R.id.back_btn:
                 onBackPressed();
                 break;
-            case R.id.btn_park_home:
-                Intent intent5 = new Intent(getApplicationContext(), ParkCloudviewHomeActivity.class);
-                intent5.putExtra("ID", ParkId_int);
+            case R.id.btn_user_road_home:
+                Intent intent5 = new Intent(this, UserRoadCloudviewHomeActivity.class);
+                intent5.putExtra("userRoadId", userRoadId);
                 startActivity(intent5);
-                finish();
                 break;
-            case R.id.btn_park_facility:
-                Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewFacilityActivity.class);
-                intent6.putExtra("ID", ParkId_int);
+/*            case R.id.btn_road_review:
+                Intent intent6 = new Intent(this, RoadCloudviewReviewActivity.class);
+                intent6.putExtra("roadId", roadId);
+                intent6.putExtra("lat", startLat);
+                intent6.putExtra("lng", startLng);
+                startActivity(intent6);
+                finish();
+                break;*/
+            case R.id.btn_user_road_path:
+                Intent intent6 = new Intent(this, UserRoadCloudviewPathActivity.class);
+                intent6.putExtra("userRoadId", userRoadId);
+                intent6.putExtra("lat", startLat);
+                intent6.putExtra("lng", startLng);
                 startActivity(intent6);
                 finish();
                 break;
@@ -182,18 +204,16 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         super.onBackPressed();
     }
 
-    public void getParkById(int id) {
+    public void getUserRoadById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getParkById(id).enqueue(new Callback<ParkRes>() {
+        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
             @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
                 if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + parkRes.toString());
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
                 } else {
-                    // 리스폰스 실패  400, 500 등
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -205,17 +225,16 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
             }
 
             @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
     }
 
-    public void getParkReview(int id) {
+    public void getUserRoadReview(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getParkReview(id).enqueue(new Callback<ReviewRes>() {
+        service.getUserRoadReview(id).enqueue(new Callback<ReviewRes>() {
             @Override
             public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
                 if (response.isSuccessful()) {
