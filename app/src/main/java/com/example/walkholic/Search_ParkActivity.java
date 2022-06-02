@@ -55,6 +55,19 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_current_location;
     Button btn_set_location;
 
+    Button btn_fil_football;
+    Button btn_fil_basketball;
+    Button btn_fil_badminton;
+    Button btn_fil_tennis;
+    Button btn_fil_gateball;
+    Button btn_fil_cycle;
+    Button btn_fil_exercise;
+    Button btn_fil_health;
+    Button btn_fil_summerhouse;
+    Button btn_fil_fountain;
+    Button btn_fil_parking;
+
+
     TextInputEditText textInputEditText;
     ImageButton imageButton;
 
@@ -74,6 +87,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
     Handler mHandler = new Handler();
+
+    ParkOption parkOption = new ParkOption();
 
 
     @Override
@@ -166,6 +181,18 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
 
+        btn_fil_football = findViewById(R.id.btn_fil_football);
+        btn_fil_basketball = findViewById(R.id.btn_fil_basketball);
+        btn_fil_badminton = findViewById(R.id.btn_fil_badminton);
+        btn_fil_tennis = findViewById(R.id.btn_fil_tennis);
+        btn_fil_gateball = findViewById(R.id.btn_fil_gateball);
+        btn_fil_cycle = findViewById(R.id.btn_fil_cycle);
+        btn_fil_exercise = findViewById(R.id.btn_fil_exercise);
+        btn_fil_health = findViewById(R.id.btn_fil_health);
+        btn_fil_summerhouse = findViewById(R.id.btn_fil_summerhouse);
+        btn_fil_fountain = findViewById(R.id.btn_fil_fountain);
+        btn_fil_parking = findViewById(R.id.btn_fil_parking);
+
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -179,6 +206,19 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_set_location.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
+
+
+        btn_fil_football.setOnClickListener(this);
+        btn_fil_basketball.setOnClickListener(this);
+        btn_fil_badminton.setOnClickListener(this);
+        btn_fil_tennis.setOnClickListener(this);
+        btn_fil_gateball.setOnClickListener(this);
+        btn_fil_cycle.setOnClickListener(this);
+        btn_fil_exercise.setOnClickListener(this);
+        btn_fil_health.setOnClickListener(this);
+        btn_fil_summerhouse.setOnClickListener(this);
+        btn_fil_fountain.setOnClickListener(this);
+        btn_fil_parking.setOnClickListener(this);
     }
 
     @Override
@@ -260,6 +300,63 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 Log.d("dlgochan", "새로고침 버튼 클릭!");
                 break;
 
+            //김재현 추가 해찬님 검토바랍니다
+            case R.id.btn_fil_football:
+                setParkOption("축구");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_basketball:
+                setParkOption("농구");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_badminton:
+                setParkOption("배드민턴");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_tennis:
+                setParkOption("테니스");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_gateball:
+                setParkOption("게이트볼");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_cycle:
+                setParkOption("사이클");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_exercise:
+                setParkOption("운동");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_health:
+                setParkOption("헬스");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_summerhouse:
+                setParkOption("정자");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_fountain:
+                setParkOption("분수");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+            case R.id.btn_fil_parking:
+                setParkOption("주차");
+                Log.d("dlgochan", " 파크옵션정보 : " +parkOption.toString());
+                getParkByFilter(mlat,mlon, parkOption);
+                break;
+
         }
     }
 
@@ -323,6 +420,49 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    //김재현 추가 해찬님 검토바랍니다
+    public void setParkOption(String option){
+        switch (option) {
+            case "축구":
+                parkOption.set축구(true);
+                break;
+            case "농구":
+                parkOption.set농구(true);
+                break;
+            case "배드민턴":
+                parkOption.set배드민턴(true);
+                break;
+            case "테니스":
+                parkOption.set테니스(true);
+                break;
+            case "게이트볼":
+                parkOption.set게이트볼(true);
+                break;
+            case "사이클":
+                parkOption.set사이클(true);
+                break;
+            case "운동":
+                parkOption.set운동(true);
+                break;
+            case "헬스":
+                parkOption.set헬스(true);
+                break;
+            case "정자":
+                parkOption.set정자(true);
+                break;
+            case "분수":
+                parkOption.set분수(true);
+                break;
+            case "주차":
+                parkOption.set주차(true);
+                break;
+
+
+        }
+    }
+
+
+
     public void getParkByFilter(double lat, double lng, ParkOption option) {
         final String TAG = "dlgochan";
 
@@ -333,6 +473,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
                     parkRes = response.body();
+                    addMarketMarker(parkRes.getData());
+                    tMapView.setZoomLevel(13);
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등

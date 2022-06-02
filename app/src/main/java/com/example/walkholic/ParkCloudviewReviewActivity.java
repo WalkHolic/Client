@@ -17,6 +17,7 @@ import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_back;
     Button btn_park_home;
     Button btn_park_facility;
+    FloatingActionButton btn_write_review;
 
     ListView listView;
 
@@ -68,6 +70,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_back = findViewById(R.id.back_btn);
         btn_park_home = findViewById(R.id.btn_park_home);
         btn_park_facility = findViewById(R.id.btn_park_facility);
+        btn_write_review = findViewById(R.id.btn_write_review);
 
         listView = findViewById(R.id.road_review_list);
         btn_home.setOnClickListener(this);
@@ -77,6 +80,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_back.setOnClickListener(this);
         btn_park_home.setOnClickListener(this);
         btn_park_facility.setOnClickListener(this);
+        btn_write_review.setOnClickListener(this);
 
         ArrayList<String> usernamelist = new ArrayList<>();
         ArrayList<String> commentlist = new ArrayList<>();
@@ -173,6 +177,11 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
                 intent6.putExtra("ID", ParkId_int);
                 startActivity(intent6);
                 finish();
+                break;
+            case R.id.btn_write_review:
+                Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
+                intent7.putExtra("ID", ParkId_int);
+                startActivity(intent7);
                 break;
         }
     }

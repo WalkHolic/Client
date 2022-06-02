@@ -18,6 +18,7 @@ import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_road_home;
     Button btn_road_review;
     Button btn_road_path;
+    FloatingActionButton btn_write_review;
 
     ListView listView;
 
@@ -79,6 +81,7 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_road_home = findViewById(R.id.btn_road_home);
         btn_road_review = findViewById(R.id.btn_road_review);
         btn_road_path = findViewById(R.id.btn_road_path);
+        btn_write_review = findViewById(R.id.btn_write_review);
 
         listView = findViewById(R.id.road_review_list);
 
@@ -91,6 +94,7 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_road_home.setOnClickListener(this);
         btn_road_review.setOnClickListener(this);
         btn_road_path.setOnClickListener(this);
+        btn_write_review.setOnClickListener(this);
 
         ArrayList<String> usernamelist = new ArrayList<>();
         ArrayList<String> commentlist = new ArrayList<>();
@@ -193,6 +197,12 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
                 intent6.putExtra("lng", startLng);*/
                 startActivity(intent6);
                 finish();
+                break;
+
+            case R.id.btn_write_review:
+                Intent intent7 = new Intent(getApplicationContext(), WriteReviewActivity.class);
+                intent7.putExtra("roadId", roadId);
+                startActivity(intent7);
                 break;
         }
     }
