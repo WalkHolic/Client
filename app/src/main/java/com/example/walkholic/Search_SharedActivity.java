@@ -275,7 +275,7 @@ public class Search_SharedActivity extends AppCompatActivity implements View.OnC
                         intent8.putExtra("userRoad", true);
                         startActivity(intent8);
                     }
-                }, 700);
+                }, 1000);
                 break;
             case R.id.btn_current_location:
                 TrackingMode = true;
