@@ -5,101 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="1">
-
-    <Button
-        android:id="@+id/back_btn"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/cloud_view_top_btn_bg"
-        android:text=""
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageView
-        android:id="@+id/parkimageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        tools:srcCompat="@drawable/basic_park" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_park_home"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:text="홈"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_park_review"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/border_menu"
-            android:text="리뷰"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_park_facility"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:text="시설"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ScrollView
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/cloud_view_top_btn_bg"
+            android:text=""
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/parkimageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:srcCompat="@drawable/basic_park" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_park_home"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="홈"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btn_park_review"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_menu"
+                android:fontFamily="@font/custom_font_family"
+                android:text="리뷰"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btn_park_facility"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="시설"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/room_under_bar"
-            android:fillViewport="true">
-
-            <ListView
-                android:id="@+id/road_review_list"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_write_review"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="15dp"
+                android:clickable="true"
+                android:background="@drawable/btn_write_review" />
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:listSelector="@android:color/transparent">
-            </ListView>
+                android:layout_above="@+id/room_under_bar"
+                android:fillViewport="true">
 
-        </ScrollView>
-    </LinearLayout>
+                <ListView
+                    android:id="@+id/park_review_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"></ListView>
+            </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_gravity="center_horizontal|end">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_write_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="270dp"
-            android:clickable="true"
-            app:srcCompat="@drawable/btn_write_review" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -111,8 +108,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
@@ -127,14 +124,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/custom_font_family"
-                android:textStyle="bold"
-                android:text="홈" />
+                android:text="홈"
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
@@ -149,15 +147,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/custom_font_family"
-                android:textStyle="bold"
+                android:text="검색"
                 android:textColor="@color/black"
-                android:text="검색" />
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
@@ -172,14 +171,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/custom_font_family"
-                android:textStyle="bold"
-                android:text="생성" />
+                android:text="생성"
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
@@ -195,8 +195,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="1dp"
                 android:fontFamily="@font/custom_font_family"
-                android:textStyle="bold"
-                android:text="마이페이지" />
+                android:text="마이페이지"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

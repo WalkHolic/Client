@@ -42,7 +42,7 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_road_home;
     Button btn_road_review;
     Button btn_road_path;
-    FloatingActionButton btn_write_review;
+    Button btn_write_review;
 
     ListView listView;
 

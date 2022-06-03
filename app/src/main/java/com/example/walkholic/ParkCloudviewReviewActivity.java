@@ -38,7 +38,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
     Button btn_back;
     Button btn_park_home;
     Button btn_park_facility;
-    FloatingActionButton btn_write_review;
+    Button btn_write_review;
 
     ListView listView;
 
@@ -72,7 +72,7 @@ public class ParkCloudviewReviewActivity extends AppCompatActivity implements Vi
         btn_park_facility = findViewById(R.id.btn_park_facility);
         btn_write_review = findViewById(R.id.btn_write_review);
 
-        listView = findViewById(R.id.road_review_list);
+        listView = findViewById(R.id.park_review_list);
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);

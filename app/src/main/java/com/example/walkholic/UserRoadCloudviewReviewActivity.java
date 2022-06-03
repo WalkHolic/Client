@@ -41,7 +41,7 @@ public class UserRoadCloudviewReviewActivity extends AppCompatActivity implement
     Button btn_user_road_home;
     Button btn_user_road_review;
     Button btn_user_road_path;
-    FloatingActionButton btn_write_review;
+    Button btn_write_review;
 
     ImageView userRoadImageView;
 
