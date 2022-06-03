@@ -517,15 +517,15 @@ public class RequestMethod {
         });
     }
 
-    public void updateParkReview(int id) {
+    public void updateParkReview(int id,RequestBody hello,MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.updateParkReview(id).enqueue(new Callback<UserRoadRes>() {
+        service.updateParkReview(id,hello,file).enqueue(new Callback<ReviewRes>() {
             @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
                 if (response.isSuccessful()) {
-                    userRoadRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                    reviewRes = response.body();
+                    //Log.d(TAG, "onResponse Success : " + roadRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -538,7 +538,7 @@ public class RequestMethod {
             }
 
             @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -627,7 +627,7 @@ public class RequestMethod {
         });
     }
 
-    public void updateRoadReview(int id) {
+    /*public void updateRoadReview(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.updateRoadReview(id).enqueue(new Callback<ReviewRes>() {
@@ -652,7 +652,7 @@ public class RequestMethod {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
-    }
+    }*/
 
 
     public void uploadUserRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
@@ -736,7 +736,7 @@ public class RequestMethod {
         });
     }
 
-    public void updateUserRoadReview(int id) {
+    /*public void updateUserRoadReview(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.updateUserRoadReview(id).enqueue(new Callback<ReviewRes>() {
@@ -761,7 +761,7 @@ public class RequestMethod {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
-    }
+    }*/
 
     public void updateMyRoad(int rid, RequestBody userRoadRequestDto, MultipartBody.Part file) {
         final String TAG = "dlgochan";
@@ -785,6 +785,59 @@ public class RequestMethod {
 
             @Override
             public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+  
+    public void getMyParkReview() {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getMyParkReview().enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+    public void getMyTrailReview() {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getMyTrailReview().enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -816,6 +869,34 @@ public class RequestMethod {
             }
         });
     }
+
+    public void getMySharedTrailReview() {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getMySharedTrailReview().enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
 
     public void getRoadByHashtag(String keyword) {
         final String TAG = "dlgochan";

@@ -56,10 +56,12 @@ public interface ServerRequestApi {
     @DELETE("/park/review/{id}")
         // 공원 리뷰 삭제
     Call<ReviewRes> delParkReview(@Path("id") int id);
-
+    @Multipart
     @PUT("/park/review/{id}")
         // 공원 리뷰 수정
-    Call<UserRoadRes> updateParkReview(@Path("id") int id);
+    Call<ReviewRes> updateParkReview(@Path("id") int id,
+                                     @Part("reviewRequestDto")RequestBody reviewRequestDto,
+                                     @Part MultipartBody.Part file);
 
 
     /* Road (기본 산책로) */
@@ -93,9 +95,12 @@ public interface ServerRequestApi {
         // 산책로 리뷰 삭제
     Call<ReviewRes> delRoadReview(@Path("id") int id);
 
+    @Multipart
     @PUT("/road/review/{id}")
         // 산책로 리뷰 수정
-    Call<ReviewRes> updateRoadReview(@Path("id") int id);
+    Call<ReviewRes> updateRoadReview(@Path("id") int id,
+                                     @Part("reviewRequestDto")RequestBody reviewRequestDto,
+                                     @Part MultipartBody.Part file);;
 
 
     /* Shared Road (공유 산책로) */
@@ -126,9 +131,12 @@ public interface ServerRequestApi {
         // 공유 산책로 리뷰 삭제
     Call<ReviewRes> delUserRoadReview(@Path("id") int id);
 
+    @Multipart
     @PUT("/userRoad/review/{id}")
         // 공유 산책로 리뷰 수정
-    Call<ReviewRes> updateUserRoadReview(@Path("id") int id);
+    Call<ReviewRes> updateUserRoadReview(@Path("id") int id,
+                                         @Part("reviewRequestDto")RequestBody reviewRequestDto,
+                                         @Part MultipartBody.Part file);;
 
 
     /* My Information (마이페이지, 지도) */
@@ -158,6 +166,16 @@ public interface ServerRequestApi {
     @GET("/user/road/{rid}/share")
         // 공유 상태 변경
     Call<UserRoadSharedRes> changeShareFlag(@Path("rid") int rid);
+
+    //내 공원 리뷰 조회
+    @GET("park/user/review")
+    Call<ReviewRes>  getMyParkReview();
+    //내 산책로 리뷰 조회
+    @GET("road/user/review")
+    Call<ReviewRes>  getMyTrailReview();
+    //내 공유산책로 리뷰 조회
+    @GET("userRoad/user/review")
+    Call<ReviewRes>  getMySharedTrailReview();
 
 
     // Login

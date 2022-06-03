@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +35,9 @@ import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
 import com.example.walkholic.DataClass.Data.UserRoad;
 import com.example.walkholic.DataClass.Data.UserRoadPath;
+import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
+import com.example.walkholic.DataClass.Response.UserRoadSharedRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 import com.google.gson.Gson;
@@ -59,6 +62,8 @@ public class TrailListViewAdapter extends BaseAdapter {
     Context context;
     ContentResolver contentResolver;
     UserRoad temp = new UserRoad();
+    UserRoadSharedRes userRoadSharedRes = new UserRoadSharedRes();
+    RoadRes roadRes = new RoadRes();
     List<UserRoad> userRoadList;
     List<UserRoadPath> userRoadPathList;
     UserRoadRes userRoadRes;
@@ -119,6 +124,8 @@ public class TrailListViewAdapter extends BaseAdapter {
         Button btn_delete = (Button) view.findViewById(R.id.btn_deleteTrail);
         Button btn_modify = (Button) view.findViewById(R.id.btn_modifyTrail);
 
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.shareCheck);
+
         contentResolver = view.getContext().getContentResolver();
 
 
@@ -149,10 +156,25 @@ public class TrailListViewAdapter extends BaseAdapter {
         //trailEnd.setText(listdata.getTrailEnd());
         trailDesc.setText(listdata.getTrailDescription());
 
+        if(listdata.isShared())checkBox.setChecked(true);
+        else checkBox.setChecked(false);
+
         //가져온 객체안에 있는 글자들을 각 뷰에 적용한다
         //trailName.setText(listdata.getName()); //원래 int형이라 String으로 형 변환
         //trailInfo.setText("총 길이 : "+listdata.getTotalDistance() +"km\n시작 주소 : " + listdata.getStartAddr() + "\n산책로 설명 : " + listdata.getRoad_desc());
 
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeShareFlag(listdata.getRid());
+                Intent intent = ((Activity) context).getIntent();
+
+                ((Activity) context).finish(); //현재 액티비티 종료 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
+                ((Activity) context).startActivity(intent); //현재 액티비티 재실행 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
+            }
+        });
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +187,10 @@ public class TrailListViewAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context.getApplicationContext(), ModifyTrail.class);
                 intent.putExtra("rid", listdata.getRid());
-                context.startActivity(intent);
+                ((Activity) context).finish(); //현재 액티비티 종료 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
+                ((Activity) context).startActivity(intent); //현재 액티비티 재실행 실시
+                ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
             }
         });
 
@@ -176,7 +201,7 @@ public class TrailListViewAdapter extends BaseAdapter {
     ;
 
     // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
-    public void addItemToList(String imageURL, String trailName, List<String> hashtags, Double trailDistance, String trailStart, String trailEnd, String trailDesc, int rid) {
+    public void addItemToList(String imageURL, String trailName, List<String> hashtags, Double trailDistance, String trailStart, String trailEnd, String trailDesc, int rid, boolean isShared) {
         com.example.walkholic.TrailListViewAdapterData listdata = new com.example.walkholic.TrailListViewAdapterData();
         listdata.setImageURL(imageURL);
         listdata.setTrailName(trailName);
@@ -186,6 +211,7 @@ public class TrailListViewAdapter extends BaseAdapter {
         listdata.setTrailEnd(trailEnd);
         listdata.setTrailDescription(trailDesc);
         listdata.setRid(rid);
+        listdata.setShared(isShared);
 
         //값들의 조립이 완성된 listdata객체 한개를 list배열에 추가
         list.add(listdata);
@@ -207,6 +233,7 @@ public class TrailListViewAdapter extends BaseAdapter {
             public void onClick(DialogInterface dialog, int id) {
                 delMyRoad(list.get(i).getRid());
                 Intent intent = ((Activity) context).getIntent();
+
                 ((Activity) context).finish(); //현재 액티비티 종료 실시
                 ((Activity) context).overridePendingTransition(0, 0); //효과 없애기
                 ((Activity) context).startActivity(intent); //현재 액티비티 재실행 실시
@@ -223,6 +250,36 @@ public class TrailListViewAdapter extends BaseAdapter {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void changeShareFlag(int rid) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.changeShareFlag(rid).enqueue(new Callback<UserRoadSharedRes>() {
+            @Override
+            public void onResponse(Call<UserRoadSharedRes> call, Response<UserRoadSharedRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    userRoadSharedRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadSharedRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
 

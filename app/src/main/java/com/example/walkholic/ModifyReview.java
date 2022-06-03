@@ -1,20 +1,21 @@
 package com.example.walkholic;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,11 +28,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
-import com.example.walkholic.DataClass.DTO.UserRoadRequestDto;
-import com.example.walkholic.DataClass.DTO.UserRoadUpdateRequestDto;
-import com.example.walkholic.DataClass.Data.UserRoad;
-import com.example.walkholic.DataClass.Data.UserRoadPath;
+import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
@@ -40,8 +39,6 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -50,100 +47,72 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ModifyTrail extends AppCompatActivity {
-    Context context;
-    ContentResolver contentResolver;
-    UserRoad temp = new UserRoad();
-    List<UserRoad> userRoadList;
-    List<UserRoadPath> userRoadPathList;
-    UserRoadRes userRoadRes;
-    Button btn_hash;
-    MultipartBody.Part trailImage = null;
-    UserRoadUpdateRequestDto dto;
-
+public class ModifyReview extends AppCompatActivity {
     // 로그에 사용할 TAG 변수 선언
     final private String TAG = getClass().getSimpleName();
 
     // 사용할 컴포넌트 선언
     private EditText reviewEdit;
-    private Button btn_modify_ok, getBtn_modify_cancel;
+    private Button reg_button;
     private RatingBar reviewRating;
-    private EditText trailName, trailDesc;
-    private TextView hashlist;
-    private ImageView trailImageView;
+    private TextView titleText;
+    ParkRes park;
 
     // 리퀘스트 사용 변수
     private Uri imageUri;
+    private ImageView reviewImageview;
+    private ReviewRes reviewRes = new ReviewRes();
+    private int objectId = -1;
+    private int reviewId = -1;
+    private String content = null;
+    private String url = null;
+    private float score = 0;
+    Handler handler = new Handler();
+    private int objectType = -1;
 
-    private int id = -1;
-    private String name = null;
-    private int road_id = -99;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modify_trail);
+        setContentView(R.layout.activity_modify_review);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        editor = preferences.edit();
+
+        objectType = preferences.getInt("objectType", 1);
 
         //원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
-//        id = getIntent().getStringExtra("id");
-//        name = getIntent().getStringExtra("name");
-        name = "Test Name";
-        road_id = getIntent().getIntExtra("rid",-1);
-
+        objectId = getIntent().getIntExtra("objectId", 0);
+        reviewId = getIntent().getIntExtra("reviewId", 0);
+        content = getIntent().getStringExtra("reviewContent");
+        url = getIntent().getStringExtra("reviewImage");
+        score = getIntent().getFloatExtra("reviewScore", 0);
+        objectType = getIntent().getIntExtra("objectType", 0);
 
 // 컴포넌트 초기화
-        dto = new UserRoadUpdateRequestDto();
+        titleText = findViewById(R.id.titleText);
+        reviewEdit = findViewById(R.id.reviewEdit);
+        reviewRating = findViewById(R.id.reviewRating);
+        reg_button = findViewById(R.id.reg_button);
+        reviewImageview = findViewById(R.id.reviewImageview);
 
-        trailName = findViewById(R.id.road_name);
-        trailDesc = findViewById(R.id.road_desc);
-        hashlist = findViewById(R.id.hashText);
+        getParkById(objectId);
 
-        btn_modify_ok = findViewById(R.id.btn_modify_ok);
-        getBtn_modify_cancel = findViewById(R.id.btn_modify_cancel);
-
-        trailImageView = findViewById(R.id.trailImage);
-
-        btn_hash = findViewById(R.id.btn_hash);
-
-        btn_hash.setOnClickListener(new Button.OnClickListener() {
-            final List<String> tempString = new ArrayList<String>();
-            final String[] hashs = new String[]{"나들이", "물놀이", "아이와함께", "걷기좋은", "드라이브코스", "데이트코스", "분위기좋은", "런닝", "벚꽃명소", "힐링"};
-            final String[] textTags = {""};
-
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(), "버튼클릭", Toast.LENGTH_SHORT).show();
-                tempString.clear();
-                // TODO : click event
-                new androidx.appcompat.app.AlertDialog.Builder(view.getContext()).setTitle("해시태그 선택")
-                        .setMultiChoiceItems(hashs, null, new DialogInterface.OnMultiChoiceClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                                        if (b) {
-                                            tempString.add(hashs[i]);
-                                        } else {
-                                            tempString.remove(i);
-                                        }
-                                    }
-                                }
-                        )
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                for (String temp : tempString
-                                ) {
-                                    textTags[0] = textTags[0] + "#" + temp + " ";
-                                }
-                                hashlist.setText(textTags[0]);
-                                textTags[0] = "";
-                            }
-                        }).show();
-                dto.setHashtag(tempString);
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // 시간 지난 후 실행할 코딩
+                titleText.setText(park.getData().get(0).getName());
             }
-        });
+        }, 500); // 0.5초후
+        reviewEdit.setText(content);
+        reviewRating.setRating(score);
+        Glide.with(this.getApplicationContext()).load(url).into(reviewImageview);
 // 버튼 이벤트 추가
-        btn_modify_ok.setOnClickListener(view -> {
-// 산책로 변경 함수
+        reg_button.setOnClickListener(view -> {
+// 리뷰 등록 함수
             // 사진
             File realFile = null;
             MultipartBody.Part thumbnail = null;
@@ -164,33 +133,24 @@ public class ModifyTrail extends AppCompatActivity {
                 RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), realFile);
                 thumbnail = MultipartBody.Part.createFormData("thumbnail", realFile.getName(), requestFile);
             }
-            // 산책로 정보 갱신
-
-
-            dto.setTrailName(trailName.getText().toString());
-            dto.setDescription(trailDesc.getText().toString());
+            // 리뷰
+            ReviewRequestDto tmp = new ReviewRequestDto();
+            tmp.setContent(reviewEdit.getText().toString());
+            tmp.setScore((double) reviewRating.getRating());
             Gson gson = new Gson();
-            String stringDto = gson.toJson(dto);
+            String stringDto = gson.toJson(tmp);
             RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
 
-
-            
             //업로드
-            updateMyRoad(road_id, requestBody1, thumbnail);
-            Intent intent1 = new Intent(getApplicationContext(), WalkListActivity.class);
+
+            updateParkReview(reviewId, requestBody1, thumbnail);
+            Intent intent1 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
             startActivity(intent1);
-            finish();
-
-
-        });
-        getBtn_modify_cancel.setOnClickListener(view -> {
-            Intent intent2 = new Intent(getApplicationContext(), WalkListActivity.class);
-            startActivity(intent2);
             finish();
         });
 
         // 사진 등록 버튼
-        trailImageView.setOnClickListener(view -> {
+        reviewImageview.setOnClickListener(view -> {
             imageUri = null;
             DialogInterface.OnClickListener albumListner = new DialogInterface.OnClickListener() {
                 @Override
@@ -214,7 +174,6 @@ public class ModifyTrail extends AppCompatActivity {
 
     private String getRealPathFromUri(Uri contentUri) {
         if (contentUri.getPath().startsWith("/storage")) {
-            Log.d("dlgochan", "if- contentUri.getPath() : " + contentUri.getPath());
             return contentUri.getPath();
         }
         String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
@@ -224,7 +183,6 @@ public class ModifyTrail extends AppCompatActivity {
         try {
             int columnIndex = cursor.getColumnIndex(columns[0]);
             if (cursor.moveToFirst()) {
-                Log.d("dlgochan", "cursor.getString(columnIndex) : " + cursor.getString(columnIndex));
                 return cursor.getString(columnIndex);
             }
         } finally {
@@ -232,10 +190,6 @@ public class ModifyTrail extends AppCompatActivity {
         }
         return null;
     }
-
-
-
-
 
     // 앨범 선택
     ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -245,7 +199,7 @@ public class ModifyTrail extends AppCompatActivity {
                     if (result != null) {
                         Log.d("dlgochan", "result: " + result);
                         imageUri = result;
-                        trailImageView.setImageURI(result);
+                        reviewImageview.setImageURI(result);
                     }
                 }
             });
@@ -254,14 +208,14 @@ public class ModifyTrail extends AppCompatActivity {
         getContent.launch("image/*");
     }
 
-    public void updateMyRoad(int rid, RequestBody userRoadRequestDto, MultipartBody.Part file) {
+    public void updateParkReview(int id, RequestBody body, MultipartBody.Part file) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.updateMyRoad(rid, userRoadRequestDto, file).enqueue(new Callback<UserRoadRes>() {
+        service.updateParkReview(id, body, file).enqueue(new Callback<ReviewRes>() {
             @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
                 if (response.isSuccessful()) {
-                    userRoadRes = response.body();
+                    reviewRes = response.body();
                     //Log.d(TAG, "onResponse Success : " + roadRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
@@ -275,25 +229,41 @@ public class ModifyTrail extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
     }
 
+    public void getParkById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getParkById(id).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    park = response.body();
+                    Log.d(TAG, "onResponse Success : " + park.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
     public static String getPath(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -413,5 +383,5 @@ public class ModifyTrail extends AppCompatActivity {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
-}
 
+}

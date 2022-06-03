@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SharedPreferences 수정을 위한 Editor 객체를 얻어옵니다.
         editor = preferences.edit();
         currentSteps = preferences.getInt("step", 0);
-        progBar.setProgress((int) currentSteps / 10);
+        progBar.setProgress((int) currentSteps / 100);
 
         // 활동 퍼미션 체크
         if (ContextCompat.checkSelfPermission(this,
