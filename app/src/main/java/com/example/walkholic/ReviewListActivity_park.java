@@ -35,6 +35,8 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -62,7 +64,6 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
     ImageView imageView;
     Uri imageUri;
     ListView reviewListView;
-    ParkRes park1;
 
     private ReviewRes reviewRes;
     private ReviewRequestDto reviewRequestDto;
@@ -160,60 +161,15 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
         adapter = new ReviewListViewAdapter(this);
         Log.d("리스트뷰테스트", "테테테테테스트");
         if (reviewRes.getData() == null) return;
+
         for (int i = 0; i < reviewRes.getData().size(); i++) {
             temp = reviewRes.getData().get(i);
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 
-            getParkById(temp.getParkId());
-            Log.d("리스트뷰테스트", temp.getParkId().toString());
-
-            // 시간 지난 후 실행할 코딩
-            Log.d("리스트뷰테스트", "mmmm : " + temp.getContent() + " , " + temp.getScore() + " , " + temp.getPngPath() + " , " + temp.getId() + " , " + temp.getParkId());
-            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(), temp.getId(), temp.getParkId());
+            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getFk());
+            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getFk(), temp.getName());
         }
         reviewListView.setAdapter(adapter);
-        Log.d("리스트뷰테스트", "테테테테테스트2");
-    }
-
-    public void getParkById(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-       /* Call<ParkRes> callSync = service.getParkById(id);
-        try {
-            Response<ParkRes> response = callSync.execute();
-            park1 = response.body();
-
-            //API response
-            Log.d(TAG, "getParkById: " + park1.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
-
-        service.getParkById(id).enqueue(new Callback<ParkRes>() {
-            @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    park1 = response.body();
-                    Log.d(TAG, "onResponse Success : " + park1.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
     }
 
     public void getMyParkReview() {
@@ -242,6 +198,4 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
             }
         });
     }
-
-
 }

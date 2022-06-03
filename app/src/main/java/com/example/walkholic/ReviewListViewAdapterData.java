@@ -14,7 +14,6 @@ public class ReviewListViewAdapterData {
     private int parkID;
     private String name;
 
-
     public String getName() {
         return name;
     }

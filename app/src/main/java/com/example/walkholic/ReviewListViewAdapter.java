@@ -133,9 +133,6 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
         //objectId = preferences.getInt("objectID",0);
         objectId = listdata.getParkID();
-        if (objectType == 1) getParkById(objectId);
-        else if (objectType == 2) getRoadById(objectId);
-        else if (objectType == 3) getUserRoadById(objectId);
 
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -169,7 +166,8 @@ public class ReviewListViewAdapter extends BaseAdapter {
         //reviewScore.setText(listdata.getScore().toString());
         reviewRating.setRating(listdata.getScore().floatValue());
 
-
+        //objectId = listdata.getParkID();
+        reviewObjectName.setText(listdata.getName());
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,13 +197,14 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
     }// 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 
-    public void addItemToList(String reviewCont, Double score, String url, int id, int parkid) {
+    public void addItemToList(String reviewCont, Double score, String url, int id, int parkid, String name) {
         com.example.walkholic.ReviewListViewAdapterData listdata = new com.example.walkholic.ReviewListViewAdapterData();
         listdata.setImageURL(url);
         listdata.setReviewContent(reviewCont);
         listdata.setScore(score);
         listdata.setReviewID(id);
         listdata.setParkID(parkid);
+        listdata.setName(name);
 
 
         //값들의 조립이 완성된 listdata객체 한개를 list배열에 추가
@@ -321,93 +320,6 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
             @Override
             public void onFailure(Call<ReviewRes> call, Throwable t) {
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void getParkById(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getParkById(id).enqueue(new Callback<ParkRes>() {
-            @Override
-            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    park = response.body();
-                    Log.d(TAG, "onResponse Success : " + park.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ParkRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void getRoadById(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getRoadById(id).enqueue(new Callback<RoadRes>() {
-            @Override
-            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
-                if (response.isSuccessful()) {
-                    // 리스폰스 성공 시 200 OK
-                    road = response.body();
-                    Log.d(TAG, "onResponse Success : " + road.toString());
-                } else {
-                    // 리스폰스 실패  400, 500 등
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RoadRes> call, Throwable t) {
-                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
-                Log.d(TAG, "onFailure : " + t.getMessage());
-            }
-        });
-    }
-
-    public void getUserRoadById(int id) {
-        final String TAG = "dlgochan";
-        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
-            @Override
-            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
-                if (response.isSuccessful()) {
-                    userRoad = response.body();
-                    Log.d(TAG, "onResponse Success : " + userRoad.toString());
-                } else {
-                    Log.d(TAG, "RES msg : " + response.message());
-                    try {
-                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, String.format("RES err code : %d", response.code()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });

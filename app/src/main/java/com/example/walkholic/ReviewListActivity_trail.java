@@ -157,8 +157,8 @@ public class ReviewListActivity_trail extends AppCompatActivity implements View.
             temp = reviewRes.getData().get(i);
             getRoadById(temp.getParkId());
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
-            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
-            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getParkId());
+//            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
+            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getFk(), temp.getName());
 
         }
         reviewListView.setAdapter(adapter);

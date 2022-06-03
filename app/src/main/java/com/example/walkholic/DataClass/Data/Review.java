@@ -13,6 +13,9 @@ public class Review {
     @SerializedName("userName")
     @Expose
     private String userName;
+    @SerializedName("name")
+    @Expose
+    private String name;
     @SerializedName(value="fk", alternate={"parkId", "roadId", "userRoadId"})
     @Expose
     private Integer fk;
@@ -50,12 +53,20 @@ public class Review {
         this.userName = userName;
     }
 
-    public Integer getParkId() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getFk() {
         return fk;
     }
 
-    public void setParkId(Integer parkId) {
-        this.fk = parkId;
+    public void setFk(Integer fk) {
+        this.fk = fk;
     }
 
     public Double getScore() {
@@ -88,6 +99,7 @@ public class Review {
                 "id=" + id +
                 ", userId=" + userId +
                 ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
                 ", fk=" + fk +
                 ", score=" + score +
                 ", content='" + content + '\'' +
