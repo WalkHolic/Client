@@ -27,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Data.Review;
+import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -34,6 +35,8 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -59,6 +62,9 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
     ImageView imageView;
     Uri imageUri;
     ListView reviewListView;
+    List<Integer> parkIds;
+
+    Handler mHandler = new Handler();
 
     private ReviewRes reviewRes;
     private ReviewRequestDto reviewRequestDto;
@@ -156,12 +162,13 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
         adapter = new ReviewListViewAdapter(this);
         Log.d("리스트뷰테스트", "테테테테테스트");
         if (reviewRes.getData() == null) return;
+
         for (int i = 0; i < reviewRes.getData().size(); i++) {
             temp = reviewRes.getData().get(i);
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 
-            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
-            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getParkId());
+            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getFk());
+            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getFk(), temp.getName());
 
         }
         reviewListView.setAdapter(adapter);
@@ -194,7 +201,5 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
             }
         });
     }
-
-
 
 }

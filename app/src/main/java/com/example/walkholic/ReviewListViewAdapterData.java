@@ -12,6 +12,15 @@ public class ReviewListViewAdapterData {
     private Double score;
     private String reviewContent;
     private int parkID;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
     public int getParkID() {

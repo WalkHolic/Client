@@ -143,21 +143,21 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
         //objectId = preferences.getInt("objectID",0);
         objectId = listdata.getParkID();
-        if(objectType == 1)getParkById(objectId);
-        else if(objectType == 2)getRoadById(objectId);
-        else if(objectType == 3)getUserRoadById(objectId);
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                // 시간 지난 후 실행할 코딩
-                Log.d("dlgochan", "objectType3 : " + objectType);
-                if(objectType == 1)reviewObjectName.setText(park.getData().get(0).getName());
-                else if(objectType == 2)reviewObjectName.setText(road.getData().get(0).getRoadName());
-                else if(objectType == 3)reviewObjectName.setText(userRoad.getData().get(0).getTrailName());
-            }
-        }, 500); // 0.5초후
-
-
+//        if(objectType == 1)getParkById(objectId);
+//        else if(objectType == 2)getRoadById(objectId);
+//        else if(objectType == 3)getUserRoadById(objectId);
+//
+//        handler.postDelayed(new Runnable() {
+//            public void run() {
+//                // 시간 지난 후 실행할 코딩
+//                Log.d("dlgochan", "objectType3 : " + objectType);
+//                if(objectType == 1)reviewObjectName.setText(park.getData().get(0).getName());
+//                else if(objectType == 2)reviewObjectName.setText(road.getData().get(0).getRoadName());
+//                else if(objectType == 3)reviewObjectName.setText(userRoad.getData().get(0).getTrailName());
+//            }
+//        }, 500); // 0.5초후
+        reviewObjectName.setText(listdata.getName());
+        Log.d("dlgochan", "listdata name : " + listdata.getName());
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,13 +187,14 @@ public class ReviewListViewAdapter extends BaseAdapter {
 
     }// 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 
-    public void addItemToList(String reviewCont, Double score, String url, int id, int parkid) {
+    public void addItemToList(String reviewCont, Double score, String url, int id, int parkid, String name) {
         com.example.walkholic.ReviewListViewAdapterData listdata = new com.example.walkholic.ReviewListViewAdapterData();
         listdata.setImageURL(url);
         listdata.setReviewContent(reviewCont);
         listdata.setScore(score);
         listdata.setReviewID(id);
         listdata.setParkID(parkid);
+        listdata.setName(name);
 
         //값들의 조립이 완성된 listdata객체 한개를 list배열에 추가
         list.add(listdata);
