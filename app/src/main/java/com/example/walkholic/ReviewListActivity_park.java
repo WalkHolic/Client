@@ -27,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Data.Review;
+import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -50,15 +51,18 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
     Button btn_walking;
     Button btn_mypage;
     Button btn_mypage2;
-    Button btn_modify,btn_delete;
+    Button btn_modify, btn_delete;
 
-    ConstraintLayout park, trail, shareTrail;
+    ParkRes park;
+    ConstraintLayout trail;
+    ConstraintLayout shareTrail;
     Handler handler = new Handler();
     ReviewListViewAdapter adapter;
     Review temp;
     ImageView imageView;
     Uri imageUri;
     ListView reviewListView;
+    ParkRes park1;
 
     private ReviewRes reviewRes;
     private ReviewRequestDto reviewRequestDto;
@@ -160,12 +164,56 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
             temp = reviewRes.getData().get(i);
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 
-            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
-            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getParkId());
+            getParkById(temp.getParkId());
+            Log.d("리스트뷰테스트", temp.getParkId().toString());
 
+            // 시간 지난 후 실행할 코딩
+            Log.d("리스트뷰테스트", "mmmm : " + temp.getContent() + " , " + temp.getScore() + " , " + temp.getPngPath() + " , " + temp.getId() + " , " + temp.getParkId());
+            adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(), temp.getId(), temp.getParkId());
         }
         reviewListView.setAdapter(adapter);
         Log.d("리스트뷰테스트", "테테테테테스트2");
+    }
+
+    public void getParkById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+       /* Call<ParkRes> callSync = service.getParkById(id);
+        try {
+            Response<ParkRes> response = callSync.execute();
+            park1 = response.body();
+
+            //API response
+            Log.d(TAG, "getParkById: " + park1.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
+
+        service.getParkById(id).enqueue(new Callback<ParkRes>() {
+            @Override
+            public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    park1 = response.body();
+                    Log.d(TAG, "onResponse Success : " + park1.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public void getMyParkReview() {
@@ -194,7 +242,6 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
             }
         });
     }
-
 
 
 }

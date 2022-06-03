@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Data.Review;
 import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 
@@ -46,6 +47,7 @@ public class ReviewListActivity_sharetrail extends AppCompatActivity implements 
     ImageView imageView;
     Uri imageUri;
     ListView reviewListView;
+    UserRoadRes userRoad;
 
     private ReviewRes reviewRes;
     private ReviewRequestDto reviewRequestDto;
@@ -152,6 +154,7 @@ public class ReviewListActivity_sharetrail extends AppCompatActivity implements 
         if (reviewRes.getData() == null) return;
         for (int i = 0; i < reviewRes.getData().size(); i++) {
             temp = reviewRes.getData().get(i);
+            getUserRoadById(temp.getParkId());
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
             Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
             adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getParkId());
@@ -161,6 +164,32 @@ public class ReviewListActivity_sharetrail extends AppCompatActivity implements 
         Log.d("리스트뷰테스트", "테테테테테스트2");
     }
 
+    public void getUserRoadById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoad = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoad.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
     public void getMySharedTrailReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
