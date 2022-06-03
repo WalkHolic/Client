@@ -81,6 +81,7 @@ public interface ServerRequestApi {
     Call<RoadRes> getRoadByHashtag(@Query("keyword") String keyword);
 
     // 리뷰 관련
+   @Multipart
     @POST("/road/{id}/review")
     // 산책로 리뷰 작성
     Call<ReviewRes> uploadRoadReview(@Path("id") int id,
@@ -117,6 +118,7 @@ public interface ServerRequestApi {
     Call<UserRoadRes> getUserRoadByCurrentLocation(@Query("lat") double lat, @Query("lng") double lng);
 
     // 리뷰 관련
+    @Multipart
     @POST("/userRoad/{id}/review")
     // 공유 산책로 리뷰 작성
     Call<ReviewRes> uploadUserRoadReview(@Path("id") int id,

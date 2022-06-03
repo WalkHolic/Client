@@ -2,6 +2,7 @@ package com.example.walkholic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -105,12 +106,21 @@ public class WriteReviewActivity extends AppCompatActivity {
             switch (kind){
                 case 1:
                     uploadParkReview(id, requestBody1, thumbnail);
+                    Intent intent1 = new Intent(getApplicationContext(), Search_ParkActivity.class);
+                    startActivity(intent1);
+                    finish();
                     break;
                 case 2:
                     uploadRoadReview(id, requestBody1, thumbnail);
+                    Intent intent2 = new Intent(getApplicationContext(), Search_WalkActivity.class);
+                    startActivity(intent2);
+                    finish();
                     break;
                 case 3:
                     uploadUserRoadReview(id, requestBody1, thumbnail);
+                    Intent intent3 = new Intent(getApplicationContext(), Search_SharedActivity.class);
+                    startActivity(intent3);
+                    finish();
                     break;
             }
         });
