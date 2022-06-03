@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener , SensorEventListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener {
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -60,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Sensor stepCountSensor;
     TextView stepCountView;
     TextView cals;
+    TextView badgeText;
+    ImageView badgeImage;
     ProgressBar progBar;
+    String cap;
+    int capInt;
     // 현재 걸음 수
     int currentSteps;
     double tt = 0;
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
 
         super.onResume();
+        //levelcheck();
         stepCountView = findViewById(R.id.stepCountView);
         progBar = findViewById(R.id.progressBar1);
         currentSteps = preferences.getInt("step", 0);
@@ -86,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        badgeImage = findViewById(R.id.badge_Image);
+        badgeText = findViewById(R.id.badge_Name);
         progBar = findViewById(R.id.progressBar1);
         stepCountView = findViewById(R.id.stepCountView);
 
@@ -97,8 +103,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SharedPreferences 수정을 위한 Editor 객체를 얻어옵니다.
         editor = preferences.edit();
         currentSteps = preferences.getInt("step", 0);
-        progBar.setProgress((int) currentSteps / 100);
+        levelcheck();
+        progBar.setProgress((int) currentSteps / capInt );
+        stepCountView.setText(String.valueOf(currentSteps) + cap);
 
+        //levelcheck();
         // 활동 퍼미션 체크
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
@@ -149,19 +158,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dayinfo = findViewById(R.id.dateInfo);
         long now = System.currentTimeMillis();
         Date date = new Date(now);
-        SimpleDateFormat dateFormat = new  SimpleDateFormat("E dd", new Locale("en", "US"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("E dd", new Locale("en", "US"));
         Calendar mCalendar = Calendar.getInstance();
         String month = mCalendar.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("en", "US"));
         Log.d("asdasd", month);
-        String strDate = dateFormat.format(date)+ " " + month;
+        String strDate = dateFormat.format(date) + " " + month;
         Log.d("asdasd", strDate);
         dayinfo.setText(strDate);
 
 
-        btn_home =  findViewById(R.id.btn_home);
-        btn_search =  findViewById(R.id.btn_search);
-        btn_walking =  findViewById(R.id.btn_walking);
-        btn_mypage =  findViewById(R.id.btn_mypage);
+
+
+        btn_home = findViewById(R.id.btn_home);
+        btn_search = findViewById(R.id.btn_search);
+        btn_walking = findViewById(R.id.btn_walking);
+        btn_mypage = findViewById(R.id.btn_mypage);
 
         btn_logout = findViewById(R.id.btn_logout);
         btn_revoke = findViewById(R.id.btn_revoke);
@@ -175,6 +186,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_revoke.setOnClickListener(this);
 
 
+    }
+
+    public void levelcheck() {
+        if (currentSteps >= 0 && currentSteps < 10000) {
+            cap = " / 10000 steps";
+            capInt = 10000;
+            badgeImage.setImageResource(R.drawable.lev1);
+            badgeText.setText("초보 탐험가");
+
+        }
+        if (currentSteps >= 10000 && currentSteps < 20000) {
+            cap = " / 20000 steps";capInt = 20000;
+            badgeImage.setImageResource(R.drawable.lev2);
+            badgeText.setText("숙련 탐험가");
+        }
+
+        if (currentSteps >= 20000 && currentSteps < 30000) {
+            cap = " / 30000 steps";capInt = 30000;
+            badgeImage.setImageResource(R.drawable.lev3);
+            badgeText.setText("중급 탐험가");
+        }
+        if (currentSteps >= 30000 && currentSteps < 40000) {
+            cap = " / 40000 steps";capInt = 40000;
+            badgeImage.setImageResource(R.drawable.lev4);
+            badgeText.setText("전문 탐험가");
+        }
+        if (currentSteps >= 40000 && currentSteps < 50000) {
+            cap = " steps";capInt = 1;
+            badgeImage.setImageResource(R.drawable.lev5);
+            badgeText.setText("달인 탐험가");
+        }
     }
 
 
@@ -202,10 +244,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 센서 이벤트가 발생할때 마다 걸음수 증가
                 currentSteps++;
                 editor.putInt("step", currentSteps);
+                //editor.putInt("step", 9990);
                 editor.commit();
                 tt = (int) (currentSteps * 0.035);
-                stepCountView.setText(String.valueOf(currentSteps) + " / 10000 steps");
-                progBar.setProgress((int) currentSteps / 10);
+                levelcheck();
+                stepCountView.setText(String.valueOf(currentSteps) + cap);
+                progBar.setProgress((int) currentSteps / capInt);
                 cals.setText(String.valueOf(tt) + " kcal");
             }
         }
@@ -243,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_logout:
                 signOut();
                 finishAffinity();
-                Toast.makeText(this,"로그아웃에 성공했습니다. 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "로그아웃에 성공했습니다. 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_revoke:
                 revokeAccess();
