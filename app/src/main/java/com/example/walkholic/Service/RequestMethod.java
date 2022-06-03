@@ -27,6 +27,7 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class RequestMethod {
     private ParkRes parkRes;
@@ -229,7 +230,6 @@ public class RequestMethod {
     // 완
     public void getUserRoadByHashtag(String hashtag) {
         final String TAG = "dlgochan";
-
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getUserRoadByHashtag(hashtag).enqueue(new Callback<UserRoadRes>() { // ( 여기 숫자부분에 GPS 정보 받아와서 넣어주시면 정상 작동할 것 같습니다 )
             @Override
@@ -287,18 +287,15 @@ public class RequestMethod {
         });
     }
 
-    public void getUserRoadById(int uid) {
-    }
-
-    public void getMyRoadPath(int rid) {
+    public void getUserRoadById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getMyRoadPath(rid).enqueue(new Callback<UserRoadPathRes>() {
+        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
             @Override
-            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
                 if (response.isSuccessful()) {
-                    userRoadPathRes = response.body();
-                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                    userRoadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -311,7 +308,7 @@ public class RequestMethod {
             }
 
             @Override
-            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -792,6 +789,7 @@ public class RequestMethod {
             }
         });
     }
+  
     public void getMyParkReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -844,6 +842,34 @@ public class RequestMethod {
             }
         });
     }
+
+    public void getUserRoadPathById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadPathById(id).enqueue(new Callback<UserRoadPathRes>() {
+            @Override
+            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadPathRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadPathRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
     public void getMySharedTrailReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -866,6 +892,34 @@ public class RequestMethod {
 
             @Override
             public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+
+    public void getRoadByHashtag(String keyword) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadByHashtag(keyword).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });

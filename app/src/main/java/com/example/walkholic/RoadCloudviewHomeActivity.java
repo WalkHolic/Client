@@ -27,7 +27,6 @@ import retrofit2.Response;
 
 public class RoadCloudviewHomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     final String TAG = "dlgochan";
 
     Button btn_home;
@@ -36,6 +35,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
     Button btn_mypage;
     Button btn_back;
     Button btn_road_home;
+    Button btn_road_review;
     Button btn_road_path;
 
     ImageView roadimageview;
@@ -57,11 +57,17 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
     String distance;
 
     TextView txt_name;
-    TextView txt_type;
-    TextView txt_contact;
+    TextView txt_hashtag;
+    TextView txt_road_distance;
+    TextView txt_road_step;
+    TextView txt_road_time;
+    TextView txt_agencyTel;
+    TextView txt_agencyName;
     TextView txt_addrNew;
     TextView txt_addr;
     TextView txt_distance;
+    TextView txt_road_description;
+    TextView txt_road_path;
 
     int roadId;
 
@@ -86,28 +92,36 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
         btn_back = findViewById(R.id.back_btn);
         btn_road_path = findViewById(R.id.btn_road_path);
         btn_road_home = findViewById(R.id.btn_road_home);
+        btn_road_review = findViewById(R.id.btn_road_review);
         roadimageview = (ImageView) findViewById(R.id.roadimageView);
 
         txt_name = findViewById(R.id.txt_name);
-        txt_type = findViewById(R.id.txt_type);
-        txt_contact = findViewById(R.id.txt_contact);
+        txt_hashtag = findViewById(R.id.txt_hashtag);
+        txt_road_distance = findViewById(R.id.txt_road_distance);
+        txt_road_step = findViewById(R.id.txt_road_step);
+        txt_road_time = findViewById(R.id.txt_road_time);
+        txt_agencyTel = findViewById(R.id.txt_agencyTel);
+        txt_agencyName = findViewById(R.id.txt_agencyName);
         txt_addrNew = findViewById(R.id.txt_addrNew);
         txt_addr = findViewById(R.id.txt_addr);
         txt_distance = findViewById(R.id.txt_distance);
+        txt_road_description = findViewById(R.id.txt_road_description);
+        txt_road_path = findViewById(R.id.txt_road_path);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         btn_walking.setOnClickListener(this);
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
-        btn_road_path.setOnClickListener(this);
         btn_road_home.setOnClickListener(this);
+        btn_road_review.setOnClickListener(this);
+        btn_road_path.setOnClickListener(this);
 
         getRoadById(roadId);
 
         mHandler.postDelayed(new Runnable() {
+            @SuppressLint("ResourceType")
             public void run() {
-
                 roadName = roadRes.getData().get(0).getRoadName();
                 roadDesc = roadRes.getData().get(0).getRoadDesc();
                 time = roadRes.getData().get(0).getTime();
@@ -130,11 +144,27 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
 
                 if (picturePath != null) {
                     Glide.with(getApplicationContext()).load(picturePath).into(roadimageview);
+                }else{
+                    roadimageview.setImageResource(R.drawable.basic_park);
                 }
+                String showHashtags = "";
+                if (hashtagList != null && !hashtagList.isEmpty()) {
+                    for (String hashtag : hashtagList) {
+                        showHashtags += "#" + hashtag + " ";
+                    }
+                }
+                int roadSteps = (int) (roadDistance / 0.00063); // 걸음 수 계산 (km 단위)
                 txt_name.setText(roadName);
+                txt_road_description.setText(roadDesc);
+                txt_road_time.setText(time);
+                txt_road_distance.setText(String.valueOf(roadDistance) + " km");
+                txt_hashtag.setText(showHashtags);
+                txt_agencyName.setText(agencyName);
+                txt_agencyTel.setText(agencyTel);
+                txt_road_step.setText(String.valueOf(roadSteps) + " 걸음");
+                txt_road_path.setText(roadPathStr);
                 txt_addr.setText(startLotAddr);
                 txt_addrNew.setText(startRoadAddr);
-                txt_contact.setText(agencyTel);
                 txt_distance.setText(distance);
             }
         }, 300); // 0.3초후
@@ -195,18 +225,27 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
             case R.id.back_btn:
                 onBackPressed();
                 break;
-            case R.id.btn_road_home:
-                Intent intent5 = new Intent(this, RoadCloudviewHomeActivity.class);
-                intent5.putExtra("roadId", roadId);
-                startActivity(intent5);
-                break;
-            case R.id.btn_road_path:
-                Log.d(TAG, "click btn_road_path!!!");
-                Intent intent6 = new Intent(this, RoadCloudviewPathActivity.class);
+//            case R.id.btn_road_home:
+//                Intent intent5 = new Intent(this, RoadCloudviewHomeActivity.class);
+//                intent5.putExtra("roadId", roadId);
+//                startActivity(intent5);
+//                finish();
+//                break;
+            case R.id.btn_road_review:
+                Intent intent6 = new Intent(this, RoadCloudviewReviewActivity.class);
                 intent6.putExtra("roadId", roadId);
                 intent6.putExtra("lat", startLat);
                 intent6.putExtra("lng", startLng);
                 startActivity(intent6);
+                finish();
+                break;
+            case R.id.btn_road_path:
+                Intent intent7 = new Intent(this, RoadCloudviewPathActivity.class);
+                intent7.putExtra("roadId", roadId);
+                intent7.putExtra("lat", startLat);
+                intent7.putExtra("lng", startLng);
+                startActivity(intent7);
+                finish();
                 break;
 
         }

@@ -20,6 +20,12 @@ public class UserRoad {
     @SerializedName("distance")
     @Expose
     private Double distance;
+    @SerializedName("startLat")
+    @Expose
+    private Double startLat;
+    @SerializedName("startLng")
+    @Expose
+    private Double startLng;
     @SerializedName("startAddr")
     @Expose
     private String startAddr;
@@ -43,88 +49,52 @@ public class UserRoad {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Object getUserId() {
         return userId;
-    }
-
-    public void setUserId(Object userId) {
-        this.userId = userId;
     }
 
     public String getTrailName() {
         return trailName;
     }
 
-    public void setTrailName(String trailName) {
-        this.trailName = trailName;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
-        this.distance = distance;
+    public Double getStartLat() {
+        return startLat;
+    }
+
+    public Double getStartLng() {
+        return startLng;
     }
 
     public String getStartAddr() {
         return startAddr;
     }
 
-    public void setStartAddr(String startAddr) {
-        this.startAddr = startAddr;
-    }
-
     public String getPicture() {
         return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public List<String> getHashtag() {
         return hashtag;
     }
 
-    public void setHashtag(List<String> hashtag) {
-        this.hashtag = hashtag;
-    }
-
     public String getCreatedDate() {
         return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
     }
 
     public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
     public Boolean getShared() {
         return shared;
-    }
-
-    public void setShared(Boolean shared) {
-        this.shared = shared;
     }
 
     @Override
@@ -135,6 +105,8 @@ public class UserRoad {
                 ", trailName='" + trailName + '\'' +
                 ", description='" + description + '\'' +
                 ", distance=" + distance +
+                ", startLat=" + startLat +
+                ", startLng=" + startLng +
                 ", startAddr='" + startAddr + '\'' +
                 ", picture='" + picture + '\'' +
                 ", hashtag=" + hashtag +

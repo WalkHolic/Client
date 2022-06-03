@@ -166,17 +166,15 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-    public void getMyRoadPath(int rid) {
+    public void getUserRoadPathById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getMyRoadPath(rid).enqueue(new Callback<UserRoadPathRes>() {
+        service.getUserRoadPathById(id).enqueue(new Callback<UserRoadPathRes>() {
             @Override
             public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
                 if (response.isSuccessful()) {
                     userRoadPathRes = response.body();
-                    userRoadPathList = userRoadPathRes.getData();
-                    //Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                    Log.d(TAG, "onResponse Success : " + userRoadPathRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -194,7 +192,6 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
-
 
     public void getMyRoad() {
         final String TAG = "dlgochan";
@@ -235,6 +232,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         for (int i = 0; i < userRoadList.size(); i++) {
             temp = userRoadList.get(i);
             getMyRoadPath(temp.getId());
+          
             // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
             adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(), temp.getId(),temp.getShared());
         }

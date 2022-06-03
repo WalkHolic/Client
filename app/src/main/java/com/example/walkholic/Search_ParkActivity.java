@@ -14,8 +14,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
 import com.example.walkholic.DataClass.Data.ParkInfo;
@@ -51,8 +54,21 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
-
+    Button btn_current_location;
     Button btn_set_location;
+
+    ToggleButton btn_fil_football;
+    ToggleButton btn_fil_basketball;
+    ToggleButton btn_fil_badminton;
+    ToggleButton btn_fil_tennis;
+    ToggleButton btn_fil_gateball;
+    ToggleButton btn_fil_cycle;
+    ToggleButton btn_fil_exercise;
+    ToggleButton btn_fil_health;
+    ToggleButton btn_fil_summerhouse;
+    ToggleButton btn_fil_fountain;
+    ToggleButton btn_fil_parking;
+
 
     TextInputEditText textInputEditText;
     ImageButton imageButton;
@@ -73,6 +89,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
     private ParkRes parkRes; // 이해찬 추가 (onCreate에서 여기에 주변 공원 리스트를 담습니다)
     Handler mHandler = new Handler();
+
+    ParkOption parkOption = new ParkOption();
 
 
     @Override
@@ -99,7 +117,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
         // T Map View Using Linear Layout
-        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_park);
+        FrameLayout linearLayoutTmap = (FrameLayout)findViewById(R.id.linearLayoutTmap_park);
         linearLayoutTmap.addView(tMapView);
 
         // Request For GPS permission
@@ -159,10 +177,23 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_park = findViewById(R.id.btn_search_park);
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
+        btn_current_location = findViewById(R.id.btn_current_location);
 
         btn_set_location = findViewById(R.id.btn_set_location);
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
+
+        btn_fil_football = findViewById(R.id.btn_fil_football);
+        btn_fil_basketball = findViewById(R.id.btn_fil_basketball);
+        btn_fil_badminton = findViewById(R.id.btn_fil_badminton);
+        btn_fil_tennis = findViewById(R.id.btn_fil_tennis);
+        btn_fil_gateball = findViewById(R.id.btn_fil_gateball);
+        btn_fil_cycle = findViewById(R.id.btn_fil_cycle);
+        btn_fil_exercise = findViewById(R.id.btn_fil_exercise);
+        btn_fil_health = findViewById(R.id.btn_fil_health);
+        btn_fil_summerhouse = findViewById(R.id.btn_fil_summerhouse);
+        btn_fil_fountain = findViewById(R.id.btn_fil_fountain);
+        btn_fil_parking = findViewById(R.id.btn_fil_parking);
 
 
         btn_home.setOnClickListener(this);
@@ -175,7 +206,77 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
+        btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
+
+
+        btn_fil_football.setOnClickListener(this);
+        btn_fil_basketball.setOnClickListener(this);
+        btn_fil_badminton.setOnClickListener(this);
+        btn_fil_tennis.setOnClickListener(this);
+        btn_fil_gateball.setOnClickListener(this);
+        btn_fil_cycle.setOnClickListener(this);
+        btn_fil_exercise.setOnClickListener(this);
+        btn_fil_health.setOnClickListener(this);
+        btn_fil_summerhouse.setOnClickListener(this);
+        btn_fil_fountain.setOnClickListener(this);
+        btn_fil_parking.setOnClickListener(this);
+
+        btn_fil_football.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set축구(isChecked);
+            }
+        });
+        btn_fil_basketball.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set농구(isChecked);
+            }
+        });
+        btn_fil_badminton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set배드민턴(isChecked);
+            }
+        });
+        btn_fil_tennis.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set테니스(isChecked);
+            }
+        });
+        btn_fil_gateball.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set게이트볼(isChecked);
+            }
+        });
+        btn_fil_cycle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set사이클(isChecked);
+            }
+        });
+        btn_fil_exercise.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set운동(isChecked);
+            }
+        });
+        btn_fil_health.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set헬스(isChecked);
+            }
+        });
+        btn_fil_summerhouse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set정자(isChecked);
+            }
+        });
+        btn_fil_fountain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set분수(isChecked);
+            }
+        });
+        btn_fil_parking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton v, boolean isChecked){
+                parkOption.set주차(isChecked);
+            }
+        });
     }
 
     @Override
@@ -217,9 +318,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.btn_set_location:
-                //getParkByCurrentLocation(37.3015045429, 127.0312636113);
                 Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-                getParkByCurrentLocation(mlat, mlon);
+                getParkByFilter(mlat, mlon, parkOption);
 
                 break;
             case R.id.imageButton:
@@ -249,6 +349,13 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                         startActivity(intent8);
                     }
                 }, 500);
+            case R.id.btn_current_location:
+                TrackingMode = true;
+                //화면이동 구현
+                tMapView.setTrackingMode(true);
+                tMapView.setZoomLevel(17);
+                Log.d("dlgochan", "새로고침 버튼 클릭!");
+                break;
         }
     }
 
@@ -263,6 +370,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
             tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
+
         }
 
     }
@@ -318,9 +426,12 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         service.getParkByFilter(lat, lng, option).enqueue(new Callback<ParkRes>() {
             @Override
             public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
+                Log.d(TAG, "onResponse Filter: " + option.toString());
+                parkRes = response.body();
+                addMarketMarker(parkRes.getData());
+                tMapView.setZoomLevel(13);
                 if (response.isSuccessful()) {
                     // 리스폰스 성공 시 200 OK
-                    parkRes = response.body();
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
@@ -344,6 +455,8 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addMarketMarker(List<ParkInfo> marketList) {
+        // 여기에 마커들 초기화 하는 구문 짜주세요
+
         final String TAG = "dlgochan";
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
