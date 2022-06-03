@@ -71,7 +71,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
 
     TextInputEditText textInputEditText;
-    ImageButton imageButton;
+    Button imageButton;
 
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
