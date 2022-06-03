@@ -154,18 +154,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 txt_addr.setText(Addr);
                 txt_distance.setText(distance);
             }
-        }, 300); // 0.3초후
-
-//        Glide.with(this).load(png_path).into(parkimageview);
-
-        Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path);
-
-        txt_name.setText(name);
-        txt_type.setText(type);
-        txt_contact.setText(contact);
-        txt_manageAgency.setText(manageAgency);
-        txt_addrNew.setText(AddrNew);
-        txt_addr.setText(Addr);
+        }, 500); // 0.5초 후
 
     }
 

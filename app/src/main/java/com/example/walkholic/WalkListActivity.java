@@ -239,8 +239,9 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             getUserRoadPathById(temp.getId());
 
 
+
             // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
-            adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(),temp.getId());
+            adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(), temp.getId(),temp.getShared());
         }
         //목록의 개수만큼 순회하여 adapter에 있는 list배열에 add
         /*while (cursor.moveToNext()) {

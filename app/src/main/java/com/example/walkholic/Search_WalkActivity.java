@@ -72,7 +72,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_hashtag_힐링;
 
     TextInputEditText textInputEditText;
-    ImageButton imageButton;
+    Button imageButton;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -284,7 +284,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                         intent8.putExtra("road", true);
                         startActivity(intent8);
                     }
-                }, 500);
+                }, 1000);
             case R.id.btn_current_location:
                 TrackingMode = true;
                 Log.d("dlgochan", "새로고침 버튼 클릭!");

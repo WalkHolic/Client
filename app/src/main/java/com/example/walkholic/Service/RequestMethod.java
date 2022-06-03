@@ -315,7 +315,6 @@ public class RequestMethod {
         });
     }
 
-
     public void getUserRoadByCurrentLocation(double lat, double lng) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -791,6 +790,7 @@ public class RequestMethod {
             }
         });
     }
+
     public void getMyParkReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -843,6 +843,34 @@ public class RequestMethod {
             }
         });
     }
+
+    public void getUserRoadPathById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadPathById(id).enqueue(new Callback<UserRoadPathRes>() {
+            @Override
+            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
+                if (response.isSuccessful()) {
+                    userRoadPathRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoadPathRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
     public void getMySharedTrailReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -896,6 +924,34 @@ public class RequestMethod {
             }
         });
     }
+
+    public void getRoadByHashtag(String keyword) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadByHashtag(keyword).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    roadRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
 
     public void getRoadByHashtag(String keyword) {
         final String TAG = "dlgochan";
