@@ -1,6 +1,7 @@
 package com.example.walkholic;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +47,8 @@ import retrofit2.Response;
 
 public class Search_ParkActivity extends AppCompatActivity implements View.OnClickListener, TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
 
-
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private boolean TrackingMode = true;
     Button btn_home;
     Button btn_search;
@@ -98,6 +101,13 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_park);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        editor = preferences.edit();
+        editor.putInt("objectType",1);
+        editor.commit();
+
         mlat = 37.0;
         mlon = 127.0;
 
