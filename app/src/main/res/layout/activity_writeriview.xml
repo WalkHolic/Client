@@ -67,11 +67,11 @@
         ></RatingBar>
 
     <EditText
-        android:fontFamily="@font/patrickhandsc_regular"
         android:id="@+id/reviewEdit"
         android:layout_width="match_parent"
         android:layout_height="228dp"
-        android:background="@null"
+        android:background="@drawable/list_item"
+        android:fontFamily="@font/patrickhandsc_regular"
         android:hint="리뷰를 작성해주세요."
         android:inputType="textMultiLine"
         android:lines="8"

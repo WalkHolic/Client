@@ -138,7 +138,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
                 picturePath = roadRes.getData().get(0).getPicturePath();
 
                 double twoDistance = twoDistance(startLat, startLng, mlat, mlon, "km");
-                distance = "해당 위치로부터 떨어진 거리: " + String.valueOf(twoDistance) + " km";
+                distance = "해당 위치로부터 떨어진 거리: " +  String.format("%,.3f", twoDistance)  + " km";
 
                 Log.d(TAG, "정보확인 : " + roadName + roadDesc + time + roadDistance + hashtagList + agencyName + agencyTel + providerName + startRoadAddr + startLotAddr + startLat + startLng + roadPathStr + picturePath + distance);
 
@@ -157,7 +157,7 @@ public class RoadCloudviewHomeActivity extends AppCompatActivity implements View
                 txt_name.setText(roadName);
                 txt_road_description.setText(roadDesc);
                 txt_road_time.setText(time);
-                txt_road_distance.setText(String.valueOf(roadDistance) + " km");
+                txt_road_distance.setText(String.format("%,.3f", roadDistance) + " km");
                 txt_hashtag.setText(showHashtags);
                 txt_agencyName.setText(agencyName);
                 txt_agencyTel.setText(agencyTel);
