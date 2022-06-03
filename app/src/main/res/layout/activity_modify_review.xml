@@ -6,17 +6,35 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/reviewText"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/patrickhandsc_regular"
-        android:gravity="center"
+        android:layout_height="51dp"
+        android:orientation="horizontal">
 
-        android:text="리뷰 수정"
-        android:textSize="30dp"></TextView>
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:background="@drawable/back1"
 
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
+            android:layout_marginRight="3dp"/>
+
+        <TextView
+            android:id="@+id/reviewText"
+            android:layout_width="354dp"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/patrickhandsc_regular"
+            android:gravity="center"
+
+            android:text="리뷰 수정"
+            android:textSize="30dp"></TextView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +71,7 @@
         android:max="5"
         android:numStars="5"
         android:rating="3"
-        android:stepSize="0.5"></RatingBar>
+        android:stepSize="1.0"></RatingBar>
 
     <EditText
         android:id="@+id/reviewEdit"
@@ -82,11 +100,12 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:adjustViewBounds="true"
+            android:autofillHints="&quot;이미지를 선택하세요&quot;"
+            android:background="@drawable/list_item"
             android:maxWidth="200dp"
             android:maxHeight="200dp"
             android:onClick="onClick"
-            app:srcCompat="@drawable/empty_image"
-            android:background="@drawable/list_item"/>
+            app:srcCompat="@drawable/empty_image" />
 
 
     </LinearLayout>
@@ -108,42 +127,6 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
 
-        >
-
-        <Button
-            android:id="@+id/btn_home"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_home" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_search_sel" />
-
-        <Button
-            android:id="@+id/btn_walking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walking" />
-
-        <Button
-            android:id="@+id/btn_mypage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_mypage" />
-
-    </LinearLayout>
 
 </LinearLayout>

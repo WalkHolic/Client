@@ -165,11 +165,12 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-
+  
     public void getUserRoadPathById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
         service.getUserRoadPathById(id).enqueue(new Callback<UserRoadPathRes>() {
+
             @Override
             public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
                 if (response.isSuccessful()) {
@@ -187,7 +188,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+            public void onFailure(Call<RoadPathRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -231,8 +232,6 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         if (userRoadList == null) return;
         for (int i = 0; i < userRoadList.size(); i++) {
             temp = userRoadList.get(i);
-            getUserRoadPathById(temp.getId());
-          
             // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
             adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(), temp.getId(),temp.getShared());
         }

@@ -137,7 +137,7 @@ public class TrailListViewAdapter extends BaseAdapter {
         if (listdata.getImageURL() != null) {
             Glide.with(context2.getApplicationContext()).load(listdata.getImageURL()).into(trailImage);
         }else{
-            Glide.with(context2.getApplicationContext()).load(R.drawable.basic_park).into(trailImage);
+            Glide.with(context2.getApplicationContext()).load(R.drawable.noimages).into(trailImage);
         }
         trailName.setText(listdata.getTrailName());
         String tempp = "";
