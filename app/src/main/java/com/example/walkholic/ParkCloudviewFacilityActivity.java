@@ -35,7 +35,7 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
     Button btn_walking;
     Button btn_mypage;
     Button btn_back;
-    Button btn_park_review, btn_park_info;
+    Button btn_park_review, btn_park_home;
 
 
     ImageView parkimageview;
@@ -46,6 +46,8 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
     String png_path;
 
     int ParkId_int;
+
+    boolean path_check = false;
 
     TextView facility_sport;
     TextView facility_amuse;
@@ -73,7 +75,17 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
 
         mHandler.postDelayed(new Runnable() {
             public void run() {
-                Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
+
+                png_path = parkRes.getData().get(0).getPngPath();
+                if (png_path == null) {
+                    path_check = true;
+                }
+                if (path_check) {
+                    parkimageview.setImageResource(R.drawable.basic_park);
+
+                } else {
+                    Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
+                }
 
                 if (parkRes.getData().get(0).getFacilitySport() != null) {
                     sport = parkRes.getData().get(0).getFacilitySport();
@@ -114,7 +126,7 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
         btn_mypage = findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
         btn_park_review = findViewById(R.id.btn_park_review);
-        btn_park_info = findViewById(R.id.btn_park_info);
+        btn_park_home = findViewById(R.id.btn_park_home);
 
 
         btn_home.setOnClickListener(this);
@@ -123,7 +135,7 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_park_review.setOnClickListener(this);
-        btn_park_info.setOnClickListener(this);
+        btn_park_home.setOnClickListener(this);
     }
 
     @Override
@@ -157,12 +169,14 @@ public class ParkCloudviewFacilityActivity extends AppCompatActivity implements 
                 int Id = ParkId_int;
                 intent5.putExtra("ID", Id);
                 startActivity(intent5);
+                finish();
                 break;
-            case R.id.btn_park_info:
+            case R.id.btn_park_home:
                 Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewHomeActivity.class);
                 int Id1 = ParkId_int;
                 intent6.putExtra("ID", Id1);
                 startActivity(intent6);
+                finish();
                 break;
 
         }

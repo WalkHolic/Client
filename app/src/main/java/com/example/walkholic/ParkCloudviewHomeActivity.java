@@ -51,6 +51,8 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     double lng;
     String distance;
 
+    boolean path_check = false;
+
     int ParkId_int;
 
     TextView txt_name;
@@ -61,7 +63,6 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     TextView txt_addr;
     TextView txt_distance;
     private ParkRes parkRes;
-    private ParkRes parkRes2;
 
     Handler mHandler = new Handler();
 
@@ -83,6 +84,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         btn_mypage =  findViewById(R.id.btn_mypage);
         btn_back = findViewById(R.id.back_btn);
         btn_park_review = findViewById(R.id.btn_park_review);
+        btn_park_facility = findViewById(R.id.btn_park_facility);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -90,6 +92,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
         btn_mypage.setOnClickListener(this);
         btn_back.setOnClickListener(this);
         btn_park_review.setOnClickListener(this);
+        btn_park_facility.setOnClickListener(this);
 
         parkimageview = (ImageView) findViewById(R.id.parkimageView);
         txt_name = findViewById(R.id.txt_name);
@@ -104,6 +107,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
 
         mHandler.postDelayed(new Runnable()  {
             public void run() {
+
                 name = parkRes.getData().get(0).getName();
                 type = parkRes.getData().get(0).getType();
                 contact = parkRes.getData().get(0).getContact();
@@ -137,9 +141,11 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 if(Addr == null){
                     Addr = "공원 지번주소가 등록되지 않았습니다";
                 }
+
                 if (png_path != null) {
                     Glide.with(getApplicationContext()).load(png_path).into(parkimageview);
                 }
+
                 txt_name.setText(name);
                 txt_type.setText(type);
                 txt_contact.setText(contact);
@@ -148,9 +154,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 txt_addr.setText(Addr);
                 txt_distance.setText(distance);
             }
-        }, 300); // 0.3초후
-
-//        Glide.with(this).load(png_path).into(parkimageview);
+        }, 500); // 0.5초 후
 
     }
 
@@ -213,12 +217,14 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 int Id = ParkId_int;
                 intent5.putExtra("ID", Id);
                 startActivity(intent5);
+                finish();
                 break;
             case R.id.btn_park_facility:
                 Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewFacilityActivity.class);
                 int Id1 = ParkId_int;
                 intent6.putExtra("ID", Id1);
                 startActivity(intent6);
+                finish();
                 break;
 
         }

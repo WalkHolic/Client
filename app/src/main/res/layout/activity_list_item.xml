@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:weightSum="100" >
             <TextView
-                android:id="@+id/trailName"
+                android:id="@+id/user_name"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="100"

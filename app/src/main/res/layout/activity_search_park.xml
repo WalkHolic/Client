@@ -13,135 +13,373 @@
         android:layout_weight="7"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="98dp"
+            android:layout_height="70dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="1dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditText"
-                android:layout_width="271dp"
+                android:layout_width="300dp"
                 android:layout_height="55dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#FFFFFF"
+                android:fontFamily="@font/custom_font_family"
+                android:hint="@string/act_park_search"/>
+
+            <Button
+                android:id="@+id/imageButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="#FFF1FF"
-                android:hint="@string/act_park_search"
-                android:singleLine="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/search_btn" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="71dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#F9F3FF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
-                app:layout_constraintStart_toEndOf="@+id/textInputEditText"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_search"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_search_park"
-                android:background="@drawable/act_search_park_sel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_menu"
+                android:fontFamily="@font/custom_font_family"
+                android:text="공원"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_walk"
-                android:background="@drawable/act_search_walk"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btn_search_shared"
-                android:background="@drawable/act_search_shared"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:fontFamily="@font/custom_font_family"
+                android:text="공유 산책로"
+                android:textSize="21dp"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </LinearLayout>
+        <HorizontalScrollView
+            android:id="@+id/hashtag_horizontal_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:orientation="horizontal">
 
-        <LinearLayout
+                <ToggleButton
+                    android:id="@+id/btn_fil_football"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="축구"
+                    android:textOn="축구"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_basketball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="농구"
+                    android:textOn="농구"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_badminton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="배드민턴"
+                    android:textOn="배드민턴"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_tennis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="테니스"
+                    android:textOn="테니스"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_gateball"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="게이트볼"
+                    android:textOn="게이트볼"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_cycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="사이클"
+                    android:textOn="사이클"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_exercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="운동"
+                    android:textOn="운동"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="헬스"
+                    android:textOn="헬스"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_summerhouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="정자"
+                    android:textOn="정자"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_fountain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="분수"
+                    android:textOn="분수"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <ToggleButton
+                    android:id="@+id/btn_fil_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/toggle_selector"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textOff="주차"
+                    android:textOn="주차"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <FrameLayout
             android:id="@+id/linearLayoutTmap_park"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_set_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="현지도에서 공원 검색"
-                android:background="@drawable/border_menu"/>
-        </LinearLayout>
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/round_menu_off"
+                android:fontFamily="@font/custom_font_family"
+                android:text="현 지도에서 검색"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
-
+            <Button
+                android:id="@+id/btn_current_location"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="10dp"
+                android:background="@drawable/search2_remove"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
+        android:layout_height="85dp"
+        android:background="@drawable/rectangle_border"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_home"
-            android:background="@drawable/act_home"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:background="@drawable/act_search_sel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_walking"
-            android:background="@drawable/act_walking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            <Button
+                android:id="@+id/btn_home"
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_home" />
 
-        <Button
-            android:id="@+id/btn_mypage"
-            android:background="@drawable/act_mypage"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="홈"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
-            />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_search_click" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="검색"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_walking"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_create" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/custom_font_family"
+                android:text="생성"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_mypage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/navigation_mypage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/custom_font_family"
+                android:text="마이페이지"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

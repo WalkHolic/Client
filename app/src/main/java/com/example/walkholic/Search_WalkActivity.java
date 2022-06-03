@@ -3,6 +3,7 @@ package com.example.walkholic;
 import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 import com.example.walkholic.DataClass.Data.MyTMapMarkerItem;
 import com.example.walkholic.DataClass.Data.ParkInfo;
@@ -36,6 +40,7 @@ import com.skt.Tmap.poi_item.TMapPOIItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -52,12 +57,22 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Button btn_search_park;
     Button btn_search_walk;
     Button btn_search_shared;
-
+    Button btn_current_location;
     Button btn_set_location;
 
-    TextInputEditText textInputEditText;
-    ImageButton imageButton;
+    Button btn_hashtag_나들이;
+    Button btn_hashtag_물놀이;
+    Button btn_hashtag_아이와함께;
+    Button btn_hashtag_걷기좋은;
+    Button btn_hashtag_드라이브코스;
+    Button btn_hashtag_데이트코스;
+    Button btn_hashtag_분위기좋은;
+    Button btn_hashtag_런닝;
+    Button btn_hashtag_벚꽃명소;
+    Button btn_hashtag_힐링;
 
+    TextInputEditText textInputEditText;
+    Button imageButton;
 
     String API_Key = "l7xxaf0e68fd185f445596200b488c1177af";
 
@@ -73,13 +88,16 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     Double mlon;
 
     private RoadRes roadRes;
+    private RoadRes roadHashtagRes;
     Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_search_walk);
+
 
         //T Map Data
         tmapdata = new TMapData();
@@ -97,13 +115,15 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         tMapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
         // T Map View Using Linear Layout
-        LinearLayout linearLayoutTmap = findViewById(R.id.linearLayoutTmap_park);
+        FrameLayout linearLayoutTmap = (FrameLayout) findViewById(R.id.linearLayoutTmap_park);
         linearLayoutTmap.addView(tMapView);
+
 
         // Request For GPS permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+
 
         // GPS using T Map
         tMapGPS = new TMapGpsManager(this);
@@ -135,7 +155,6 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             tMapMarkerItem.setName(itemName);              // Marker의 이름
             tMapView.addMarkerItem(itemName, tMapMarkerItem);
             tMapView.setCenterPoint(mlon, mlat);
-
         } else { // 그냥 GPS
             TrackingMode = true;
             mlat = tMapGPS.getLocation().getLatitude();
@@ -144,10 +163,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             tMapView.setLocationPoint(mlon, mlat);
             tMapView.setCenterPoint(mlon, mlat);
             Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
-
-
         }
-
 
         btn_home = findViewById(R.id.btn_home);
         btn_search = findViewById(R.id.btn_search);
@@ -157,11 +173,22 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_park = findViewById(R.id.btn_search_park);
         btn_search_walk = findViewById(R.id.btn_search_walk);
         btn_search_shared = findViewById(R.id.btn_search_shared);
-
         btn_set_location = findViewById(R.id.btn_set_location);
+        btn_current_location = findViewById(R.id.btn_current_location);
+
         imageButton = findViewById(R.id.imageButton);
         textInputEditText = findViewById(R.id.textInputEditText);
 
+        btn_hashtag_나들이 = findViewById(R.id.btn_hashtag_나들이);
+        btn_hashtag_물놀이 = findViewById(R.id.btn_hashtag_물놀이);
+        btn_hashtag_아이와함께 = findViewById(R.id.btn_hashtag_아이와함께);
+        btn_hashtag_걷기좋은 =  findViewById(R.id.btn_hashtag_걷기좋은);
+        btn_hashtag_드라이브코스 = findViewById(R.id.btn_hashtag_드라이브코스);
+        btn_hashtag_데이트코스 = findViewById(R.id.btn_hashtag_데이트코스);
+        btn_hashtag_분위기좋은 = findViewById(R.id.btn_hashtag_분위기좋은);
+        btn_hashtag_런닝 = findViewById(R.id.btn_hashtag_런닝);
+        btn_hashtag_벚꽃명소 = findViewById(R.id.btn_hashtag_벚꽃명소);
+        btn_hashtag_힐링 = findViewById(R.id.btn_hashtag_힐링);
 
         btn_home.setOnClickListener(this);
         btn_search.setOnClickListener(this);
@@ -173,7 +200,20 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         btn_search_shared.setOnClickListener(this);
 
         btn_set_location.setOnClickListener(this);
+        btn_current_location.setOnClickListener(this);
         imageButton.setOnClickListener(this);
+
+        btn_hashtag_나들이.setOnClickListener(this);
+        btn_hashtag_물놀이.setOnClickListener(this);
+        btn_hashtag_아이와함께.setOnClickListener(this);
+        btn_hashtag_걷기좋은.setOnClickListener(this);
+        btn_hashtag_드라이브코스.setOnClickListener(this);
+        btn_hashtag_데이트코스.setOnClickListener(this);
+        btn_hashtag_분위기좋은.setOnClickListener(this);
+        btn_hashtag_런닝.setOnClickListener(this);
+        btn_hashtag_벚꽃명소.setOnClickListener(this);
+        btn_hashtag_힐링.setOnClickListener(this);
+
     }
 
     @Override
@@ -189,11 +229,11 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent2);
                 finish();
                 break;
-//            case R.id.btn_walking:
-//                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
-//                startActivity(intent3);
-//                finish();
-//                break;
+            case R.id.btn_walking:
+                Intent intent3 = new Intent(getApplicationContext(), WalkingActivity.class);
+                startActivity(intent3);
+                finish();
+                break;
             case R.id.btn_mypage:
                 Intent intent4 = new Intent(this, WalkListActivity.class);
                 startActivity(intent4);
@@ -244,8 +284,52 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                         intent8.putExtra("road", true);
                         startActivity(intent8);
                     }
-                }, 500);
+                }, 1000);
+            case R.id.btn_current_location:
+                TrackingMode = true;
+                Log.d("dlgochan", "새로고침 버튼 클릭!");
+                tMapView.setTrackingMode(true);
+                tMapView.setZoomLevel(17);
+                break;
+            case R.id.btn_hashtag_나들이:
+                searchHashtag("나들이");
+                break;
+            case R.id.btn_hashtag_물놀이:
+                searchHashtag("물놀이");
+                break;
+            case R.id.btn_hashtag_아이와함께:
+                searchHashtag("아이와함께");
+                break;
+            case R.id.btn_hashtag_걷기좋은:
+                searchHashtag("걷기좋은");
+                break;
+            case R.id.btn_hashtag_드라이브코스:
+                searchHashtag("드라이브코스");
+                break;
+            case R.id.btn_hashtag_데이트코스:
+                searchHashtag("데이트코스");
+                break;
+            case R.id.btn_hashtag_분위기좋은:
+                searchHashtag("분위기좋은");
+                break;
+            case R.id.btn_hashtag_런닝:
+                searchHashtag("런닝");
+                break;
+            case R.id.btn_hashtag_벚꽃명소:
+                searchHashtag("벚꽃명소");
+                break;
+            case R.id.btn_hashtag_힐링:
+                searchHashtag("힐링");
+                break;
+
         }
+    }
+
+    public void searchHashtag(String keyword) {
+        tMapView.setCenterPoint(126.996421, 37.4332181); // 서울, 수원 중간 과천으로 중심 이동
+        tMapView.setZoomLevel(10);
+        TrackingMode = false;
+        getRoadByHashtag(keyword);
     }
 
     @Override
@@ -255,7 +339,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
             mlat = location.getLatitude();
             mlon = location.getLongitude();
 
-            Log.e("dlgochan", "위치변경 탐지");
+            Log.e("dlgochan", "위치변경 탐지: " + mlat + " / " + mlon);
             //원래 2줄만 있던 코드, 좌표 변경 시 좌표 기록을 해보자
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
             tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
@@ -277,6 +361,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
                     tMapView.setZoomLevel(13);
                 } else {
                     // 리스폰스 실패  400, 500 등
+                    tMapView.removeAllMarkerItem();
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
                         Log.d(TAG, "RES errorBody : " + response.errorBody().string());
@@ -297,6 +382,7 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addMarketMarker(List<Road> marketList) {
+        tMapView.removeAllMarkerItem();
         final String TAG = "dlgochan";
         // Marker img -> bitmap
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
@@ -353,5 +439,35 @@ public class Search_WalkActivity extends AppCompatActivity implements View.OnCli
         intent.putExtra("lng", mlon);
         intent.putExtra("roadId", roadId);
         startActivity(intent);
+    }
+
+    public void getRoadByHashtag(String keyword) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadByHashtag(keyword).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    roadHashtagRes = response.body();
+                    addMarketMarker(roadHashtagRes.getData());
+                    tMapView.setZoomLevel(13);
+                    Log.d(TAG, "onResponse Success : " + roadHashtagRes.toString());
+                } else {
+                    tMapView.removeAllMarkerItem();
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 }

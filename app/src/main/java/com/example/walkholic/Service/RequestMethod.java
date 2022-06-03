@@ -789,7 +789,6 @@ public class RequestMethod {
             }
         });
     }
-
     public void getMyParkReview() {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);

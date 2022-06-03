@@ -39,6 +39,7 @@ public class TmapSearchListActivity extends AppCompatActivity implements View.On
 
         boolean isPark = getIntent().getBooleanExtra("park", false);
         boolean isRoad = getIntent().getBooleanExtra("road", false);
+        boolean isUserRoad = getIntent().getBooleanExtra("userRoad", false);
 
         ItemListAdapter adapter = new ItemListAdapter(this, R.layout.dialog_item, searchList);
         mListView = (ListView) findViewById(R.id.itemListView);
@@ -54,7 +55,9 @@ public class TmapSearchListActivity extends AppCompatActivity implements View.On
                     intent = new Intent(getApplicationContext(), Search_ParkActivity.class);
                 } else if (isRoad) {
                     intent = new Intent(getApplicationContext(), Search_WalkActivity.class);
-                } else intent = null;
+                } else if (isUserRoad) {
+                    intent = new Intent(getApplicationContext(), Search_SharedActivity.class);
+                } else return;
 
                 intent.putExtra("itemName", item.getName());
                 intent.putExtra("itemLat", item.getLat());

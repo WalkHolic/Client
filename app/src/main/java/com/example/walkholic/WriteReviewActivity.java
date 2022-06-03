@@ -52,6 +52,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView reviewImageview;
     private ReviewRes reviewRes = new ReviewRes();
+    private String kind;
     private int id = -1;
     private String name = null;
 
@@ -60,11 +61,11 @@ public class WriteReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writeriview);
 
-        //원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
-//        id = getIntent().getStringExtra("id");
-//        name = getIntent().getStringExtra("name");
-        name = "Test Name";
-        id = 2222;
+//        원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
+        kind = getIntent().getStringExtra("kind");
+        id = getIntent().getIntExtra("ID", id);
+        name = getIntent().getStringExtra("name");
+
 // 컴포넌트 초기화
         titleText = findViewById(R.id.titleText);
         titleText.setText(name);
@@ -95,9 +96,17 @@ public class WriteReviewActivity extends AppCompatActivity {
             RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
 
             //업로드
-            uploadParkReview(id, requestBody1, thumbnail);
-
-
+            switch (kind){
+                case "park":
+                    uploadParkReview(id, requestBody1, thumbnail);
+                    break;
+                case "road":
+                    uploadRoadReview(id, requestBody1, thumbnail);
+                    break;
+                case "userRoad":
+                    uploadUserRoadReview(id, requestBody1, thumbnail);
+                    break;
+            }
         });
 
         // 사진 등록 버튼
@@ -190,5 +199,59 @@ public class WriteReviewActivity extends AppCompatActivity {
         });
     }
 
+
+    public void uploadRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.uploadRoadReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void uploadUserRoadReview(int id, RequestBody reviewRequestDto, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.uploadUserRoadReview(id, reviewRequestDto, file).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + reviewRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
 }
 
