@@ -167,16 +167,15 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public void getMyRoadPath(int rid) {
+    public void getRoadPathByRid(int rid) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
-        service.getMyRoadPath(rid).enqueue(new Callback<UserRoadPathRes>() {
+        service.getRoadPathByRid(rid).enqueue(new Callback<RoadPathRes>() {
             @Override
-            public void onResponse(Call<UserRoadPathRes> call, Response<UserRoadPathRes> response) {
+            public void onResponse(Call<RoadPathRes> call, Response<RoadPathRes> response) {
                 if (response.isSuccessful()) {
-                    userRoadPathRes = response.body();
-                    userRoadPathList = userRoadPathRes.getData();
-                    //Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                    roadPathRes = response.body();
+                    Log.d(TAG, "onResponse Success : " + roadPathRes.toString());
                 } else {
                     Log.d(TAG, "RES msg : " + response.message());
                     try {
@@ -189,7 +188,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public void onFailure(Call<UserRoadPathRes> call, Throwable t) {
+            public void onFailure(Call<RoadPathRes> call, Throwable t) {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
@@ -234,7 +233,7 @@ public class WalkListActivity extends AppCompatActivity implements View.OnClickL
         if (userRoadList == null) return;
         for (int i = 0; i < userRoadList.size(); i++) {
             temp = userRoadList.get(i);
-            getMyRoadPath(temp.getId());
+            getRoadPathByRid(temp.getId());
             // 0: 이미지, 1 : 산책로명 2 : 해시태그들  3 : 산책로 길이  4 : 산책로시작지점 5 : 산책로 끝지점 6 : 산책로 설명
             adapter.addItemToList(temp.getPicture(), temp.getTrailName(), temp.getHashtag(), temp.getDistance(), temp.getStartAddr(), address1, temp.getDescription(), temp.getId(),temp.getShared());
         }
