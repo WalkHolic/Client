@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Response.ParkRes;
 import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.DataClass.Response.UserRoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
@@ -57,6 +58,10 @@ public class ModifyReview extends AppCompatActivity {
     private RatingBar reviewRating;
     private TextView titleText;
     ParkRes park;
+    RoadRes road;
+    UserRoadRes userRoad;
+
+    Button btn_back;
 
     // 리퀘스트 사용 변수
     private Uri imageUri;
@@ -82,35 +87,68 @@ public class ModifyReview extends AppCompatActivity {
 
         editor = preferences.edit();
 
-        objectType = preferences.getInt("objectType", 1);
 
         //원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
         objectId = getIntent().getIntExtra("objectId", 0);
+
         reviewId = getIntent().getIntExtra("reviewId", 0);
         content = getIntent().getStringExtra("reviewContent");
         url = getIntent().getStringExtra("reviewImage");
         score = getIntent().getFloatExtra("reviewScore", 0);
         objectType = getIntent().getIntExtra("objectType", 0);
-
+        objectType = preferences.getInt("objectType", 1);
+        Log.d("dlgochan", "objectType1 : " + objectType);
 // 컴포넌트 초기화
         titleText = findViewById(R.id.titleText);
         reviewEdit = findViewById(R.id.reviewEdit);
         reviewRating = findViewById(R.id.reviewRating);
         reg_button = findViewById(R.id.reg_button);
         reviewImageview = findViewById(R.id.reviewImageview);
+        btn_back = findViewById(R.id.btn_back);
 
-        getParkById(objectId);
+        Log.d("dlgochan", "objectID : " + objectId);
+        Log.d("dlgochan", "objectType2 : " + objectType);
+        if (objectType == 1) getParkById(objectId);
+        else if (objectType == 2) getRoadById(objectId);
+        else if (objectType == 3) getUserRoadById(objectId);
+
 
         handler.postDelayed(new Runnable() {
             public void run() {
                 // 시간 지난 후 실행할 코딩
-                titleText.setText(park.getData().get(0).getName());
+                Log.d("dlgochan", "objectType3 : " + objectType);
+                if (objectType == 1) titleText.setText(park.getData().get(0).getName());
+                else if (objectType == 2) titleText.setText(road.getData().get(0).getRoadName());
+                else if (objectType == 3)
+                    titleText.setText(userRoad.getData().get(0).getTrailName());
             }
-        }, 500); // 0.5초후
+        }, 800); // 0.5초후
         reviewEdit.setText(content);
         reviewRating.setRating(score);
-        Glide.with(this.getApplicationContext()).load(url).into(reviewImageview);
+        if(url != null)Glide.with(this.getApplicationContext()).load(url).into(reviewImageview);
+        else Glide.with(this.getApplicationContext()).load(R.drawable.noimages).into(reviewImageview);
 // 버튼 이벤트 추가
+
+        btn_back.setOnClickListener(view -> {
+            if (objectType == 1) {
+
+                Intent intent1 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
+                startActivity(intent1);
+                finish();
+            } else if (objectType == 2) {
+
+                Intent intent2 = new Intent(getApplicationContext(), ReviewListActivity_trail.class);
+                startActivity(intent2);
+                finish();
+            } else if (objectType == 3) {
+
+                Intent intent3 = new Intent(getApplicationContext(), ReviewListActivity_sharetrail.class);
+                startActivity(intent3);
+                finish();
+            }
+
+
+        });
         reg_button.setOnClickListener(view -> {
 // 리뷰 등록 함수
             // 사진
@@ -120,7 +158,7 @@ public class ModifyReview extends AppCompatActivity {
                 Log.d("dlgochan", "image_uri: " + imageUri);
                 String realImagePath = getPath(this, imageUri);
 //                String realImagePath = imageUri.getPath();
-                if(realImagePath == null){
+                if (realImagePath == null) {
                     Log.d("dlgochan", "realImagePath is Null@@");
                 }
                 //realImagePath = realImagePath.replaceAll(" ","");
@@ -141,12 +179,27 @@ public class ModifyReview extends AppCompatActivity {
             String stringDto = gson.toJson(tmp);
             RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), stringDto);
 
+            Log.d("dlgochan", "objectType4 : " + objectType);
             //업로드
+            if (objectType == 1) {
+                if(thumbnail != null)updateParkReview(reviewId, requestBody1, thumbnail);
+                else updateParkReview(reviewId, requestBody1, thumbnail);
+                Intent intent1 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
+                startActivity(intent1);
+                finish();
+            } else if (objectType == 2) {
+                updateRoadReview(reviewId, requestBody1, thumbnail);
+                Intent intent2 = new Intent(getApplicationContext(), ReviewListActivity_trail.class);
+                startActivity(intent2);
+                finish();
+            } else if (objectType == 3) {
+                updateUserRoadReview(reviewId, requestBody1, thumbnail);
+                Intent intent3 = new Intent(getApplicationContext(), ReviewListActivity_sharetrail.class);
+                startActivity(intent3);
+                finish();
+            }
 
-            updateParkReview(reviewId, requestBody1, thumbnail);
-            Intent intent1 = new Intent(getApplicationContext(), ReviewListActivity_park.class);
-            startActivity(intent1);
-            finish();
+
         });
 
         // 사진 등록 버튼
@@ -235,6 +288,60 @@ public class ModifyReview extends AppCompatActivity {
         });
     }
 
+    public void updateRoadReview(int id, RequestBody body, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.updateRoadReview(id, body, file).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    //Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void updateUserRoadReview(int id, RequestBody body, MultipartBody.Part file) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.updateUserRoadReview(id, body, file).enqueue(new Callback<ReviewRes>() {
+            @Override
+            public void onResponse(Call<ReviewRes> call, Response<ReviewRes> response) {
+                if (response.isSuccessful()) {
+                    reviewRes = response.body();
+                    //Log.d(TAG, "onResponse Success : " + roadRes.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
     public void getParkById(int id) {
         final String TAG = "dlgochan";
         ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
@@ -264,6 +371,64 @@ public class ModifyReview extends AppCompatActivity {
             }
         });
     }
+
+    public void getRoadById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadById(id).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    road = response.body();
+                    Log.d(TAG, "onResponse Success : " + road.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
+    public void getUserRoadById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getUserRoadById(id).enqueue(new Callback<UserRoadRes>() {
+            @Override
+            public void onResponse(Call<UserRoadRes> call, Response<UserRoadRes> response) {
+                if (response.isSuccessful()) {
+                    userRoad = response.body();
+                    Log.d(TAG, "onResponse Success : " + userRoad.toString());
+                } else {
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserRoadRes> call, Throwable t) {
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
+    }
+
     public static String getPath(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -307,7 +472,7 @@ public class ModifyReview extends AppCompatActivity {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 
@@ -330,9 +495,9 @@ public class ModifyReview extends AppCompatActivity {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */

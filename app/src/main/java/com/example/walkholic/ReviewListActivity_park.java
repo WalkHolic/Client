@@ -159,6 +159,8 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
         for (int i = 0; i < reviewRes.getData().size(); i++) {
             temp = reviewRes.getData().get(i);
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
+
+            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
             adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getParkId());
 
         }

@@ -10,117 +10,295 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="16dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/back1" />
-
-        <TextView
-            android:id="@+id/txt_user_road_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:gravity="right"
-            android:text="공유 산책로"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/userRoadImageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        tools:srcCompat="@drawable/basic_park" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_user_road_home"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:text="홈"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_user_road_review"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/border_menu"
-            android:text="리뷰"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_user_road_path"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:text="경로"
-            android:textSize="20dp"
-            android:fontFamily="@font/custom_font_family"
-            android:textStyle="bold"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <ScrollView
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/room_under_bar"
-            android:fillViewport="true">
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
-            <ListView
-                android:id="@+id/user_road_review_list"
+            <Button
+                android:id="@+id/back_btn"
+                android:layout_width="16dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/back1" />
+
+            <TextView
+                android:id="@+id/txt_user_road_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:listSelector="@android:color/transparent"></ListView>
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/custom_font_family"
+                android:gravity="right"
+                android:text="공유 산책로"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        </ScrollView>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/userRoadImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:srcCompat="@drawable/basic_park" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_gravity="center_horizontal|end">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_write_review"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btn_user_road_home"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="홈"
+                android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btn_user_road_review"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/border_menu"
+                android:text="리뷰"
+                android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btn_user_road_path"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="경로"
+                android:textSize="20dp"
+                android:fontFamily="@font/custom_font_family"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="270dp"
-            android:clickable="true"
-            app:srcCompat="@drawable/btn_write_review" />
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="40dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/review_star" />
+
+                <TextView
+                    android:id="@+id/txt_review_mean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/custom_font_family"
+                    android:textStyle="bold"
+                    android:text="별점 평균" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="5점" />
+                    <ProgressBar
+                        android:id="@+id/progressBar5"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/txt_nr_five_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="50" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="4점" />
+                    <ProgressBar
+                        android:id="@+id/progressBar4"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/txt_nr_four_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="50" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="3점" />
+                    <ProgressBar
+                        android:id="@+id/progressBar3"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/txt_nr_three_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="50" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="2점" />
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/txt_nr_two_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="50" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="1점" />
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:max="100"
+                        android:min="0"
+                        android:progressBackgroundTint="#E5D0FF"
+                        android:progressTint="@color/purple_200"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/txt_nr_one_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="50" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/linearLayoutTmap_park"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_write_review"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="15dp"
+                android:clickable="true"
+                android:background="@drawable/btn_write_review" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/room_under_bar"
+                android:fillViewport="true">
+
+                <ListView
+                    android:id="@+id/user_road_review_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"></ListView>
+            </ScrollView>
+
+        </FrameLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
