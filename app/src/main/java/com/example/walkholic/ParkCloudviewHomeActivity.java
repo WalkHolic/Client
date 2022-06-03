@@ -63,6 +63,7 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
     TextView txt_addr;
     TextView txt_distance;
     private ParkRes parkRes;
+    String tempDis;
 
     Handler mHandler = new Handler();
 
@@ -119,7 +120,9 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 lng = parkRes.getData().get(0).getLng();
 
                 double twoDistance = twoDistance(lat, lng, mlat, mlon, "km");
-                distance = "해당 위치로부터 떨어진 거리: " + String.valueOf(twoDistance) + " km";
+
+
+                distance = "해당 위치로부터 떨어진 거리: " + String.format("%,.3f", twoDistance) + " km";
 
                 Log.d(TAG, "정보확인 : " + name + type + contact + manageAgency + AddrNew + Addr +  png_path + distance);
 

@@ -53,18 +53,17 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
     Button btn_walking;
     Button btn_mypage;
     Button btn_mypage2;
-    Button btn_modify,btn_delete;
+    Button btn_modify, btn_delete;
 
-    ConstraintLayout park, trail, shareTrail;
+    ParkRes park;
+    ConstraintLayout trail;
+    ConstraintLayout shareTrail;
     Handler handler = new Handler();
     ReviewListViewAdapter adapter;
     Review temp;
     ImageView imageView;
     Uri imageUri;
     ListView reviewListView;
-    List<Integer> parkIds;
-
-    Handler mHandler = new Handler();
 
     private ReviewRes reviewRes;
     private ReviewRequestDto reviewRequestDto;
@@ -169,10 +168,8 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
 
             Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getFk());
             adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getFk(), temp.getName());
-
         }
         reviewListView.setAdapter(adapter);
-        Log.d("리스트뷰테스트", "테테테테테스트2");
     }
 
     public void getMyParkReview() {
@@ -201,5 +198,4 @@ public class ReviewListActivity_park extends AppCompatActivity implements View.O
             }
         });
     }
-
 }

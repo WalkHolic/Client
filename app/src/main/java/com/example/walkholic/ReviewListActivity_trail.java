@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Data.Review;
 import com.example.walkholic.DataClass.Response.ReviewRes;
+import com.example.walkholic.DataClass.Response.RoadRes;
 import com.example.walkholic.Service.ServerRequestApi;
 import com.example.walkholic.Service.ServiceGenerator;
 
@@ -45,6 +46,7 @@ public class ReviewListActivity_trail extends AppCompatActivity implements View.
     Review temp;
     ImageView imageView;
     Uri imageUri;
+    RoadRes road;
     ListView reviewListView;
 
     private ReviewRes reviewRes;
@@ -153,6 +155,7 @@ public class ReviewListActivity_trail extends AppCompatActivity implements View.
         if (reviewRes.getData() == null) return;
         for (int i = 0; i < reviewRes.getData().size(); i++) {
             temp = reviewRes.getData().get(i);
+            getRoadById(temp.getParkId());
             // 0: 리뷰내용 1: 리뷰별점 2: 리뷰사진
 //            Log.d("리스트뷰테스트", "mmmm : "+temp.getContent()+" , "+temp.getScore()+ " , "+temp.getPngPath()+" , "+temp.getId()+" , "+temp.getParkId());
             adapter.addItemToList(temp.getContent(), temp.getScore(), temp.getPngPath(),temp.getId(),temp.getFk(), temp.getName());
@@ -160,6 +163,35 @@ public class ReviewListActivity_trail extends AppCompatActivity implements View.
         }
         reviewListView.setAdapter(adapter);
         Log.d("리스트뷰테스트", "테테테테테스트2");
+    }
+    public void getRoadById(int id) {
+        final String TAG = "dlgochan";
+        ServerRequestApi service = ServiceGenerator.getService(ServerRequestApi.class);
+        service.getRoadById(id).enqueue(new Callback<RoadRes>() {
+            @Override
+            public void onResponse(Call<RoadRes> call, Response<RoadRes> response) {
+                if (response.isSuccessful()) {
+                    // 리스폰스 성공 시 200 OK
+                    road = response.body();
+                    Log.d(TAG, "onResponse Success : " + road.toString());
+                } else {
+                    // 리스폰스 실패  400, 500 등
+                    Log.d(TAG, "RES msg : " + response.message());
+                    try {
+                        Log.d(TAG, "RES errorBody : " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, String.format("RES err code : %d", response.code()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadRes> call, Throwable t) {
+                // 통신 실패 시 (인터넷 연결 끊김, SSL 인증 실패 등)
+                Log.d(TAG, "onFailure : " + t.getMessage());
+            }
+        });
     }
 
     public void getMyTrailReview() {

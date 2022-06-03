@@ -40,7 +40,8 @@
         android:id="@+id/roadimageView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        tools:srcCompat="@drawable/basic_park" />
+        tools:srcCompat="@drawable/basic_park"
+        android:background="@drawable/list_item"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,7 +104,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@drawable/list_item">
 
                     <TextView
                         android:id="@+id/txt_name"
@@ -112,6 +114,7 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="20dp"
                         android:text="TextView"
+
                         android:fontFamily="@font/custom_font_family"
                         android:textSize="24sp"
                         android:textStyle="bold" />

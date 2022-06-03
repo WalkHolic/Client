@@ -123,7 +123,7 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
                 int time = (int) (roadDistance / 0.08); // 총 시간(분) - km 단위
 
                 double twoDistance = twoDistance(startLat, startLng, mlat, mlon, "km");
-                distance = "해당 위치로부터 떨어진 거리: " + String.valueOf(twoDistance) + " km";
+                distance = "해당 위치로부터 떨어진 거리: " +  String.format("%,.3f", twoDistance)  + " km";
 
                 Log.d(TAG, "정보확인 : " + roadName + roadDesc + roadSteps + time + roadDistance + hashtagList + startLotAddr + startLat + startLng + picturePath + distance);
 
@@ -139,7 +139,7 @@ public class UserRoadCloudviewHomeActivity extends AppCompatActivity implements 
                 txt_name.setText(roadName);
                 txt_road_description.setText(roadDesc);
                 txt_road_time.setText(String.valueOf(time) + " 분");
-                txt_road_distance.setText(String.valueOf(roadDistance) + " km");
+                txt_road_distance.setText( String.format("%,.3f", roadDistance)  + " km");
                 txt_hashtag.setText(showHashtags);
                 txt_road_step.setText(String.valueOf(roadSteps) + " 걸음");
                 txt_addr.setText(startLotAddr);
