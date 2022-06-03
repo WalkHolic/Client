@@ -2,9 +2,11 @@ package com.example.walkholic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -40,7 +42,8 @@ import retrofit2.Response;
 
 public class WriteReviewActivity extends AppCompatActivity {
 
-
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     // 로그에 사용할 TAG 변수 선언
     final private String TAG = getClass().getSimpleName();
 
@@ -54,7 +57,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView reviewImageview;
     private ReviewRes reviewRes = new ReviewRes();
-    private String kind;
+    private int kind;
     private int id = -1;
     private String name = null;
 
@@ -62,9 +65,12 @@ public class WriteReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writeriview);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-//        원래는 리뷰 액티비티에서 종류(공원, 산책로, 사용자산책로)와 id값, 이름을 넘겨줘야함
-        kind = getIntent().getStringExtra("kind");
+        editor = preferences.edit();
+//        원래는 리뷰 액티비티에서 해당 park의 id값을 넘겨줘야함
+        //kind = getIntent().getStringExtra("kind");
+        kind = preferences.getInt("objectType", 1);
         id = getIntent().getIntExtra("ID", id);
         name = getIntent().getStringExtra("name");
 
@@ -105,13 +111,13 @@ public class WriteReviewActivity extends AppCompatActivity {
 
             //업로드
             switch (kind){
-                case "park":
+                case 1:
                     uploadParkReview(id, requestBody1, thumbnail);
                     break;
-                case "road":
+                case 2:
                     uploadRoadReview(id, requestBody1, thumbnail);
                     break;
-                case "userRoad":
+                case 3:
                     uploadUserRoadReview(id, requestBody1, thumbnail);
                     break;
             }

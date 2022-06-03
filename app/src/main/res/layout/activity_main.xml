@@ -216,7 +216,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:max="100"
+                        android:max="1"
                         android:min="0"
                         android:progressBackgroundTint="#E5D0FF"
                         android:progressTint="@color/purple_200"
