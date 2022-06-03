@@ -134,25 +134,6 @@ public class ReviewListViewAdapter extends BaseAdapter {
         //objectId = preferences.getInt("objectID",0);
         objectId = listdata.getParkID();
 
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                // 시간 지난 후 실행할 코딩
-                Log.d("dlgochan", "objectType3 : " + objectType);
-                if (objectType == 1) {
-                    tempName = park.getData().get(0).getName();
-                    nameList.add(tempName);
-                } else if (objectType == 2) {
-                    tempName = road.getData().get(0).getRoadName();
-                    nameList.add(tempName);
-                } else if (objectType == 3) {
-                    tempName = userRoad.getData().get(0).getTrailName();
-                    nameList.add(tempName);
-                }
-                Log.d("dlgochan", "name : " + tempName);
-
-            }
-        }, 500); // 0.5초후
-        reviewObjectName.setText(tempName);
         //현재 포지션에 해당하는 아이템에 글자를 적용하기 위해 list배열에서 객체를 가져온다.
         Log.d("dlgochan", "listdata url : " + listdata.getImageURL());
         //URI로 이미지 미리보기 띄우기
