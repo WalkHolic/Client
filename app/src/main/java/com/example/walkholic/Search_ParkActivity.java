@@ -145,6 +145,39 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
         //tMapGPS.setProvider(tMapGPS.GPS_PROVIDER);
 
         tMapGPS.OpenGps();
+        // 키워드 검색으로 요청할 때
+        Log.d("dlgochan", "키워드 이름: " + getIntent().getStringExtra("itemName"));
+        if (getIntent().getStringExtra("itemName") != null) {
+            TrackingMode = false;
+            String itemName = getIntent().getStringExtra("itemName");
+            mlat = getIntent().getDoubleExtra("itemLat", 37.2844252); // default: 아주대 위경도
+            mlon = getIntent().getDoubleExtra("itemLng", 127.043568);
+
+            Log.d("dlgochan", "search Item 위도: " + mlat + "경도: " + mlon);
+
+            // 마커 생성
+            TMapPoint tMapPointItem = new TMapPoint(mlat, mlon);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.marker_blue);
+            TMapMarkerItem tMapMarkerItem = new TMapMarkerItem();
+            tMapMarkerItem.setIcon(bitmap);                 // bitmap를 Marker icon으로 사용
+            tMapMarkerItem.setPosition(0.5f, 1.0f);         // Marker img의 position
+            tMapMarkerItem.setTMapPoint(tMapPointItem);         // Marker의 위치
+            tMapMarkerItem.setName(itemName);              // Marker의 이름
+            tMapView.addMarkerItem(itemName, tMapMarkerItem);
+            tMapView.setCenterPoint(mlon, mlat);
+
+        } else { // 그냥 GPS
+            TrackingMode = true;
+            mlat = tMapGPS.getLocation().getLatitude();
+            mlon = tMapGPS.getLocation().getLongitude();
+
+            tMapView.setLocationPoint(mlon, mlat);
+            tMapView.setCenterPoint(mlon, mlat);
+            Log.d("dlgochan", "위도: " + mlat + "경도: " + mlon);
+
+
+        }
+
 
         btn_home = findViewById(R.id.btn_home);
         btn_search = findViewById(R.id.btn_search);
@@ -438,12 +471,12 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onResponse(Call<ParkRes> call, Response<ParkRes> response) {
                 Log.d(TAG, "onResponse Filter: " + option.toString());
+                parkRes = response.body();
 
                 if (response.isSuccessful()) {
-                    parkRes = response.body();
-                    addMarketMarker(parkRes.getData());
-                    tMapView.setZoomLevel(13);
                     // 리스폰스 성공 시 200 OK
+                    addMarketMarker(parkRes.getData());
+
                     Log.d(TAG, "onResponse Success : " + parkRes.toString());
                 } else {
                     // 리스폰스 실패  400, 500 등
@@ -455,6 +488,7 @@ public class Search_ParkActivity extends AppCompatActivity implements View.OnCli
                     }
                     Log.d(TAG, String.format("RES err code : %d", response.code()));
                 }
+                tMapView.setZoomLevel(13);
             }
 
             @Override

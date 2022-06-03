@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.walkholic.DataClass.DTO.ReviewRequestDto;
 import com.example.walkholic.DataClass.Response.ReviewRes;
@@ -80,9 +82,15 @@ public class WriteReviewActivity extends AppCompatActivity {
         reviewRating = findViewById(R.id.reviewRating);
         reg_button = findViewById(R.id.reg_button);
         reviewImageview = findViewById(R.id.reviewImageview);
+
+        // 툴바 생성
+        Toolbar toolbar = findViewById(R.id.next_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // 기본 타이틀 제거
 // 버튼 이벤트 추가
         reg_button.setOnClickListener(view -> {
-// 리뷰 등록 함수
+        // 리뷰 등록 함수
             // 사진
             File realFile = null;
             MultipartBody.Part thumbnail = null;
@@ -268,6 +276,18 @@ public class WriteReviewActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure : " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                // 액티비티 이동
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

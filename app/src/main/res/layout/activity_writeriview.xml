@@ -6,17 +6,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/next_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_500"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
     <TextView
         android:fontFamily="@font/patrickhandsc_regular"
-        android:id="@+id/reviewText"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="리뷰작성"
-        android:textSize="30dp"></TextView>
-
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        />
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +61,7 @@
         android:max="5"
         android:numStars="5"
         android:rating="3"
-        android:stepSize="1.0"
+        android:stepSize="1"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         ></RatingBar>
@@ -91,10 +101,9 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="10"
         >
@@ -105,47 +114,7 @@
             android:layout_height="wrap_content"
             android:text="등록하기"
             android:textColor="#FFFFFF"
-            android:background="#673AB7"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-
-        >
-
-        <Button
-            android:id="@+id/btn_home"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_home" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_search_sel" />
-
-        <Button
-            android:id="@+id/btn_walking"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_walking" />
-
-        <Button
-            android:id="@+id/btn_mypage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/act_mypage"
-            />
-
+            android:background="#673AB7" />
     </LinearLayout>
 
 </LinearLayout>
