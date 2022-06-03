@@ -214,15 +214,13 @@ public class ParkCloudviewHomeActivity extends AppCompatActivity implements View
                 break;
             case R.id.btn_park_review:
                 Intent intent5 = new Intent(getApplicationContext(), ParkCloudviewReviewActivity.class);
-                int Id = ParkId_int;
-                intent5.putExtra("ID", Id);
+                intent5.putExtra("ID", ParkId_int);
                 startActivity(intent5);
                 finish();
                 break;
             case R.id.btn_park_facility:
                 Intent intent6 = new Intent(getApplicationContext(), ParkCloudviewFacilityActivity.class);
-                int Id1 = ParkId_int;
-                intent6.putExtra("ID", Id1);
+                intent6.putExtra("ID", ParkId_int);
                 startActivity(intent6);
                 finish();
                 break;

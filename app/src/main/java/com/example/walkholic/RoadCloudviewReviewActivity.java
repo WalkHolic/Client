@@ -109,6 +109,9 @@ public class RoadCloudviewReviewActivity extends AppCompatActivity implements Vi
 
         mHandler.postDelayed(new Runnable() {
             public void run() {
+                if(reviewRes.getData() == null){
+                    return;
+                }
                 picturePath = roadRes.getData().get(0).getPicturePath();
 
                 if (picturePath != null) {
